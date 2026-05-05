@@ -1,0 +1,46 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment and OS
+.env
+.DS_Store
+Thumbs.db
+
+# Dataset and large local files (keep folder README files tracked)
+data/**
+!data/
+!data/**/
+!data/**/README.md
+
+# Models and generated artifacts
+models/**
+!models/
+!models/README.md
+
+results/**
+!results/
+!results/**/
+!results/**/README.md
+
+# Optional deployment artifacts
+deployment/**
+
+# Common ML outputs
+*.pth
+*.pt
+*.onnx
+*.ckpt
+*.h5
+*.npy
+*.npz
+*.parquet
+*.feather
