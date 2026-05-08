@@ -145,6 +145,8 @@ Use **leaf-grouped stratified split** to prevent data leakage:
 - Keep **10–15% of Cycle 1 training samples** as replay buffer
 - Store in `replay_buffer/` folder
 - **Do not use test or validation samples in replay buffer**
+- Keep `data/replay_buffer/` **immutable** after creation (do not add/remove image files later)
+- For later cycles, apply replay updates in a **manifest file only** (logical update, no data-folder mutation)
 
 #### For Category B New Classes (T6, T7)
 - Same 70/15/15 split applied independently
@@ -357,9 +359,12 @@ After producing M1, M2, M3 — evaluate all three on the held-out test set **bef
 2. Sample from `replay_buffer/` (10–15% of old training data per class, balanced)
 3. Combine replay samples + new cycle data → mixed training set
 4. Standard cross-entropy training on mixed set
-5. Update replay buffer after training (add portion of new cycle data)
+5. Update replay sampling state after training via manifest only:
+   - keep `data/replay_buffer/` unchanged
+   - add selected `cl_cycle1_stream` paths into next-cycle replay manifest
+   - use that manifest to build Cycle 2 mixed batches
 
-**Replay Buffer Strategy:** Random sampling per class (can try reservoir sampling for Cycle 2)
+**Replay Buffer Strategy:** Random/stratified sampling per class with manifest-based logical updates (no file copying into `data/replay_buffer/`).
 
 **Output to Store per Cycle:**
 - `results/cat_a/replay/{model}/cycle_{n}/model.pth`
@@ -496,6 +501,62 @@ After each CL method × each cycle, evaluate:
 #### Method B_Base — Naive Fine-tuning (No CL)
 
 Same as A_Base but with expanded 7-class head. Expect severe forgetting of old classes.
+
+---
+
+#### B-Implementation Rules (Critical for 5 -> 7 Expansion)
+
+These rules are mandatory for stable and reproducible Cat B runs.
+
+1. **Expand classifier head with old-row weight copy**
+   - Preserve old-class logits by copying the first 5 neurons exactly.
+   - Initialize new neurons (T6, T7) with small values.
+
+```python
+old_layer = model.classifier[-1]           # Linear(1024 -> 5)
+new_layer = nn.Linear(1024, 7)
+
+new_layer.weight.data[:5] = old_layer.weight.data
+new_layer.bias.data[:5] = old_layer.bias.data
+
+nn.init.normal_(new_layer.weight.data[5:], mean=0.0, std=0.01)
+nn.init.zeros_(new_layer.bias.data[5:])
+
+model.classifier[-1] = new_layer
+```
+
+2. **For EWC only: compute Fisher before head expansion**
+   - Correct order:
+     - compute Fisher/theta* on clean 5-class model
+     - expand head 5 -> 7
+     - train with EWC
+
+```python
+fisher, theta_star = compute_fisher(model_5class, replay_buffer)
+expand_head_5_to_7(model_5class)
+train_with_ewc(model_5class, fisher, theta_star, train_stream)
+```
+
+3. **For EWC with expanded head: penalize only old classifier rows**
+   - After expansion, full-layer shape changes (5 -> 7), so direct full-tensor EWC on final layer is invalid.
+   - Apply EWC penalty to old rows only (`[:5]`) for final classifier weight/bias.
+
+```python
+if name == "classifier.3.weight":
+    loss += (fisher[name] * (param[:5] - theta_star[name]).pow(2)).sum()
+elif name == "classifier.3.bias":
+    loss += (fisher[name] * (param[:5] - theta_star[name]).pow(2)).sum()
+elif name in fisher:
+    loss += (fisher[name] * (param - theta_star[name]).pow(2)).sum()
+```
+
+4. **Replay batch composition must be balanced**
+   - Recommended per-batch target: `old=16`, `new=16` for `batch_size=32`.
+   - If new-class stream is smaller, oversample T6/T7 to maintain stable new-class learning.
+
+5. **Isolation inference requires score calibration check**
+   - Concatenating old/new branch logits can be miscalibrated.
+   - Add validation-time calibration (temperature or bias correction) if one branch dominates.
 
 ---
 

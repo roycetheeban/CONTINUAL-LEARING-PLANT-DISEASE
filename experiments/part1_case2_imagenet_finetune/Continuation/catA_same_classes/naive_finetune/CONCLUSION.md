@@ -19,7 +19,7 @@
 | Cycle | Total Time (s) | Train Time (s) | Peak VRAM (MB) | End RAM (MB) | Model Size (MB) |
 |---|---:|---:|---:|---:|---:|
 | Cycle 1 | 155.6882 | 149.1135 | 161.02 | 1221.38 | 5.8097 |
-| Cycle 2 | 178.4817 | 171.2499 | 162.17 | 1145.53 | 5.8097 |
+| Cycle 2 | 166.7872 | 160.4085 | 162.17 | 1229.56 | 5.8097 |
 
 - Parameters (both cycles): `1,522,981`
 - No model growth across cycles (same architecture size).

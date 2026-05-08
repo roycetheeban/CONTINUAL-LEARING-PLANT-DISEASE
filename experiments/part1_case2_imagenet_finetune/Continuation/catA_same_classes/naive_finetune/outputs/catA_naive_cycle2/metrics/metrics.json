@@ -12,13 +12,13 @@
   "train_summary": {
     "best_epoch": 11,
     "best_val_macro_f1": 0.9601268459312623,
-    "train_wall_time_sec": 171.2499
+    "train_wall_time_sec": 160.4085
   },
   "runtime": {
-    "total_wall_time_sec": 178.4817,
-    "train_wall_time_sec": 171.2499,
+    "total_wall_time_sec": 166.7872,
+    "train_wall_time_sec": 160.4085,
     "peak_vram_mb": 162.17,
-    "process_ram_mb_end": 1145.53
+    "process_ram_mb_end": 1229.56
   },
   "model_footprint": {
     "num_parameters": 1522981,
