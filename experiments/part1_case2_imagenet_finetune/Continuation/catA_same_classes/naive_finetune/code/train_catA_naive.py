@@ -3,6 +3,7 @@ import copy
 import csv
 import json
 import random
+import time
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -10,11 +11,15 @@ import numpy as np
 import torch
 import torch.nn as nn
 import yaml
-from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, f1_score, precision_score, recall_score
 from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torchvision import datasets, models, transforms
+try:
+    import psutil
+except ImportError:
+    psutil = None
 
 
 def set_seed(seed: int) -> None:
@@ -97,6 +102,17 @@ def evaluate(model: nn.Module, loader: DataLoader, device: torch.device, with_pr
     return stats
 
 
+def get_model_size_mb(model: nn.Module) -> float:
+    param_bytes = sum(p.numel() * p.element_size() for p in model.parameters())
+    return round(param_bytes / (1024 ** 2), 4)
+
+
+def get_process_ram_mb() -> float | None:
+    if psutil is None:
+        return None
+    return round(psutil.Process().memory_info().rss / (1024 ** 2), 2)
+
+
 def freeze_for_catA(model: nn.Module) -> None:
     for p in model.features[:9].parameters():
         p.requires_grad = False
@@ -130,6 +146,7 @@ def train_naive(model: nn.Module, train_loader: DataLoader, val_loader: DataLoad
     bad_epochs = 0
     rows = []
 
+    phase_start = time.perf_counter()
     for epoch in range(1, max_epochs + 1):
         model.train()
         running_loss = 0.0
@@ -184,7 +201,11 @@ def train_naive(model: nn.Module, train_loader: DataLoader, val_loader: DataLoad
         if rows:
             writer.writerows(rows)
 
-    return model, {"best_epoch": best_epoch, "best_val_macro_f1": best_f1}
+    return model, {
+        "best_epoch": best_epoch,
+        "best_val_macro_f1": best_f1,
+        "train_wall_time_sec": round(time.perf_counter() - phase_start, 4),
+    }
 
 
 def plot_training_curves(log_csv: Path, out_png: Path):
@@ -231,6 +252,42 @@ def save_confusion(y_true, y_pred, class_names, out_png: Path):
     plt.close(fig)
 
 
+def save_classification_report(y_true, y_pred, class_names, out_csv: Path):
+    report = classification_report(
+        y_true,
+        y_pred,
+        target_names=class_names,
+        digits=4,
+        output_dict=True,
+        zero_division=0,
+    )
+    with out_csv.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["label", "precision", "recall", "f1-score", "support"])
+        for label in class_names:
+            vals = report.get(label, {})
+            writer.writerow(
+                [
+                    label,
+                    vals.get("precision", ""),
+                    vals.get("recall", ""),
+                    vals.get("f1-score", ""),
+                    vals.get("support", ""),
+                ]
+            )
+        for agg in ["macro avg", "weighted avg"]:
+            vals = report.get(agg, {})
+            writer.writerow(
+                [
+                    agg,
+                    vals.get("precision", ""),
+                    vals.get("recall", ""),
+                    vals.get("f1-score", ""),
+                    vals.get("support", ""),
+                ]
+            )
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True, type=str)
@@ -239,9 +296,12 @@ def main():
     with open(args.config, "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
 
+    total_start = time.perf_counter()
     set_seed(int(cfg["seed"]))
     device = torch.device("cuda" if cfg["device"] == "cuda" and torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats()
 
     out_root = Path(cfg["output"]["root"])
     dirs = ensure_dirs(out_root)
@@ -273,6 +333,9 @@ def main():
 
     val_metrics = evaluate(model, val_loader, device)
     test_metrics = evaluate(model, test_loader, device, with_preds=True)
+    per_class_f1 = f1_score(test_metrics["y_true"], test_metrics["y_pred"], average=None).tolist()
+    per_class_precision = precision_score(test_metrics["y_true"], test_metrics["y_pred"], average=None, zero_division=0).tolist()
+    per_class_recall = recall_score(test_metrics["y_true"], test_metrics["y_pred"], average=None, zero_division=0).tolist()
 
     metrics = {
         "cycle": cfg["meta"]["cycle_name"],
@@ -280,8 +343,23 @@ def main():
         "class_names": class_names,
         "base_checkpoint": str(base_ckpt),
         "train_summary": train_summary,
-        "val": {k: test_metrics[k] if False else val_metrics[k] for k in ["accuracy", "macro_f1", "macro_precision", "macro_recall"]},
+        "runtime": {
+            "total_wall_time_sec": round(time.perf_counter() - total_start, 4),
+            "train_wall_time_sec": train_summary["train_wall_time_sec"],
+            "peak_vram_mb": round(torch.cuda.max_memory_allocated() / (1024 ** 2), 2)
+            if device.type == "cuda"
+            else None,
+            "process_ram_mb_end": get_process_ram_mb(),
+        },
+        "model_footprint": {
+            "num_parameters": int(sum(p.numel() for p in model.parameters())),
+            "model_size_mb": get_model_size_mb(model),
+        },
+        "val": {k: val_metrics[k] for k in ["accuracy", "macro_f1", "macro_precision", "macro_recall"]},
         "test": {k: test_metrics[k] for k in ["accuracy", "macro_f1", "macro_precision", "macro_recall"]},
+        "test_per_class_precision": dict(zip(class_names, per_class_precision)),
+        "test_per_class_recall": dict(zip(class_names, per_class_recall)),
+        "test_per_class_f1": dict(zip(class_names, per_class_f1)),
         "config": cfg,
     }
     with (dirs["metrics"] / "metrics.json").open("w", encoding="utf-8") as f:
@@ -289,6 +367,12 @@ def main():
 
     plot_training_curves(dirs["logs"] / "train_log.csv", dirs["figures"] / "train_val_curves.png")
     save_confusion(test_metrics["y_true"], test_metrics["y_pred"], class_names, dirs["figures"] / "confusion_matrix.png")
+    save_classification_report(
+        test_metrics["y_true"],
+        test_metrics["y_pred"],
+        class_names,
+        dirs["metrics"] / "classification_report.csv",
+    )
 
     print(f"Saved: {best_model_path}")
     print(f"Test macro_f1: {test_metrics['macro_f1']:.4f}")
