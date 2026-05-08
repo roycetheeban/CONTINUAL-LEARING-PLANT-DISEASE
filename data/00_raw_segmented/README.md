@@ -1,6 +1,7 @@
 ﻿# 00 Raw Segmented
 
-Use case: canonical raw input location for data splitting.
-Current file count: 0 (placeholder folder).
-Source currently in: ../raw_segmented/ with 54306 images.
-Do not edit source images manually.
+Use case: canonical raw input placeholder.
+
+Note:
+- Actual source currently used by scripts is `../raw_segmented/`.
+- Split workflow uses copy mode and preserves source files.

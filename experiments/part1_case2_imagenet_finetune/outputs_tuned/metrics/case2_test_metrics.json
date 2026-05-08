@@ -1,0 +1,53 @@
+{
+  "case": "part1_case2_imagenet_finetune",
+  "best_phase1": {
+    "phase": "phase1",
+    "best_epoch": 3,
+    "best_train_loss": 0.4148786377705885,
+    "best_val_accuracy": 0.899736147757256,
+    "best_val_macro_f1": 0.878203880413337,
+    "best_val_macro_precision": 0.8753384140586874,
+    "best_val_macro_recall": 0.8866701853829964
+  },
+  "best_phase2": {
+    "phase": "phase2",
+    "best_epoch": 20,
+    "best_train_loss": 0.08003891369830189,
+    "best_val_accuracy": 0.945910290237467,
+    "best_val_macro_f1": 0.9356538738505839,
+    "best_val_macro_precision": 0.9350121763182422,
+    "best_val_macro_recall": 0.9380244920270394
+  },
+  "test_accuracy": 0.969217238346526,
+  "test_macro_f1": 0.9660217415627861,
+  "test_macro_precision": 0.9673527171718852,
+  "test_macro_recall": 0.9648793895471142,
+  "test_per_class_precision": {
+    "Tomato___Bacterial_spot": 0.9873417721518988,
+    "Tomato___Early_blight": 0.9591836734693877,
+    "Tomato___Late_blight": 0.9391891891891891,
+    "Tomato___Leaf_Mold": 0.951048951048951,
+    "Tomato___healthy": 1.0
+  },
+  "test_per_class_recall": {
+    "Tomato___Bacterial_spot": 0.9780564263322884,
+    "Tomato___Early_blight": 0.94,
+    "Tomato___Late_blight": 0.972027972027972,
+    "Tomato___Leaf_Mold": 0.951048951048951,
+    "Tomato___healthy": 0.9832635983263598
+  },
+  "test_per_class_f1": {
+    "Tomato___Bacterial_spot": 0.9826771653543307,
+    "Tomato___Early_blight": 0.9494949494949495,
+    "Tomato___Late_blight": 0.9553264604810997,
+    "Tomato___Leaf_Mold": 0.951048951048951,
+    "Tomato___healthy": 0.9915611814345991
+  },
+  "classes": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ]
+}

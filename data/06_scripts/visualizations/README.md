@@ -1,5 +1,8 @@
 ﻿# Visualization Scripts
 
-Use case: .py files for data distribution plots and split verification charts.
-Example names: plot_class_distribution.py, plot_split_balance.py.
-Current file count: 0.
+Use case: scripts that generate charts/tables to verify class balance and split quality.
+
+Suggested outputs:
+- class-count bar plots
+- split-ratio comparison charts
+- per-class distribution CSV summaries

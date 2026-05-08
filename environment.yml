@@ -29,3 +29,4 @@ dependencies:
 # conda env create -f environment.yml -n NEW_NAME
 # conda activate NEW_NAME
 # current env: conda activate AIOT
+# quick check: python -c "import torch; print(torch.__version__); print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0))"

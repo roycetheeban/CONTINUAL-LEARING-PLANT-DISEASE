@@ -1,5 +1,11 @@
 ﻿# 06 Scripts
 
-Use case: keep all Python utilities used for splitting and visualization.
-Subfolders: splitters/, visualizations/, utils/.
-Current file count: 0.
+Use case: all Python helpers for splitting and data visualizations.
+
+Subfolders:
+- `splitters/`
+- `visualizations/`
+- `utils/`
+
+Default behavior:
+- split scripts run in copy mode unless you pass `--mode move`.

@@ -1,0 +1,20 @@
+{
+  "phase1": {
+    "phase": "phase1",
+    "best_epoch": 3,
+    "best_train_loss": 0.4148786377705885,
+    "best_val_accuracy": 0.899736147757256,
+    "best_val_macro_f1": 0.878203880413337,
+    "best_val_macro_precision": 0.8753384140586874,
+    "best_val_macro_recall": 0.8866701853829964
+  },
+  "phase2": {
+    "phase": "phase2",
+    "best_epoch": 20,
+    "best_train_loss": 0.08003891369830189,
+    "best_val_accuracy": 0.945910290237467,
+    "best_val_macro_f1": 0.9356538738505839,
+    "best_val_macro_precision": 0.9350121763182422,
+    "best_val_macro_recall": 0.9380244920270394
+  }
+}
