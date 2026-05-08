@@ -3,17 +3,23 @@ import copy
 import csv
 import json
 import random
+import time
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torch.nn as nn
 import yaml
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
 from torch.optim import Adam
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 from torchvision import datasets, models, transforms
+try:
+    import psutil
+except ImportError:
+    psutil = None
 
 
 def set_seed(seed: int) -> None:
@@ -29,6 +35,7 @@ def ensure_dirs(output_root: Path) -> dict:
         "checkpoints": output_root / "checkpoints",
         "logs": output_root / "logs",
         "metrics": output_root / "metrics",
+        "figures": output_root / "figures",
     }
     for p in dirs.values():
         p.mkdir(parents=True, exist_ok=True)
@@ -74,7 +81,7 @@ def build_dataloaders(cfg: dict):
     return train_ds, train_loader, val_loader, test_loader, fisher_loader
 
 
-def evaluate(model: nn.Module, loader: DataLoader, device: torch.device):
+def evaluate(model: nn.Module, loader: DataLoader, device: torch.device, with_preds: bool = False):
     model.eval()
     y_true, y_pred = [], []
     with torch.no_grad():
@@ -85,12 +92,27 @@ def evaluate(model: nn.Module, loader: DataLoader, device: torch.device):
             y_pred.extend(pred.tolist())
             y_true.extend(y.numpy().tolist())
 
-    return {
+    out = {
         "accuracy": float(accuracy_score(y_true, y_pred)),
         "macro_f1": float(f1_score(y_true, y_pred, average="macro")),
         "macro_precision": float(precision_score(y_true, y_pred, average="macro", zero_division=0)),
         "macro_recall": float(recall_score(y_true, y_pred, average="macro", zero_division=0)),
     }
+    if with_preds:
+        out["y_true"] = y_true
+        out["y_pred"] = y_pred
+    return out
+
+
+def get_model_size_mb(model: nn.Module) -> float:
+    param_bytes = sum(p.numel() * p.element_size() for p in model.parameters())
+    return round(param_bytes / (1024 ** 2), 4)
+
+
+def get_process_ram_mb() -> float | None:
+    if psutil is None:
+        return None
+    return round(psutil.Process().memory_info().rss / (1024 ** 2), 2)
 
 
 def get_trainable_named_params(model: nn.Module):
@@ -192,7 +214,9 @@ def train_with_ewc(
     bad_epochs = 0
 
     rows = []
+    phase_start = time.perf_counter()
     for epoch in range(1, max_epochs + 1):
+        epoch_start = time.perf_counter()
         model.train()
         running_loss = 0.0
         running_ce = 0.0
@@ -224,6 +248,7 @@ def train_with_ewc(
 
         row = {
             "epoch": epoch,
+            "epoch_time_sec": round(time.perf_counter() - epoch_start, 4),
             "train_total_loss": avg_loss,
             "train_ce_loss": avg_ce,
             "train_ewc_penalty": avg_ewc,
@@ -270,7 +295,50 @@ def train_with_ewc(
         "best_epoch": best_epoch,
         "best_val_macro_f1": best_f1,
         "old_f1_floor": floor_f1,
+        "train_wall_time_sec": round(time.perf_counter() - phase_start, 4),
     }
+
+
+def plot_training_curves(log_csv: Path, out_png: Path):
+    epochs, train_losses, val_f1s = [], [], []
+    with log_csv.open("r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            epochs.append(int(row["epoch"]))
+            train_losses.append(float(row["train_total_loss"]))
+            val_f1s.append(float(row["val_macro_f1"]))
+
+    fig, ax1 = plt.subplots(figsize=(9, 5))
+    ax1.plot(epochs, train_losses, color="tab:blue", linewidth=2, label="train_total_loss")
+    ax1.set_xlabel("Epoch")
+    ax1.set_ylabel("Train Total Loss", color="tab:blue")
+    ax1.tick_params(axis="y", labelcolor="tab:blue")
+
+    ax2 = ax1.twinx()
+    ax2.plot(epochs, val_f1s, color="tab:green", linewidth=2, label="val_macro_f1")
+    ax2.set_ylabel("Val Macro-F1", color="tab:green")
+    ax2.tick_params(axis="y", labelcolor="tab:green")
+
+    plt.title("Cat A EWC Training Curves")
+    fig.tight_layout()
+    fig.savefig(out_png, dpi=180)
+    plt.close(fig)
+
+
+def save_confusion(y_true, y_pred, class_names, out_png: Path):
+    cm = confusion_matrix(y_true, y_pred, labels=list(range(len(class_names))))
+    fig = plt.figure(figsize=(8, 6))
+    plt.imshow(cm, interpolation="nearest")
+    plt.title("Cat A EWC Test Confusion Matrix")
+    plt.colorbar()
+    ticks = np.arange(len(class_names))
+    plt.xticks(ticks, class_names, rotation=45, ha="right")
+    plt.yticks(ticks, class_names)
+    plt.ylabel("True")
+    plt.xlabel("Pred")
+    plt.tight_layout()
+    fig.savefig(out_png, dpi=180)
+    plt.close(fig)
 
 
 def main():
@@ -281,9 +349,12 @@ def main():
     with open(args.config, "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
 
+    total_start = time.perf_counter()
     set_seed(int(cfg["seed"]))
     device = torch.device("cuda" if cfg["device"] == "cuda" and torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats()
 
     out_root = Path(cfg["output"]["root"])
     dirs = ensure_dirs(out_root)
@@ -327,7 +398,7 @@ def main():
     torch.save(model.state_dict(), best_model_path)
 
     val_metrics = evaluate(model, val_loader, device)
-    test_metrics = evaluate(model, test_loader, device)
+    test_metrics = evaluate(model, test_loader, device, with_preds=True)
 
     metrics = {
         "cycle": cfg["meta"]["cycle_name"],
@@ -336,12 +407,37 @@ def main():
         "base_checkpoint": str(base_ckpt),
         "fisher_batches_used": used_batches,
         "train_summary": train_summary,
+        "runtime": {
+            "total_wall_time_sec": round(time.perf_counter() - total_start, 4),
+            "train_wall_time_sec": train_summary["train_wall_time_sec"],
+            "peak_vram_mb": round(torch.cuda.max_memory_allocated() / (1024 ** 2), 2)
+            if device.type == "cuda"
+            else None,
+            "process_ram_mb_end": get_process_ram_mb(),
+        },
+        "model_footprint": {
+            "num_parameters": int(sum(p.numel() for p in model.parameters())),
+            "model_size_mb": get_model_size_mb(model),
+        },
         "val": val_metrics,
-        "test": test_metrics,
+        "test": {
+            "accuracy": test_metrics["accuracy"],
+            "macro_f1": test_metrics["macro_f1"],
+            "macro_precision": test_metrics["macro_precision"],
+            "macro_recall": test_metrics["macro_recall"],
+        },
         "config": cfg,
     }
     with (dirs["metrics"] / "metrics.json").open("w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2)
+
+    plot_training_curves(dirs["logs"] / "train_log.csv", dirs["figures"] / "train_val_curves.png")
+    save_confusion(
+        test_metrics["y_true"],
+        test_metrics["y_pred"],
+        class_names,
+        dirs["figures"] / "confusion_matrix.png",
+    )
 
     print(f"Saved: {best_model_path}")
     print(f"Test macro_f1: {test_metrics['macro_f1']:.4f}")

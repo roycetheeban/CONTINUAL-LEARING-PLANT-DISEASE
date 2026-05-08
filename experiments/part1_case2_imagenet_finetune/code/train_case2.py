@@ -3,6 +3,7 @@ import copy
 import csv
 import json
 import random
+import time
 from pathlib import Path
 
 import numpy as np
@@ -23,6 +24,10 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, models, transforms
 
 import matplotlib.pyplot as plt
+try:
+    import psutil
+except ImportError:
+    psutil = None
 
 
 def set_seed(seed: int) -> None:
@@ -100,6 +105,18 @@ def compute_class_weights(train_ds: datasets.ImageFolder, device: torch.device) 
     return torch.tensor(weights, dtype=torch.float32, device=device)
 
 
+def get_model_size_mb(model: nn.Module) -> float:
+    param_bytes = sum(p.numel() * p.element_size() for p in model.parameters())
+    return round(param_bytes / (1024 ** 2), 4)
+
+
+def get_process_ram_mb() -> float | None:
+    if psutil is None:
+        return None
+    proc = psutil.Process()
+    return round(proc.memory_info().rss / (1024 ** 2), 2)
+
+
 def evaluate(model: nn.Module, loader: DataLoader, device: torch.device):
     model.eval()
     y_true, y_pred = [], []
@@ -153,8 +170,10 @@ def train_phase(
     best_state = None
     bad_epochs = 0
     rows = []
+    phase_start = time.perf_counter()
 
     for epoch in range(1, max_epochs + 1):
+        epoch_start = time.perf_counter()
         model.train()
         running_loss = 0.0
 
@@ -180,6 +199,7 @@ def train_phase(
         row = {
             "phase": phase_name,
             "epoch": epoch,
+            "epoch_time_sec": round(time.perf_counter() - epoch_start, 4),
             "train_loss": train_loss,
             "val_accuracy": val_acc,
             "val_macro_f1": val_f1,
@@ -216,6 +236,7 @@ def train_phase(
             fieldnames=[
                 "phase",
                 "epoch",
+                "epoch_time_sec",
                 "train_loss",
                 "val_accuracy",
                 "val_macro_f1",
@@ -236,6 +257,7 @@ def train_phase(
         "best_val_macro_f1": best_f1,
         "best_val_macro_precision": best_val_precision,
         "best_val_macro_recall": best_val_recall,
+        "phase_wall_time_sec": round(time.perf_counter() - phase_start, 4),
     }
 
 
@@ -336,10 +358,13 @@ def main():
         cfg = yaml.safe_load(f)
 
     set_seed(cfg["seed"])
+    total_start = time.perf_counter()
     device = torch.device(
         "cuda" if cfg["device"] == "cuda" and torch.cuda.is_available() else "cpu"
     )
     print(f"Using device: {device}")
+    if device.type == "cuda":
+        torch.cuda.reset_peak_memory_stats()
 
     output_root = Path(cfg["output"]["root"])
     dirs = ensure_dirs(output_root, cfg)
@@ -419,6 +444,19 @@ def main():
         "case": "part1_case2_imagenet_finetune",
         "best_phase1": best_p1,
         "best_phase2": best_p2,
+        "runtime": {
+            "total_wall_time_sec": round(time.perf_counter() - total_start, 4),
+            "phase1_wall_time_sec": best_p1["phase_wall_time_sec"],
+            "phase2_wall_time_sec": best_p2["phase_wall_time_sec"],
+            "peak_vram_mb": round(torch.cuda.max_memory_allocated() / (1024 ** 2), 2)
+            if device.type == "cuda"
+            else None,
+            "process_ram_mb_end": get_process_ram_mb(),
+        },
+        "model_footprint": {
+            "num_parameters": int(sum(p.numel() for p in model.parameters())),
+            "model_size_mb": get_model_size_mb(model),
+        },
         "test_accuracy": test_result["accuracy"],
         "test_macro_f1": test_result["macro_f1"],
         "test_macro_precision": test_result["macro_precision"],

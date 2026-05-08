@@ -1,0 +1,66 @@
+{
+  "case": "part1_case2_imagenet_finetune",
+  "best_phase1": {
+    "phase": "phase1",
+    "best_epoch": 3,
+    "best_train_loss": 0.4148786377705885,
+    "best_val_accuracy": 0.899736147757256,
+    "best_val_macro_f1": 0.878203880413337,
+    "best_val_macro_precision": 0.8753384140586874,
+    "best_val_macro_recall": 0.8866701853829964,
+    "phase_wall_time_sec": 225.7374
+  },
+  "best_phase2": {
+    "phase": "phase2",
+    "best_epoch": 24,
+    "best_train_loss": 0.06533041580192996,
+    "best_val_accuracy": 0.9551451187335093,
+    "best_val_macro_f1": 0.9455901828517421,
+    "best_val_macro_precision": 0.9446114808966953,
+    "best_val_macro_recall": 0.9482129737024321,
+    "phase_wall_time_sec": 754.0797
+  },
+  "runtime": {
+    "total_wall_time_sec": 983.7678,
+    "phase1_wall_time_sec": 225.7374,
+    "phase2_wall_time_sec": 754.0797,
+    "peak_vram_mb": 161.0,
+    "process_ram_mb_end": 1222.43
+  },
+  "model_footprint": {
+    "num_parameters": 1522981,
+    "model_size_mb": 5.8097
+  },
+  "test_accuracy": 0.9727352682497801,
+  "test_macro_f1": 0.9701484889389516,
+  "test_macro_precision": 0.969057786423383,
+  "test_macro_recall": 0.9716069642856542,
+  "test_per_class_precision": {
+    "Tomato___Bacterial_spot": 0.9903536977491961,
+    "Tomato___Early_blight": 0.9727891156462585,
+    "Tomato___Late_blight": 0.9554794520547946,
+    "Tomato___Leaf_Mold": 0.9266666666666666,
+    "Tomato___healthy": 1.0
+  },
+  "test_per_class_recall": {
+    "Tomato___Bacterial_spot": 0.9655172413793104,
+    "Tomato___Early_blight": 0.9533333333333334,
+    "Tomato___Late_blight": 0.9755244755244755,
+    "Tomato___Leaf_Mold": 0.972027972027972,
+    "Tomato___healthy": 0.9916317991631799
+  },
+  "test_per_class_f1": {
+    "Tomato___Bacterial_spot": 0.9777777777777777,
+    "Tomato___Early_blight": 0.9629629629629629,
+    "Tomato___Late_blight": 0.9653979238754326,
+    "Tomato___Leaf_Mold": 0.9488054607508533,
+    "Tomato___healthy": 0.9957983193277311
+  },
+  "classes": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ]
+}

@@ -15,10 +15,10 @@ train:
   min_epochs: 5
   patience: 6
   phase1:
-    max_epochs: 15
+    max_epochs: 20
     lr_head: 0.0008
   phase2:
-    max_epochs: 20
+    max_epochs: 30
     lr_g3: 0.00005
     lr_head: 0.0005
 
