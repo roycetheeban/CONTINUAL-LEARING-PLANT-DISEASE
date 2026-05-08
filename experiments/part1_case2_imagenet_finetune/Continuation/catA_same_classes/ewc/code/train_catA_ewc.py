@@ -344,10 +344,27 @@ def save_confusion(y_true, y_pred, class_names, out_png: Path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True, type=str)
+    parser.add_argument("--lambda-override", type=float, default=None)
+    parser.add_argument("--base-checkpoint-override", type=str, default=None)
+    parser.add_argument("--output-root-override", type=str, default=None)
+    parser.add_argument("--cycle-name-override", type=str, default=None)
     args = parser.parse_args()
 
     with open(args.config, "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
+
+    if args.lambda_override is not None:
+        cfg.setdefault("ewc", {})
+        cfg["ewc"]["lambda"] = float(args.lambda_override)
+    if args.base_checkpoint_override is not None:
+        cfg.setdefault("model", {})
+        cfg["model"]["base_checkpoint"] = args.base_checkpoint_override
+    if args.output_root_override is not None:
+        cfg.setdefault("output", {})
+        cfg["output"]["root"] = args.output_root_override
+    if args.cycle_name_override is not None:
+        cfg.setdefault("meta", {})
+        cfg["meta"]["cycle_name"] = args.cycle_name_override
 
     total_start = time.perf_counter()
     set_seed(int(cfg["seed"]))

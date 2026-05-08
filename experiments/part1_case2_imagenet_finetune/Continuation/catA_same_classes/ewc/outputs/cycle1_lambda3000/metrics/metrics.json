@@ -1,0 +1,84 @@
+{
+  "cycle": "cycle1_lambda3000",
+  "method": "ewc",
+  "class_names": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "base_checkpoint": "experiments\\part1_case2_imagenet_finetune\\outputs_tuned\\checkpoints\\M2.pth",
+  "fisher_batches_used": 17,
+  "train_summary": {
+    "cycle_start_val": {
+      "accuracy": 0.9551451187335093,
+      "macro_f1": 0.9455901828517421,
+      "macro_precision": 0.9446114808966953,
+      "macro_recall": 0.9482129737024321
+    },
+    "best_epoch": 4,
+    "best_val_macro_f1": 0.9454878043572407,
+    "old_f1_floor": 0.9172224773661898,
+    "train_wall_time_sec": 76.6098
+  },
+  "runtime": {
+    "total_wall_time_sec": 88.0103,
+    "train_wall_time_sec": 76.6098,
+    "peak_vram_mb": 169.51,
+    "process_ram_mb_end": 1287.69
+  },
+  "model_footprint": {
+    "num_parameters": 1522981,
+    "model_size_mb": 5.8097
+  },
+  "val": {
+    "accuracy": 0.9538258575197889,
+    "macro_f1": 0.9454878043572407,
+    "macro_precision": 0.9412858498608632,
+    "macro_recall": 0.9510817209748315
+  },
+  "test": {
+    "accuracy": 0.9780123131046614,
+    "macro_f1": 0.9756304231327331,
+    "macro_precision": 0.9727702157026856,
+    "macro_recall": 0.9790354863239008
+  },
+  "config": {
+    "seed": 42,
+    "num_workers": 0,
+    "device": "cuda",
+    "meta": {
+      "cycle_name": "cycle1_lambda3000"
+    },
+    "model": {
+      "num_classes": 5,
+      "base_checkpoint": "experiments/part1_case2_imagenet_finetune/outputs_tuned/checkpoints/M2.pth"
+    },
+    "data": {
+      "train_dir": "data/02_tomato_5cls/cl_cycle1_stream",
+      "fisher_dir": "data/02_tomato_5cls/replay_buffer",
+      "val_dir": "data/02_tomato_5cls/val",
+      "test_dir": "data/02_tomato_5cls/test",
+      "image_size": 224,
+      "resize_size": 256
+    },
+    "train": {
+      "batch_size": 32,
+      "weight_decay": 0.0001,
+      "max_epochs": 15,
+      "min_epochs": 5,
+      "patience": 5,
+      "old_f1_drop_tolerance": 0.03,
+      "lr_g3": 0.0001,
+      "lr_head": 0.0005
+    },
+    "ewc": {
+      "lambda": 3000.0,
+      "fisher_max_batches": 100
+    },
+    "output": {
+      "root": "experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/outputs/cycle1_lambda3000"
+    }
+  }
+}

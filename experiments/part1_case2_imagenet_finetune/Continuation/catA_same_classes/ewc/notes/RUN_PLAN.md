@@ -4,6 +4,10 @@
 python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle1_lambda300.yaml
 python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle1_lambda1000.yaml
 python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle1_lambda3000.yaml
+python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle1_lambda5000.yaml
+python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle1_lambda8000.yaml
+python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle1_lambda10000.yaml
+python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle1_lambda15000.yaml
 
 ## Cycle 2 (each lambda continues from its own cycle1 result)
 python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle2_lambda300.yaml
@@ -14,6 +18,10 @@ python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/
 - runs/cycle1_lambda300
 - runs/cycle1_lambda1000
 - runs/cycle1_lambda3000
+- runs/cycle1_lambda5000
+- runs/cycle1_lambda8000
+- runs/cycle1_lambda10000
+- runs/cycle1_lambda15000
 - runs/cycle2_lambda300
 - runs/cycle2_lambda1000
 - runs/cycle2_lambda3000
