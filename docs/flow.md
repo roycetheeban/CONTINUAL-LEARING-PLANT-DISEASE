@@ -869,3 +869,59 @@ cl_research/
 ---
 
 *This journal documents the continual learning phase of the research. Previous phases (image collection, segmentation pipeline, GAN augmentation) are documented in separate research journal entries.*
+
+## 10. Edge-Focused Paper Outputs (Jetson Nano / Orin Nano)
+
+To support the paper claim of **edge-optimized continual learning**, include the following outputs in addition to classification accuracy/F1.
+
+### 10.1 Edge Inference Metrics (Per Model/Method)
+
+| Metric | Unit | Why It Matters |
+|---|---|---|
+| Latency | ms/image | Real-time feasibility on edge |
+| Throughput | FPS | Deployment capacity |
+| Model Size | MB | Storage constraints |
+| Runtime RAM Usage | MB/GB | Memory fit on device |
+
+### 10.2 Continual Update Cost Metrics (Per Cycle)
+
+| Metric | Unit | Why It Matters |
+|---|---|---|
+| Retraining Time | min/cycle | Practical update cost |
+| Epoch Time | sec/epoch | Optimization/debug reference |
+| Peak VRAM (dev GPU) | MB | Training hardware budget |
+| Peak RAM | MB/GB | System resource demand |
+
+### 10.3 CL Behavior Metrics (Core)
+
+| Metric | Description |
+|---|---|
+| Backward Transfer (BT) / Forgetting | Old-class retention after updates |
+| Stability Score | Consistency across cycles |
+| Plasticity / Forward Transfer | Adaptation to new incoming data |
+
+### 10.4 Compression + Deployment Tradeoff
+
+Compare at least:
+- FP32 baseline
+- FP16 (or mixed precision export)
+- INT8 quantized model (if accuracy drop acceptable)
+- Optional pruning levels (e.g., 20%, 30%, 40%)
+
+Report for each: accuracy/F1 change vs speed and size gains.
+
+### 10.5 Hardware Reporting Matrix
+
+| Platform | Method | Precision | Latency | FPS | Model Size | RAM | Accuracy | Macro-F1 |
+|---|---|---|---|---|---|---|---|---|
+| Dev GPU (RTX) | ... | FP32 | | | | | | |
+| Jetson Orin Nano | ... | FP16/INT8 | | | | | | |
+| Jetson Nano (optional) | ... | FP16/INT8 | | | | | | |
+
+### 10.6 Recommended Minimal Extra Runs for Paper
+
+1. Baseline M2 + best Cat A methods (Naive / EWC / Replay) with runtime logging enabled.
+2. Export best model checkpoints to deployment formats (FP32/FP16/INT8).
+3. Run edge inference benchmark script on target Jetson device(s).
+4. Fill final tradeoff table: **Accuracy/F1 vs Time/Memory/Size**.
+
