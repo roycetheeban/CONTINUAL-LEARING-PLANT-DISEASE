@@ -1,0 +1,84 @@
+{
+  "cycle": "cycle2_lambda15000",
+  "method": "ewc",
+  "class_names": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "base_checkpoint": "experiments\\part1_case2_imagenet_finetune\\Continuation\\catA_same_classes\\ewc\\outputs\\cycle1_lambda15000\\checkpoints\\model.pth",
+  "fisher_batches_used": 17,
+  "train_summary": {
+    "cycle_start_val": {
+      "accuracy": 0.9564643799472295,
+      "macro_f1": 0.9479529024044261,
+      "macro_precision": 0.9439570659280857,
+      "macro_recall": 0.9532785497462019
+    },
+    "best_epoch": 6,
+    "best_val_macro_f1": 0.9457961630953815,
+    "old_f1_floor": 0.9195143153322933,
+    "train_wall_time_sec": 156.5453
+  },
+  "runtime": {
+    "total_wall_time_sec": 167.7487,
+    "train_wall_time_sec": 156.5453,
+    "peak_vram_mb": 169.51,
+    "process_ram_mb_end": 1298.0
+  },
+  "model_footprint": {
+    "num_parameters": 1522981,
+    "model_size_mb": 5.8097
+  },
+  "val": {
+    "accuracy": 0.9538258575197889,
+    "macro_f1": 0.9457961630953815,
+    "macro_precision": 0.9405725017388239,
+    "macro_recall": 0.9533008092871811
+  },
+  "test": {
+    "accuracy": 0.9815303430079155,
+    "macro_f1": 0.9796606755934179,
+    "macro_precision": 0.9760503459617398,
+    "macro_recall": 0.9839304109539284
+  },
+  "config": {
+    "seed": 42,
+    "num_workers": 0,
+    "device": "cuda",
+    "meta": {
+      "cycle_name": "cycle2_lambda15000"
+    },
+    "model": {
+      "num_classes": 5,
+      "base_checkpoint": "experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/outputs/cycle1_lambda15000/checkpoints/model.pth"
+    },
+    "data": {
+      "train_dir": "data/02_tomato_5cls/cl_cycle2_stream",
+      "fisher_dir": "data/02_tomato_5cls/replay_buffer",
+      "val_dir": "data/02_tomato_5cls/val",
+      "test_dir": "data/02_tomato_5cls/test",
+      "image_size": 224,
+      "resize_size": 256
+    },
+    "train": {
+      "batch_size": 32,
+      "weight_decay": 0.0001,
+      "max_epochs": 12,
+      "min_epochs": 5,
+      "patience": 5,
+      "old_f1_drop_tolerance": 0.03,
+      "lr_g3": 5e-05,
+      "lr_head": 0.0002
+    },
+    "ewc": {
+      "lambda": 15000.0,
+      "fisher_max_batches": 100
+    },
+    "output": {
+      "root": "experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/outputs/cycle2_lambda15000"
+    }
+  }
+}

@@ -3,11 +3,11 @@ num_workers: 0
 device: cuda
 
 meta:
-  cycle_name: cycle2_lambda1000
+  cycle_name: cycle2_lambda8000
 
 model:
   num_classes: 5
-  base_checkpoint: experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/outputs/cycle1_lambda1000/checkpoints/model.pth
+  base_checkpoint: experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/outputs/cycle1_lambda8000/checkpoints/model.pth
 
 data:
   train_dir: data/02_tomato_5cls/cl_cycle2_stream
@@ -28,10 +28,8 @@ train:
   lr_head: 0.0002
 
 ewc:
-  lambda: 1000.0
+  lambda: 8000.0
   fisher_max_batches: 100
 
 output:
-  root: experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/outputs/cycle2_lambda1000
-
-
+  root: experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/outputs/cycle2_lambda8000

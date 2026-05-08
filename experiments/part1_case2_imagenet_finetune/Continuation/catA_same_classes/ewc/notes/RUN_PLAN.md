@@ -13,18 +13,26 @@ python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/
 python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle2_lambda300.yaml
 python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle2_lambda1000.yaml
 python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle2_lambda3000.yaml
+python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle2_lambda5000.yaml
+python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle2_lambda8000.yaml
+python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle2_lambda10000.yaml
+python experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/code/train_catA_ewc.py --config experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/ewc/configs/catA_ewc_cycle2_lambda15000.yaml
 
 ## Output roots (auto-created)
-- runs/cycle1_lambda300
-- runs/cycle1_lambda1000
-- runs/cycle1_lambda3000
-- runs/cycle1_lambda5000
-- runs/cycle1_lambda8000
-- runs/cycle1_lambda10000
-- runs/cycle1_lambda15000
-- runs/cycle2_lambda300
-- runs/cycle2_lambda1000
-- runs/cycle2_lambda3000
+- outputs/cycle1_lambda300
+- outputs/cycle1_lambda1000
+- outputs/cycle1_lambda3000
+- outputs/cycle1_lambda5000
+- outputs/cycle1_lambda8000
+- outputs/cycle1_lambda10000
+- outputs/cycle1_lambda15000
+- outputs/cycle2_lambda300
+- outputs/cycle2_lambda1000
+- outputs/cycle2_lambda3000
+- outputs/cycle2_lambda5000
+- outputs/cycle2_lambda8000
+- outputs/cycle2_lambda10000
+- outputs/cycle2_lambda15000
 
 ## Stored per run
 - checkpoints/model.pth
