@@ -21,7 +21,11 @@ train:
   patience: 10
   weighted_sampling:
     enabled: true
+fim:
+  batch_size: 32
+  max_batches: 100
+  # Preferred source for CL-EWC Fisher estimation.
+  fisher_dir: data/02_tomato_5cls/replay_buffer
 
 output:
   root: experiments/part1_case1_scratch/outputs/case1_scratch_weighted
-

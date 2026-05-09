@@ -1,0 +1,98 @@
+{
+  "method": "part1_case1_scratch",
+  "class_names": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "train_summary": {
+    "best_epoch": 39,
+    "best_val_macro_f1": 0.9586822179997263,
+    "train_wall_time_sec": 1310.0359
+  },
+  "sampling": {
+    "weighted_sampling_enabled": true,
+    "class_weights_inverse_freq": [
+      0.0012547051442910915,
+      0.0026666666666666666,
+      0.0013966480446927375,
+      0.0028011204481792717,
+      0.0016750418760469012
+    ],
+    "num_sample_weights": 2842
+  },
+  "runtime": {
+    "total_wall_time_sec": 1317.2488,
+    "train_wall_time_sec": 1310.0359,
+    "peak_vram_mb": 548.11,
+    "process_ram_mb_end": 1148.67
+  },
+  "model_footprint": {
+    "num_parameters": 1522981,
+    "model_size_mb": 5.8097
+  },
+  "val": {
+    "accuracy": 0.9630606860158312,
+    "macro_f1": 0.9586822179997263,
+    "macro_precision": 0.9571516346967437,
+    "macro_recall": 0.9603184517609094
+  },
+  "test": {
+    "accuracy": 0.9744942832014072,
+    "macro_f1": 0.971169758330402,
+    "macro_precision": 0.9699140135221291,
+    "macro_recall": 0.9726580051987641
+  },
+  "test_per_class_precision": {
+    "Tomato___Bacterial_spot": 0.9873015873015873,
+    "Tomato___Early_blight": 0.9235668789808917,
+    "Tomato___Late_blight": 0.9754385964912281,
+    "Tomato___Leaf_Mold": 0.9716312056737588,
+    "Tomato___healthy": 0.9916317991631799
+  },
+  "test_per_class_recall": {
+    "Tomato___Bacterial_spot": 0.9749216300940439,
+    "Tomato___Early_blight": 0.9666666666666667,
+    "Tomato___Late_blight": 0.972027972027972,
+    "Tomato___Leaf_Mold": 0.958041958041958,
+    "Tomato___healthy": 0.9916317991631799
+  },
+  "test_per_class_f1": {
+    "Tomato___Bacterial_spot": 0.9810725552050473,
+    "Tomato___Early_blight": 0.9446254071661238,
+    "Tomato___Late_blight": 0.9737302977232924,
+    "Tomato___Leaf_Mold": 0.9647887323943662,
+    "Tomato___healthy": 0.9916317991631799
+  },
+  "config": {
+    "seed": 42,
+    "num_workers": 0,
+    "device": "cuda",
+    "model": {
+      "num_classes": 5
+    },
+    "data": {
+      "train_dir": "data/02_tomato_5cls/initial_train",
+      "val_dir": "data/02_tomato_5cls/val",
+      "test_dir": "data/02_tomato_5cls/test",
+      "image_size": 224,
+      "resize_size": 256
+    },
+    "train": {
+      "batch_size": 32,
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "max_epochs": 50,
+      "min_epochs": 5,
+      "patience": 10,
+      "weighted_sampling": {
+        "enabled": true
+      }
+    },
+    "output": {
+      "root": "experiments/part1_case1_scratch/outputs/case1_scratch_weighted"
+    }
+  }
+}

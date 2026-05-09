@@ -1,0 +1,20 @@
+{
+  "method": "part1_case1_scratch_fim_export",
+  "checkpoint": "experiments\\part1_case1_scratch\\outputs\\case1_scratch_weighted\\checkpoints\\model.pth",
+  "fisher_split": "replay",
+  "fisher_dir": "data/02_tomato_5cls/replay_buffer",
+  "num_samples_in_fisher_ds": 526,
+  "batch_size": 32,
+  "max_batches_config": 100,
+  "used_batches": 17,
+  "elapsed_sec": 3.376,
+  "fisher_stats": {
+    "mean": 1.58113816723926e-05,
+    "max": 0.3455728590488434,
+    "min": 0.0
+  },
+  "outputs": {
+    "fisher_matrix": "experiments\\part1_case1_scratch\\outputs\\case1_scratch_weighted\\fim\\fisher_matrix.pt",
+    "theta_star": "experiments\\part1_case1_scratch\\outputs\\case1_scratch_weighted\\fim\\theta_star.pt"
+  }
+}
