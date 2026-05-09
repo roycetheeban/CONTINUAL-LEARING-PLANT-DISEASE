@@ -1,0 +1,100 @@
+{
+  "cycle": "cycle1",
+  "method": "parameter_isolation",
+  "class_names": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "base_checkpoint": "experiments\\part1_case2_imagenet_finetune\\outputs_tuned\\checkpoints\\M2.pth",
+  "train_summary": {
+    "best_epoch": 1,
+    "best_val_macro_f1": 0.9443333390502872,
+    "train_wall_time_sec": 92.7013
+  },
+  "runtime": {
+    "total_wall_time_sec": 101.3614,
+    "train_wall_time_sec": 92.7013,
+    "peak_vram_mb": 122.63,
+    "process_ram_mb_end": 1228.2
+  },
+  "model_footprint": {
+    "num_parameters": 1527685,
+    "model_size_mb": 5.8277
+  },
+  "isolation": {
+    "num_adapters": 1,
+    "train_adapter_index": 0,
+    "trainable_param_count": 4704
+  },
+  "val": {
+    "accuracy": 0.9511873350923483,
+    "macro_f1": 0.9443333390502872,
+    "macro_precision": 0.9399774980726899,
+    "macro_recall": 0.9497278570689488
+  },
+  "test": {
+    "accuracy": 0.9718557607739666,
+    "macro_f1": 0.9686191347065936,
+    "macro_precision": 0.9653331479735672,
+    "macro_recall": 0.9724480542301924
+  },
+  "test_per_class_precision": {
+    "Tomato___Bacterial_spot": 0.9873817034700315,
+    "Tomato___Early_blight": 0.9125,
+    "Tomato___Late_blight": 0.9747292418772563,
+    "Tomato___Leaf_Mold": 0.952054794520548,
+    "Tomato___healthy": 1.0
+  },
+  "test_per_class_recall": {
+    "Tomato___Bacterial_spot": 0.9811912225705329,
+    "Tomato___Early_blight": 0.9733333333333334,
+    "Tomato___Late_blight": 0.9440559440559441,
+    "Tomato___Leaf_Mold": 0.972027972027972,
+    "Tomato___healthy": 0.9916317991631799
+  },
+  "test_per_class_f1": {
+    "Tomato___Bacterial_spot": 0.9842767295597484,
+    "Tomato___Early_blight": 0.9419354838709677,
+    "Tomato___Late_blight": 0.9591474245115453,
+    "Tomato___Leaf_Mold": 0.9619377162629758,
+    "Tomato___healthy": 0.9957983193277311
+  },
+  "config": {
+    "seed": 42,
+    "num_workers": 0,
+    "device": "cuda",
+    "meta": {
+      "cycle_name": "cycle1"
+    },
+    "model": {
+      "num_classes": 5,
+      "base_checkpoint": "experiments/part1_case2_imagenet_finetune/outputs_tuned/checkpoints/M2.pth"
+    },
+    "data": {
+      "train_dir": "data/02_tomato_5cls/cl_cycle1_stream",
+      "val_dir": "data/02_tomato_5cls/val",
+      "test_dir": "data/02_tomato_5cls/test",
+      "image_size": 224,
+      "resize_size": 256
+    },
+    "train": {
+      "batch_size": 32,
+      "weight_decay": 0.0001,
+      "max_epochs": 15,
+      "min_epochs": 5,
+      "patience": 5,
+      "lr_adapter": 0.001
+    },
+    "isolation": {
+      "num_adapters": 1,
+      "train_adapter_index": 0,
+      "adapter_bottleneck": 24
+    },
+    "output": {
+      "root": "experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/parameter_isolation/outputs/catA_isolation_cycle1"
+    }
+  }
+}

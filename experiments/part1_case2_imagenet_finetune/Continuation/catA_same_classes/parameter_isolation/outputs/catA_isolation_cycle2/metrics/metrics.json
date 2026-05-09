@@ -1,0 +1,100 @@
+{
+  "cycle": "cycle2",
+  "method": "parameter_isolation",
+  "class_names": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "base_checkpoint": "experiments\\part1_case2_imagenet_finetune\\Continuation\\catA_same_classes\\parameter_isolation\\outputs\\catA_isolation_cycle1\\checkpoints\\model_expanded.pth",
+  "train_summary": {
+    "best_epoch": 12,
+    "best_val_macro_f1": 0.9389561199649179,
+    "train_wall_time_sec": 178.1234
+  },
+  "runtime": {
+    "total_wall_time_sec": 184.846,
+    "train_wall_time_sec": 178.1234,
+    "peak_vram_mb": 122.14,
+    "process_ram_mb_end": 1232.38
+  },
+  "model_footprint": {
+    "num_parameters": 1532389,
+    "model_size_mb": 5.8456
+  },
+  "isolation": {
+    "num_adapters": 2,
+    "train_adapter_index": 1,
+    "trainable_param_count": 4704
+  },
+  "val": {
+    "accuracy": 0.9472295514511874,
+    "macro_f1": 0.9389561199649179,
+    "macro_precision": 0.9332298409927571,
+    "macro_recall": 0.9472260462435103
+  },
+  "test": {
+    "accuracy": 0.9727352682497801,
+    "macro_f1": 0.9696612470448732,
+    "macro_precision": 0.9656856915005179,
+    "macro_recall": 0.9743432590109837
+  },
+  "test_per_class_precision": {
+    "Tomato___Bacterial_spot": 0.9904761904761905,
+    "Tomato___Early_blight": 0.906832298136646,
+    "Tomato___Late_blight": 0.9784172661870504,
+    "Tomato___Leaf_Mold": 0.9527027027027027,
+    "Tomato___healthy": 1.0
+  },
+  "test_per_class_recall": {
+    "Tomato___Bacterial_spot": 0.9780564263322884,
+    "Tomato___Early_blight": 0.9733333333333334,
+    "Tomato___Late_blight": 0.951048951048951,
+    "Tomato___Leaf_Mold": 0.986013986013986,
+    "Tomato___healthy": 0.9832635983263598
+  },
+  "test_per_class_f1": {
+    "Tomato___Bacterial_spot": 0.9842271293375394,
+    "Tomato___Early_blight": 0.9389067524115756,
+    "Tomato___Late_blight": 0.9645390070921985,
+    "Tomato___Leaf_Mold": 0.9690721649484536,
+    "Tomato___healthy": 0.9915611814345991
+  },
+  "config": {
+    "seed": 42,
+    "num_workers": 0,
+    "device": "cuda",
+    "meta": {
+      "cycle_name": "cycle2"
+    },
+    "model": {
+      "num_classes": 5,
+      "base_checkpoint": "experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/parameter_isolation/outputs/catA_isolation_cycle1/checkpoints/model_expanded.pth"
+    },
+    "data": {
+      "train_dir": "data/02_tomato_5cls/cl_cycle2_stream",
+      "val_dir": "data/02_tomato_5cls/val",
+      "test_dir": "data/02_tomato_5cls/test",
+      "image_size": 224,
+      "resize_size": 256
+    },
+    "train": {
+      "batch_size": 32,
+      "weight_decay": 0.0001,
+      "max_epochs": 12,
+      "min_epochs": 5,
+      "patience": 5,
+      "lr_adapter": 0.0005
+    },
+    "isolation": {
+      "num_adapters": 2,
+      "train_adapter_index": 1,
+      "adapter_bottleneck": 24
+    },
+    "output": {
+      "root": "experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/parameter_isolation/outputs/catA_isolation_cycle2"
+    }
+  }
+}
