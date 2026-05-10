@@ -1,0 +1,20 @@
+﻿seed: 42
+num_workers: 0
+device: cuda
+
+model:
+  base_checkpoint: experiments/part1_case2_imagenet_finetune/outputs_tuned/checkpoints/M2.pth
+  old_num_classes: 5
+
+data:
+  old_test_dir: data/02_tomato_5cls/test
+  new_test_dir: data/03_tomato_new_2cls/test
+  image_size: 224
+
+train:
+  batch_size: 32
+
+output:
+  root: experiments/part1_case2_imagenet_finetune/Continuation/catB_new_classes/runs/cycle0_baseline
+
+

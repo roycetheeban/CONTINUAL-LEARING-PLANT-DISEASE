@@ -1,0 +1,39 @@
+﻿seed: 42
+num_workers: 0
+device: cuda
+
+meta:
+  cycle_name: cycle1
+
+model:
+  base_checkpoint: experiments/part1_case2_imagenet_finetune/outputs_tuned/checkpoints/M2.pth
+
+data:
+  new_train_dir: data/03_tomato_new_2cls/cl_cycle1_stream
+  new_val_dir: data/03_tomato_new_2cls/val
+  old_val_dir: data/02_tomato_5cls/val
+  old_test_dir: data/02_tomato_5cls/test
+  new_test_dir: data/03_tomato_new_2cls/test
+  image_size: 224
+  resize_size: 256
+
+classes:
+  old_classes:
+    - Tomato___Bacterial_spot
+    - Tomato___Early_blight
+    - Tomato___Late_blight
+    - Tomato___Leaf_Mold
+    - Tomato___healthy
+
+train:
+  batch_size: 32
+  weight_decay: 0.0001
+  max_epochs: 15
+  min_epochs: 5
+  patience: 5
+  lr_branch: 0.001
+
+output:
+  root: experiments/part1_case2_imagenet_finetune/Continuation/catB_new_classes/parameter_isolation_new_branch/outputs/cycle1
+
+
