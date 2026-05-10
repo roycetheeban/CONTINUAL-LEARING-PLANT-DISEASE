@@ -1,0 +1,39 @@
+﻿seed: 42
+num_workers: 0
+device: cuda
+
+meta:
+  cycle_name: cycle1
+
+model:
+  num_classes: 5
+  base_checkpoint: experiments/part1_case1_scratch/outputs/case1_scratch_weighted/checkpoints/model.pth
+
+data:
+  train_dir: data/02_tomato_5cls/cl_cycle1_stream
+  replay_dir: data/02_tomato_5cls/replay_buffer
+  val_dir: data/02_tomato_5cls/val
+  test_dir: data/02_tomato_5cls/test
+  image_size: 224
+  resize_size: 256
+
+train:
+  batch_size: 32
+  weight_decay: 0.0001
+  max_epochs: 15
+  min_epochs: 5
+  patience: 5
+  lr_g3: 0.0001
+  lr_head: 0.0005
+
+replay:
+  old_per_batch: 16
+  new_per_batch: 16
+  add_per_class_after_cycle: 40
+  input_manifest: null
+
+output:
+  root: experiments/part1_case1_scratch/Continuation/catA_same_classes/experience_replay/outputs/catA_replay_cycle1
+
+
+

@@ -1,0 +1,84 @@
+{
+  "cycle": "cycle2",
+  "method": "ewc",
+  "class_names": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "base_checkpoint": "experiments\\part1_case3B_plantvillage_finetune\\Continuation\\catA_same_classes\\ewc\\outputs\\catA_ewc_cycle1\\checkpoints\\model.pth",
+  "fisher_batches_used": 17,
+  "train_summary": {
+    "cycle_start_val": {
+      "accuracy": 0.9604221635883905,
+      "macro_f1": 0.9554871957369986,
+      "macro_precision": 0.9513195613007298,
+      "macro_recall": 0.9604515398088074
+    },
+    "best_epoch": 1,
+    "best_val_macro_f1": 0.9521824463483588,
+    "old_f1_floor": 0.9268225798648886,
+    "train_wall_time_sec": 85.9635
+  },
+  "runtime": {
+    "total_wall_time_sec": 96.2839,
+    "train_wall_time_sec": 85.9635,
+    "peak_vram_mb": 169.51,
+    "process_ram_mb_end": 1297.55
+  },
+  "model_footprint": {
+    "num_parameters": 1522981,
+    "model_size_mb": 5.8097
+  },
+  "val": {
+    "accuracy": 0.9551451187335093,
+    "macro_f1": 0.9521824463483588,
+    "macro_precision": 0.9498010851889512,
+    "macro_recall": 0.955941488410124
+  },
+  "test": {
+    "accuracy": 0.9665787159190853,
+    "macro_f1": 0.9634658638499284,
+    "macro_precision": 0.9625788984085526,
+    "macro_recall": 0.9650285225763511
+  },
+  "config": {
+    "seed": 42,
+    "num_workers": 0,
+    "device": "cuda",
+    "meta": {
+      "cycle_name": "cycle2"
+    },
+    "model": {
+      "num_classes": 5,
+      "base_checkpoint": "experiments/part1_case3B_plantvillage_finetune/Continuation/catA_same_classes/ewc/outputs/catA_ewc_cycle1/checkpoints/model.pth"
+    },
+    "data": {
+      "train_dir": "data/02_tomato_5cls/cl_cycle2_stream",
+      "fisher_dir": "data/02_tomato_5cls/replay_buffer",
+      "val_dir": "data/02_tomato_5cls/val",
+      "test_dir": "data/02_tomato_5cls/test",
+      "image_size": 224,
+      "resize_size": 256
+    },
+    "train": {
+      "batch_size": 32,
+      "weight_decay": 0.0001,
+      "max_epochs": 12,
+      "min_epochs": 5,
+      "patience": 5,
+      "old_f1_drop_tolerance": 0.03,
+      "lr_g3": 5e-05,
+      "lr_head": 0.0002
+    },
+    "ewc": {
+      "lambda": 1000.0,
+      "fisher_max_batches": 100
+    },
+    "output": {
+      "root": "experiments/part1_case3B_plantvillage_finetune/Continuation/catA_same_classes/ewc/outputs/catA_ewc_cycle2"
+    }
+  }
+}

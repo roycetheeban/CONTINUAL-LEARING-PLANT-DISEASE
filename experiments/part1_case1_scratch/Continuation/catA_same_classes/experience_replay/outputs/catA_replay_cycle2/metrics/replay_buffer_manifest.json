@@ -1,0 +1,1018 @@
+{
+  "cycle": "cycle2",
+  "replay_folder_immutable": true,
+  "replay_root": "data/02_tomato_5cls/replay_buffer",
+  "base_replay_count": 526,
+  "prior_added_count": 200,
+  "newly_added_count": 200,
+  "effective_old_count": 926,
+  "class_names": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "added_cycle_paths": [
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\3c42263c-39eb-4e33-bf35-6694cb1eb973___GCREC_Bact.Sp 6106_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\10eddc16-1127-4de1-832e-6ae55cc0f953___GCREC_Bact.Sp 6180_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\06ac210d-bdb1-4224-9053-c218cb14fa60___GCREC_Bact.Sp 3220_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\482ef065-ba2f-4492-b215-9a60138a0047___GCREC_Bact.Sp 3090_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\2f1b0a5b-05ed-41b7-bd44-6f291f7ccc43___GCREC_Bact.Sp 3665_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\517dac9f-61a6-4e5a-928e-b0009c2d6d47___GCREC_Bact.Sp 3516_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\18f7004e-226b-42cc-bcaf-db9c47c5da65___UF.GRC_BS_Lab Leaf 9237_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\f6084490-18e3-489a-9144-4584db9c1d38___GCREC_Bact.Sp 3049_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\89cd8d83-c3bb-49ca-9561-d92874511f80___GCREC_Bact.Sp 6037_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\a3666572-94a1-4cc7-8caa-f7e43a1d64a4___GCREC_Bact.Sp 5909_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\2d9b4cc9-3b21-4e0c-830f-b97ed7bfb397___GCREC_Bact.Sp 3444_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\bd214fe7-7ed1-428e-ac09-c3ee84a9ba24___GCREC_Bact.Sp 5699_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\29184f19-db21-475d-8032-a8b7c3a9c7f4___GCREC_Bact.Sp 5784_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\fb255876-e618-43a7-ad17-7b200039dbde___UF.GRC_BS_Lab Leaf 0614_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\1b3ccbf3-c1e1-476e-b34a-6af0a6fbb349___GCREC_Bact.Sp 3735_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\bfd9caac-aa4c-4be2-91be-23f2ee32da9f___GCREC_Bact.Sp 5776_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\68bc253e-0c0f-4180-8f86-13048c04b26e___GCREC_Bact.Sp 6088_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\8dbf81aa-7085-4707-9374-9be792a0fd4a___GCREC_Bact.Sp 3275_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\1fcebd34-f196-4909-abd1-6d9413d9b4b4___GCREC_Bact.Sp 3304_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\64d5ec90-b356-4ce8-9ad4-2a152d98782e___GCREC_Bact.Sp 5557_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\c996e455-465d-48da-acfc-00bf283cb1fa___GCREC_Bact.Sp 5637_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\a342423d-7c62-4fcd-a9c6-d92d586b5023___GCREC_Bact.Sp 3754_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\83e484bc-0e3e-4e57-b5a4-9e8d85f03cfb___GCREC_Bact.Sp 3837_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\d8914e04-4e33-4189-bfa9-f547e5f696d1___GCREC_Bact.Sp 3173_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\23cf28cd-1d94-4797-82ed-0f3c79a39200___GCREC_Bact.Sp 5702_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\d5291fc4-6702-407a-a09f-1c8e2e7455fc___GCREC_Bact.Sp 5642_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\66348a1f-6ca3-43c3-9883-ccf79c8dec89___GCREC_Bact.Sp 3640_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\67ce4b75-dbd6-446e-bcd6-2f58d407ed04___GCREC_Bact.Sp 3378_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\7e2d95d8-61e7-4b3f-8425-a6bfd53e8490___UF.GRC_BS_Lab Leaf 0402_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\965f8fae-c0d9-44a1-a203-3335b5f1fb74___GCREC_Bact.Sp 3391_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\32231fc1-ec78-45c6-9c7a-8412a7e38a25___GCREC_Bact.Sp 6143_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\8d56489d-58dc-43d8-a399-906b18b78566___GCREC_Bact.Sp 3081_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\6c9e726b-8574-4f84-81c3-271e093f8bf2___GCREC_Bact.Sp 3350_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\1c213d89-a3ba-4486-ac5a-1744eb371859___GCREC_Bact.Sp 3500_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\51d27c5f-eb9d-46c7-a91f-e83c3433b5d3___GCREC_Bact.Sp 3809_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\cb70e79d-a282-448e-a300-7f880a08cd70___GCREC_Bact.Sp 6332_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\707dc081-60c2-4362-a91e-6c6eacf4d081___GCREC_Bact.Sp 5613_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\e85d64bf-a47c-4d80-8eb8-9059c1eec9a9___GCREC_Bact.Sp 5790_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\3f75dffc-41bb-4db0-bc3f-a8879e1f4523___GCREC_Bact.Sp 3601_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Bacterial_spot\\b39d9edd-bcee-456c-b078-e3e286171114___GCREC_Bact.Sp 3656_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\e11ee1f8-8de2-4d9c-a0c1-86bc42350fd9___RS_Erly.B 9472_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\abb2b25f-a1a8-49c7-8bc9-a66dc224481d___RS_Erly.B 9573_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\4065f166-5f48-4277-9f51-7aa61dbd4b48___RS_Erly.B 8399_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\d41e78aa-0020-457b-a17d-736d426adad5___RS_Erly.B 7755_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\f7065117-14b1-44f1-b9ec-953b61fd3368___RS_Erly.B 9544_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\42ef04d9-9bea-4bd2-9ea4-54cb16c9be24___RS_Erly.B 9616_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\f7beb64a-f8be-46d8-b4ea-637fb71e7509___RS_Erly.B 7711_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\0f03a09c-aa48-4d51-95e1-752c466c3742___RS_Erly.B 6413_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\b45de15f-76b6-46bf-9990-e819dbef21d1___RS_Erly.B 9491_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\fdc50285-836e-4707-a17d-388b8179c87c___RS_Erly.B 7812_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\389a93c4-2ea1-4df5-94c6-01ea8ad856db___RS_Erly.B 7720_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\c6e96373-484c-45da-b043-0a294a59ad2c___RS_Erly.B 7401_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\7bd63940-1890-4263-8c8c-e0c743bb51ce___RS_Erly.B 9487_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\503785a3-9eaa-4887-b832-2288f747624a___RS_Erly.B 7636_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\54e98d19-a7a0-44d8-a004-1eaee5f3610b___RS_Erly.B 7348_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\de57a88b-7170-4eca-93f6-330df50fa8b5___RS_Erly.B 9541_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\fbb79594-419e-4bb7-9afa-6b9c0ba89033___RS_Erly.B 7644_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\8a089fe7-9e6a-4db7-b0e8-9792e4abc326___RS_Erly.B 7466_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\74b3c6cf-a35b-481b-aa22-7483a52bff76___RS_Erly.B 7792_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\dbbc206a-90ab-4b29-abe0-5613028278be___RS_Erly.B 8409_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\2763c9bc-ecc6-4f1a-86a7-ef8ffa370420___RS_Erly.B 8422_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\bfbf7eb4-8a12-4595-96f7-dcec497d3917___RS_Erly.B 7682_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\b3129245-a3b0-4451-a213-b15fe08734b7___RS_Erly.B 9423_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\bac9d43f-fc43-4b89-bc2a-b8ba4a040059___RS_Erly.B 7724_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\18a21f42-8794-4665-8174-b0ccd3758af8___RS_Erly.B 7650_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\20a276c8-90b5-475f-811b-1d63f34f1c10___RS_Erly.B 9551_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\3064e2fc-3a71-4a66-8cd1-dc76ebc0c2e6___RS_Erly.B 7345_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\9eec6625-b337-403b-b93c-e809f4e0b8c4___RS_Erly.B 7681_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\089243e5-f319-4ed2-b10c-603328ff4143___RS_Erly.B 9428_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\3271f296-5264-4600-94e0-bde6cf1a2b42___RS_Erly.B 8300_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\a3611dae-1359-41af-b506-0b012c37a451___RS_Erly.B 7368_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\32ae9564-c205-4814-b579-1ebf0d732e7e___RS_Erly.B 9415_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\872ec950-8238-4f73-a366-f72f2f92d3fe___RS_Erly.B 7487_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\ee69b7e2-34d6-455f-97f6-6f5c06216131___RS_Erly.B 7478_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\f64da90c-b9ca-4453-896f-4cd9e358c24a___RS_Erly.B 8223_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\079e0d43-e9d2-4217-b8e8-2f3b989cdab2___RS_Erly.B 7588_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\5c81bfc2-d377-4fc8-9f51-ff26a997c20b___RS_Erly.B 6345_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\f93578b3-4b98-4b13-95c3-495c656963f4___RS_Erly.B 8340_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\0c221e01-a85e-4794-b45b-3a91e349a8d2___RS_Erly.B 6425_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Early_blight\\a52492e3-7916-4a13-a175-6a6c0dd3440a___RS_Erly.B 7613_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\b984cd6b-35cc-4f3d-824f-b663d08cae6b___GHLB2 Leaf 57_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\0566e4e3-675b-4289-9e36-ad199448975b___GHLB2 Leaf 161.2_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\c1d826c3-84d2-4f96-9eb5-4eaf983c43be___GHLB2 Leaf 8766_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\a6876e29-dc0f-4716-bd3c-eedc9f45cf70___GHLB_PS Leaf 41 Day 18_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\cc31ca99-6a1c-4e62-bc6b-044c99ba2c62___RS_Late.B 6775_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\f52d0ec5-4bc7-4a32-b9a1-6930b6c3477d___RS_Late.B 6501_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\46e4103f-f240-48cc-ae17-9466fcbec332___RS_Late.B 6650_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\3e1ddc38-64bb-4976-950d-7e228638d70e___GHLB2ES Leaf 65.1_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\a63289bd-bdf3-4092-a460-2fa5138379be___RS_Late.B 7049_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\0990b491-dd31-4b62-aa5a-c7bce97d552c___RS_Late.B 5558_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\2f08688f-f6ea-4772-bfa3-5a995e38988c___GHLB2 Leaf 8827_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\c9ae05d3-8ffd-49a4-abc3-ceeeabdc1e0d___GHLB2 Leaf 55_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\ebbdadc5-972c-45fb-a6c2-99e8015cf4a9___RS_Late.B 5479_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\b96efa85-1d48-4a5e-9c80-4b1848182c93___RS_Late.B 6961_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\b636dc09-ae98-4907-bc0e-3f1e8c444b50___GHLB2 Leaf 9115_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\00355ec2-f12c-4015-b8f9-94354f69ce22___RS_Late.B 5311_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\1627cb48-dc80-46a1-bda0-b677c32fbf56___RS_Late.B 5066_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\6153ccd5-1c83-493f-a6a6-bf0ec0964aaf___GHLB2 Leaf 9105_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\48246fa8-29ce-4ae2-abc3-586440295cf0___RS_Late.B 5459_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\abc618dc-e185-4866-a09c-6073404cac76___GHLB2 Leaf 153.1_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\06c6a302-ae34-4d38-9e4b-3a6acdd42d91___GHLB2 Leaf 9047_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\389ecffc-2ab0-4c7e-9f03-d6d4695d4f6a___RS_Late.B 5117_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\7e92fb02-314e-4cad-a30d-e478b216bce4___RS_Late.B 6890_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\12d62ed2-a145-4400-824d-3e4d5f64418a___RS_Late.B 6586_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\98ae3801-450e-493f-aca0-014520cfaf6e___GHLB_PS Leaf 29.1 Day 12_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\545d8b80-b6b1-45fe-8f3d-4d0a904730e9___GHLB2 Leaf 87.1_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\c59952b7-66e1-484d-a2e2-d240e7b12680___GHLB2 Leaf 8553_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\23c5c930-6830-46c6-8353-616c0b34ae12___RS_Late.B 4947_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\a38d671f-4582-4ee9-b994-63f2343821e8___GHLB2 Leaf 8592_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\e678adf4-2b13-4027-91e8-e997c6362de0___GHLB2 Leaf 8714_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\3d43c9c6-7b87-4c79-819c-e202de44236c___GHLB2 Leaf 89.3_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\42bc64dd-b367-4cc0-b5df-689c1e86705d___RS_Late.B 4906_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\71a47848-146e-4cda-ae09-5ff0fe3a0540___GHLB2 Leaf 80.1_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\cd11a26c-4833-4829-b6b7-29b03bc8df4d___RS_Late.B 5615_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\16c1763a-8e49-436c-865e-be56d8dadf4f___GHLB2 Leaf 9107_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\d348146e-9cb0-45be-b0ba-78fc310b92da___GHLB2 Leaf 9101_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\eda41abe-61cf-439d-9562-e03fee3cd2ca___GHLB2 Leaf 8802_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\69c6df3c-ce76-4bac-a4be-d3efee364c10___GHLB2 Leaf 8929_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\518253c3-eb2d-436f-84eb-9fd969e849cf___RS_Late.B 5194_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Late_blight\\283ff0be-6e5e-4b4e-bf21-639780b77ffc___GHLB2 Leaf 8636_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\86bcc70f-66dd-40ec-8bf5-d260f58cb25d___Crnl_L.Mold 7004_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\f1cba359-4553-46a7-a1b3-3b6dbbcb81ae___Crnl_L.Mold 7151_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\89abe0cd-9b85-4fbe-b441-7c7431bc7c18___Crnl_L.Mold 9155_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\970a299e-18bd-4bf6-83af-f0950cfe0272___Crnl_L.Mold 8668_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\241287d9-30c8-4463-999c-821fd32ba894___Crnl_L.Mold 6583_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\91fca18d-8401-46d7-a173-cc549261b37f___Crnl_L.Mold 8662_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\70e4ee54-f85e-461b-a35b-e35deb567620___Crnl_L.Mold 6516_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\bd569413-f52c-4e92-9bfb-54e2baae7d31___Crnl_L.Mold 6645_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\128f8a8f-257f-4fb1-b4c3-4eeb524af355___Crnl_L.Mold 8985_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\44167946-e66c-4206-9501-4f1777bac9ae___Crnl_L.Mold 8639_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\c7a3f599-36dc-40e2-8efc-d0e0568666a7___Crnl_L.Mold 6983_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\dbd8242c-1c4c-4d6a-97ba-6cb26fffec49___Crnl_L.Mold 7145_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\be2680f9-cdba-44e5-8834-7bc5b615a0ea___Crnl_L.Mold 7158_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\7d40d29e-ba53-49bb-93be-e19d63855f60___Crnl_L.Mold 6994_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\452bc068-6862-4715-a724-a4057d4155ee___Crnl_L.Mold 6866_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\76b3aadb-a6e5-465d-809b-0aa4d60a1f83___Crnl_L.Mold 6680_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\3e6cdf52-1ecf-49a3-bc77-9cd3abb7f901___Crnl_L.Mold 8755_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\a5639de3-303c-4066-b3a0-a72aa73ef818___Crnl_L.Mold 6740_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\db0e6ad7-58db-478e-9b17-37bb603363d1___Crnl_L.Mold 8863_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\bcab5afc-96ce-4b88-8801-8e905b783ef3___Crnl_L.Mold 9094_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\6e33ee8d-616a-47f2-8229-d4375c47346c___Crnl_L.Mold 8795_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\770f7e1c-99a6-4441-9281-015935d290ef___Crnl_L.Mold 6937_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\707469c1-31f4-4c33-ae84-432e70e0c399___Crnl_L.Mold 9034_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\5033c868-7977-4a3f-9705-1fb656e64459___Crnl_L.Mold 6813_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\9d23d930-a755-4554-bb5d-093d0055b65d___Crnl_L.Mold 9090_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\82fc0697-cf02-48f0-8a16-23018cee64db___Crnl_L.Mold 6584_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\fb7b35d0-f501-4410-902c-99ab6022ae47___Crnl_L.Mold 9163_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\af7e1ce4-bb49-4227-ba89-9972bab473b7___Crnl_L.Mold 6560_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\4615af1a-bf03-4e3a-9687-e62ce353f1e8___Crnl_L.Mold 8702_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\f6c11a02-6f44-4e15-aab8-50cb8d79bc62___Crnl_L.Mold 9166_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\1d25cb12-499f-453f-9a62-dbc3fd20b220___Crnl_L.Mold 7061_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\1a1acd8f-bd8d-47be-945d-ce308dffd678___Crnl_L.Mold 6675_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\c02f3863-3012-4f3a-873e-8003d73a54f9___Crnl_L.Mold 6520_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\cfb343fb-950d-488c-a158-8208aa69c1b0___Crnl_L.Mold 6751_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\4babadaf-7d3f-4cc8-8179-05d86893dd97___Crnl_L.Mold 9096_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\fe0bcd7f-a7de-4155-95a5-79043190eef7___Crnl_L.Mold 7030_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\b7dec0f3-e619-4d79-9112-98f40654d6b8___Crnl_L.Mold 7124_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\46cb40a7-b7f5-428c-91a3-121085ec73b5___Crnl_L.Mold 9116_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\905a051a-0649-4b4a-8dc7-273952cbd832___Crnl_L.Mold 6574_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___Leaf_Mold\\1b2db321-28cd-4e33-88eb-b6c1302ca033___Crnl_L.Mold 6701_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\83d9992c-b4ee-41f5-b3eb-792afd464f4e___RS_HL 9629_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\933b7a1c-5015-48df-8c2d-b7fdf918a4db___GH_HL Leaf 490.1_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\14f9c049-aeb8-4cfb-84a7-cd39526b8b20___RS_HL 0534_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\4959798b-5c9b-4f8e-b0a0-3778259614b1___CG1_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\d76f5b4a-9205-4a14-9181-5d3add326231___GH_HL Leaf 447_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\67fe557e-2e6e-4145-8d3f-468be8f7480e___RS_HL 9800_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\afbedba8-4d3a-4816-9c55-bd666d262b59___RS_HL 9841_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\98f3de1f-2505-4e4b-94ad-fb16f66f27d8___RS_HL 9852_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\387dd4db-733b-4d6a-b87e-77ab2f2890a8___RS_HL 9866_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\ae7304a4-58ad-4a45-aab4-6f18ee303a43___RS_HL 0183_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\e62a7ec8-3e5e-4a47-be14-a57db0322bb6___RS_HL 9627_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\feda8fd2-1d18-443e-a7d9-15bd6bf8ce66___RS_HL 0332_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\6ff7ee8e-bb69-4b7e-a15b-09c6d406ef92___RS_HL 0087_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\ccfba9c3-41a5-40de-b71a-980bc3336ae7___GH_HL Leaf 522.2_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\5c4d21aa-76f8-4ab7-8440-65fd3cac640b___GH_HL Leaf 263_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\d45c5eb7-c7b7-430b-9b2c-917a4a34315e___RS_HL 0151_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\c6d62e0c-15e0-4e99-8dbd-40e8f7181131___RS_HL 9954_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\2c22b17b-e914-453a-a379-15b29fe294b0___RS_HL 9720_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\9c84597a-72a3-4e91-9203-92de6090462b___RS_HL 0040_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\2a11ceb9-41c9-4f2e-bed9-ef1c1c7d479b___RS_HL 0371_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\0a31e630-0d98-416b-b0e4-88a88aad1dc5___RS_HL 9653_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\bc3ca9e1-86c1-4945-9993-c61a38a942ed___GH_HL Leaf 294_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\87d30769-5aea-4648-8105-788267115242___GH_HL Leaf 414.1_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\bb0d7ad0-8374-41a1-85bd-699892bb8431___RS_HL 0176_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\e9f45c75-db52-4a85-ab72-0b9adf1f047b___GH_HL Leaf 480.1_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\1bd9f661-9b9c-4faf-80ab-86a8a64a8bc2___RS_HL 0271_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\b2639bc5-e165-4cdd-8557-fa73c6d4137f___RS_HL 0072_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\4a1e2b71-992a-4a64-a599-b49b8fa75378___RS_HL 0627_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\fd27de23-27cd-4f09-a962-df0b26899b07___RS_HL 0039_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\c59a5a86-2645-49e0-a6e0-c9e8112f95d5___GH_HL Leaf 166.1_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\d06e33fb-58bf-440f-9dbc-a1ceec9abaea___GH_HL Leaf 383_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\fae1be6a-cac5-481b-96ab-4a4abae39af5___RS_HL 0227_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\f163df8f-6510-4520-82ee-779d2679af33___GH_HL Leaf 422.2_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\36d4756b-afff-40cb-ac7f-598eda5269b9___RS_HL 9711_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\da3e3bf7-80da-479b-99f1-f86f18d8a264___GH_HL Leaf 511.1_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\1352e7ea-9a81-44fb-98e9-25ee6c701753___RS_HL 0549_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\48af8eac-8662-400b-a0bb-024a28ed3cc9___RS_HL 0266_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\d30f0e3c-7246-455d-959c-6221eac22dfd___GH_HL Leaf 202_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\4ed0a372-fe3d-49a6-82a1-2e904e6c66e3___GH_HL Leaf 200_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "data\\02_tomato_5cls\\cl_cycle2_stream\\Tomato___healthy\\c11a3cf1-de74-421e-89d0-11ea1508673d___RS_HL 0185_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    }
+  ]
+}

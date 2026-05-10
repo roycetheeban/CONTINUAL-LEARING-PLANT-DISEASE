@@ -1,0 +1,91 @@
+{
+  "cycle": "cycle2",
+  "method": "naive_finetune",
+  "class_names": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "base_checkpoint": "experiments\\part1_case1_scratch\\Continuation\\catA_same_classes\\naive_finetune\\outputs\\catA_naive_cycle1\\checkpoints\\model.pth",
+  "train_summary": {
+    "best_epoch": 2,
+    "best_val_macro_f1": 0.9572221296270982,
+    "train_wall_time_sec": 93.9879
+  },
+  "runtime": {
+    "total_wall_time_sec": 100.8325,
+    "train_wall_time_sec": 93.9879,
+    "peak_vram_mb": 162.17,
+    "process_ram_mb_end": 1229.8
+  },
+  "model_footprint": {
+    "num_parameters": 1522981,
+    "model_size_mb": 5.8097
+  },
+  "val": {
+    "accuracy": 0.9617414248021108,
+    "macro_f1": 0.9572221296270982,
+    "macro_precision": 0.9557683320783635,
+    "macro_recall": 0.9589468714939674
+  },
+  "test": {
+    "accuracy": 0.9753737906772207,
+    "macro_f1": 0.9713002923814438,
+    "macro_precision": 0.9683801660695568,
+    "macro_recall": 0.974604151006979
+  },
+  "test_per_class_precision": {
+    "Tomato___Bacterial_spot": 0.9843260188087775,
+    "Tomato___Early_blight": 0.9230769230769231,
+    "Tomato___Late_blight": 0.9927536231884058,
+    "Tomato___Leaf_Mold": 0.9459459459459459,
+    "Tomato___healthy": 0.9957983193277311
+  },
+  "test_per_class_recall": {
+    "Tomato___Bacterial_spot": 0.9843260188087775,
+    "Tomato___Early_blight": 0.96,
+    "Tomato___Late_blight": 0.958041958041958,
+    "Tomato___Leaf_Mold": 0.9790209790209791,
+    "Tomato___healthy": 0.9916317991631799
+  },
+  "test_per_class_f1": {
+    "Tomato___Bacterial_spot": 0.9843260188087775,
+    "Tomato___Early_blight": 0.9411764705882353,
+    "Tomato___Late_blight": 0.9750889679715302,
+    "Tomato___Leaf_Mold": 0.9621993127147767,
+    "Tomato___healthy": 0.9937106918238994
+  },
+  "config": {
+    "seed": 42,
+    "num_workers": 0,
+    "device": "cuda",
+    "meta": {
+      "cycle_name": "cycle2"
+    },
+    "model": {
+      "num_classes": 5,
+      "base_checkpoint": "experiments/part1_case1_scratch/Continuation/catA_same_classes/naive_finetune/outputs/catA_naive_cycle1/checkpoints/model.pth"
+    },
+    "data": {
+      "train_dir": "data/02_tomato_5cls/cl_cycle2_stream",
+      "val_dir": "data/02_tomato_5cls/val",
+      "test_dir": "data/02_tomato_5cls/test",
+      "image_size": 224,
+      "resize_size": 256
+    },
+    "train": {
+      "batch_size": 32,
+      "weight_decay": 0.0001,
+      "max_epochs": 12,
+      "min_epochs": 5,
+      "patience": 5,
+      "lr_g3": 5e-05,
+      "lr_head": 0.0002
+    },
+    "output": {
+      "root": "experiments/part1_case1_scratch/Continuation/catA_same_classes/naive_finetune/outputs/catA_naive_cycle2"
+    }
+  }
+}

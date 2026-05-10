@@ -1,0 +1,36 @@
+﻿seed: 42
+num_workers: 0
+device: cuda
+
+meta:
+  cycle_name: cycle1_lambda10000
+
+model:
+  num_classes: 5
+  base_checkpoint: experiments/part1_case3B_plantvillage_finetune/outputs_tuned/checkpoints/M2.pth
+
+data:
+  train_dir: data/02_tomato_5cls/cl_cycle1_stream
+  fisher_dir: data/02_tomato_5cls/replay_buffer
+  val_dir: data/02_tomato_5cls/val
+  test_dir: data/02_tomato_5cls/test
+  image_size: 224
+  resize_size: 256
+
+train:
+  batch_size: 32
+  weight_decay: 0.0001
+  max_epochs: 15
+  min_epochs: 5
+  patience: 5
+  old_f1_drop_tolerance: 0.03
+  lr_g3: 0.0001
+  lr_head: 0.0005
+
+ewc:
+  lambda: 10000.0
+  fisher_max_batches: 100
+
+output:
+  root: experiments/part1_case3B_plantvillage_finetune/Continuation/catA_same_classes/ewc/outputs/cycle1_lambda10000
+
