@@ -1,0 +1,8 @@
+{
+  "fisher_dir": "data/02_tomato_5cls/replay_buffer",
+  "fisher_max_batches": 100,
+  "fisher_used_batches": 17,
+  "fisher_matrix_path": "experiments\\part1_case3B_plantvillage_finetune\\outputs\\fim\\fisher_matrix.pt",
+  "theta_star_path": "experiments\\part1_case3B_plantvillage_finetune\\outputs\\fim\\theta_star.pt",
+  "num_fisher_samples": 526
+}

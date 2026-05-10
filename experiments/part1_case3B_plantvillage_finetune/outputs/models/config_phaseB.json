@@ -1,0 +1,44 @@
+{
+  "seed": 42,
+  "num_workers": 0,
+  "device": "cuda",
+  "model": {
+    "num_classes": 5,
+    "pretrained_backbone": "experiments/part1_case3A_plantvillage_pretrain/outputs/models/pretrained_backbone.pth"
+  },
+  "data": {
+    "train_dir": "data/02_tomato_5cls/initial_train",
+    "val_dir": "data/02_tomato_5cls/val",
+    "test_dir": "data/02_tomato_5cls/test",
+    "fisher_dir": "data/02_tomato_5cls/replay_buffer",
+    "image_size": 224,
+    "resize_size": 256
+  },
+  "train": {
+    "batch_size": 32,
+    "weight_decay": 1e-05,
+    "class_weight_cap": 3.0,
+    "phase1": {
+      "max_epochs": 15,
+      "min_epochs": 5,
+      "patience": 5,
+      "lr_g3": 5e-05,
+      "lr_head": 0.0005
+    },
+    "phase2": {
+      "enabled": true,
+      "max_epochs": 10,
+      "min_epochs": 3,
+      "patience": 5,
+      "lr_g2": 1e-05,
+      "lr_g3": 5e-05,
+      "lr_head": 0.0005
+    }
+  },
+  "fim": {
+    "max_batches": 100
+  },
+  "output": {
+    "root": "experiments/part1_case3B_plantvillage_finetune/outputs"
+  }
+}

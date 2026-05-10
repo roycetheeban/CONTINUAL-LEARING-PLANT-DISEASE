@@ -34,9 +34,12 @@ def ensure_dirs(output_root: Path) -> dict:
     dirs = {
         "root": output_root,
         "models": output_root / "models",
+        "checkpoints": output_root / "checkpoints",
         "logs": output_root / "logs",
         "results": output_root / "results",
+        "metrics": output_root / "metrics",
         "plots": output_root / "plots",
+        "figures": output_root / "figures",
         "fim": output_root / "fim",
     }
     for p in dirs.values():
@@ -376,7 +379,10 @@ def main():
 
     final_model_path = dirs["models"] / "M3.pth"
     torch.save(model.state_dict(), final_model_path)
-    torch.save(cfg, dirs["models"] / "config_phaseB.json")
+    case1_style_ckpt = dirs["checkpoints"] / "model.pth"
+    torch.save(model.state_dict(), case1_style_ckpt)
+    with (dirs["models"] / "config_phaseB.json").open("w", encoding="utf-8") as f:
+        json.dump(cfg, f, indent=2)
     with (dirs["models"] / "class_weights_5cls.json").open("w", encoding="utf-8") as f:
         json.dump(
             {
@@ -399,8 +405,11 @@ def main():
     val_metrics = evaluate(model, val_loader, device)
     test_metrics = evaluate(model, test_loader, device, with_preds=True)
     save_classification_report(test_metrics["y_true"], test_metrics["y_pred"], class_names, dirs["results"] / "classification_report.csv")
+    save_classification_report(test_metrics["y_true"], test_metrics["y_pred"], class_names, dirs["metrics"] / "classification_report.csv")
     save_confusion(test_metrics["y_true"], test_metrics["y_pred"], class_names, dirs["plots"] / "case3b_confusion_matrix.png")
+    save_confusion(test_metrics["y_true"], test_metrics["y_pred"], class_names, dirs["figures"] / "confusion_matrix.png")
     plot_val_curve(log_csv, dirs["plots"] / "case3b_val_f1.png")
+    plot_val_curve(log_csv, dirs["figures"] / "train_val_curves.png")
 
     fisher, used_batches = compute_diagonal_fisher(
         model=model,
@@ -448,11 +457,14 @@ def main():
         "artifacts": {
             "phase1_model": str(dirs["models"] / "M3_phase1.pth"),
             "final_model": str(final_model_path),
+            "case1_style_checkpoint": str(case1_style_ckpt),
             "train_log": str(log_csv),
         },
         "config": cfg,
     }
     with (dirs["results"] / "case3b_metrics.json").open("w", encoding="utf-8") as f:
+        json.dump(metrics, f, indent=2)
+    with (dirs["metrics"] / "metrics.json").open("w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2)
 
     with (dirs["fim"] / "fim_metadata.json").open("w", encoding="utf-8") as f:

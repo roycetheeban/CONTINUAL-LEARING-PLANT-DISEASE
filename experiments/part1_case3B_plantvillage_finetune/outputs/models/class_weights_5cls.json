@@ -1,0 +1,24 @@
+{
+  "class_names": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "class_counts": [
+    797,
+    375,
+    716,
+    357,
+    597
+  ],
+  "class_weights_capped_invfreq": [
+    1.0,
+    2.1253333333333333,
+    1.1131284916201118,
+    2.2324929971988796,
+    1.3350083752093804
+  ],
+  "cap": 3.0
+}
