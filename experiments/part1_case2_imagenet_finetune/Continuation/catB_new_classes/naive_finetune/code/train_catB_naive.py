@@ -61,16 +61,27 @@ def main():
     expand_head_to_7(model, total_classes=len(global_classes))
     freeze_for_catb(model, unfreeze_g2=bool(cfg['train']['unfreeze_g2']))
 
+    # Split-LR optimizer for Category B (old vs new classifier neurons)
+    old_cls_params = [model.classifier[3].weight[:len(old_classes)], model.classifier[3].bias[:len(old_classes)]]
+    new_cls_params = [model.classifier[3].weight[len(old_classes):], model.classifier[3].bias[len(old_classes):]]
+    other_cls_params = [p for name, p in model.classifier.named_parameters() if name not in ['3.weight', '3.bias']]
+    
     optimizer = Adam(
         [
             {'params': model.features[4:9].parameters(), 'lr': float(cfg['train']['lr_g2'])},
             {'params': model.features[9:].parameters(), 'lr': float(cfg['train']['lr_g3'])},
-            {'params': model.classifier.parameters(), 'lr': float(cfg['train']['lr_head'])},
+            {'params': other_cls_params, 'lr': float(cfg['train']['lr_head'])},
+            {'params': old_cls_params, 'lr': float(cfg['train']['lr_head_old'])},  # Lower LR for old classes
+            {'params': new_cls_params, 'lr': float(cfg['train']['lr_head_new'])},  # Higher LR for new classes
         ],
         weight_decay=float(cfg['train']['weight_decay'])
     )
     scheduler = ReduceLROnPlateau(optimizer, mode='max', patience=3, factor=0.5, min_lr=1e-6)
     criterion = nn.CrossEntropyLoss()
+
+    # Early stopping based on old class F1 degradation
+    cycle_start_old = evaluate(model, old_val_loader, device)
+    floor_old_f1 = cycle_start_old['macro_f1'] * (1.0 - float(cfg['train']['old_f1_drop_tolerance']))
 
     best = {'f1': -1, 'state': None, 'epoch': 0}
     bad = 0
@@ -85,13 +96,29 @@ def main():
         joint_f1 = 0.5 * (old_s['macro_f1'] + new_s['macro_f1'])
         scheduler.step(joint_f1)
 
-        logs.append({'epoch': ep,'epoch_time_sec': round(time.perf_counter()-t0,4),'train_loss': tr_loss,'val_old_macro_f1': old_s['macro_f1'],'val_new_macro_f1': new_s['macro_f1'],'val_joint_macro_f1': joint_f1,'lr': optimizer.param_groups[-1]['lr']})
+        logs.append({
+            'epoch': ep,
+            'epoch_time_sec': round(time.perf_counter()-t0,4),
+            'train_loss': tr_loss,
+            'val_old_macro_f1': old_s['macro_f1'],
+            'val_new_macro_f1': new_s['macro_f1'],
+            'val_joint_macro_f1': joint_f1,
+            'lr': optimizer.param_groups[-1]['lr']
+        })
+        
         if joint_f1 > best['f1']:
             best = {'f1': joint_f1, 'state': {k:v.cpu().clone() for k,v in model.state_dict().items()}, 'epoch': ep}
             bad = 0
         else:
             bad += 1
+            
+        # Early stopping conditions
+        if ep >= int(cfg['train']['min_epochs']) and old_s['macro_f1'] < floor_old_f1:
+            print(f"Early stop: old-class val F1 ({old_s['macro_f1']:.4f}) dropped below floor ({floor_old_f1:.4f})")
+            break
+            
         if ep >= int(cfg['train']['min_epochs']) and bad >= int(cfg['train']['patience']):
+            print("Early stop: patience reached")
             break
 
     if best['state'] is not None:
@@ -115,7 +142,12 @@ def main():
         'peak_vram_mb': round(torch.cuda.max_memory_allocated()/(1024**2),2) if device.type=='cuda' else None,
         'process_ram_mb_end': get_process_ram_mb(),
     }
-    extra = {'best_epoch': best['epoch']}
+    extra = {
+        'best_epoch': best['epoch'],
+        'cycle_start_old_f1': cycle_start_old['macro_f1'],
+        'floor_old_f1': floor_old_f1,
+        'forgetting_score': cycle_start_old['macro_f1'] - old_stats['macro_f1']
+    }
     dump_metrics(dirs, cfg, 'cat_b_naive_head_expand', cfg['meta']['cycle_name'], global_classes, old_classes, new_classes, old_stats, new_stats, runtime, model, extra=extra)
 
 

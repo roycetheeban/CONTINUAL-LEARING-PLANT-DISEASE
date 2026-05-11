@@ -9,6 +9,7 @@ model:
   base_checkpoint: experiments/part1_case2_imagenet_finetune/outputs_tuned/checkpoints/M2.pth
 
 data:
+  old_train_dir: data/02_tomato_5cls/cl_cycle1_stream
   old_replay_dir: data/02_tomato_5cls/replay_buffer
   new_train_dir: data/03_tomato_new_2cls/cl_cycle1_stream
   old_val_dir: data/02_tomato_5cls/val
@@ -34,10 +35,13 @@ train:
   max_epochs: 15
   min_epochs: 5
   patience: 5
+  old_f1_drop_tolerance: 0.05  # Allow 5% drop in old class F1 before early stop
   unfreeze_g2: true
   lr_g2: 0.00005
   lr_g3: 0.0002
   lr_head: 0.0005
+  lr_head_old: 0.0001  # Lower LR for old class neurons
+  lr_head_new: 0.001   # Higher LR for new class neurons
 
 output:
   root: experiments/part1_case2_imagenet_finetune/Continuation/catB_new_classes/experience_replay_head_expand/outputs/cycle1

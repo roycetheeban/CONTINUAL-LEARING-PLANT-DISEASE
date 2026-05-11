@@ -31,10 +31,13 @@ train:
   max_epochs: 15
   min_epochs: 5
   patience: 5
+  old_f1_drop_tolerance: 0.05  # Allow 5% drop in old class F1 before early stop
   unfreeze_g2: true
   lr_g2: 0.00005
   lr_g3: 0.0002
   lr_head: 0.0005
+  lr_head_old: 0.0001  # Lower LR for old class neurons
+  lr_head_new: 0.001   # Higher LR for new class neurons
 
 output:
   root: experiments/part1_case2_imagenet_finetune/Continuation/catB_new_classes/naive_finetune/outputs/cycle1
