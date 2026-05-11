@@ -133,14 +133,22 @@ def score(y_true, y_pred):
 
 
 def save_confusion(y_true, y_pred, labels, out_png: Path, title: str):
-    cm = confusion_matrix(y_true, y_pred, labels=list(range(len(labels))))
+    # Get unique labels that actually appear in the data
+    unique_labels = sorted(set(y_true + y_pred))
+    
+    # Create confusion matrix only for labels that exist
+    cm = confusion_matrix(y_true, y_pred, labels=unique_labels)
+    
+    # Map back to original label names for display
+    display_labels = [labels[i] if i < len(labels) else f"Class_{i}" for i in unique_labels]
+    
     fig = plt.figure(figsize=(8, 6))
     plt.imshow(cm, interpolation="nearest")
     plt.title(title)
     plt.colorbar()
-    ticks = np.arange(len(labels))
-    plt.xticks(ticks, labels, rotation=45, ha="right")
-    plt.yticks(ticks, labels)
+    ticks = np.arange(len(unique_labels))
+    plt.xticks(ticks, display_labels, rotation=45, ha="right")
+    plt.yticks(ticks, display_labels)
     plt.ylabel("True")
     plt.xlabel("Pred")
     plt.tight_layout()
