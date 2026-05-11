@@ -67,8 +67,9 @@ def main():
     freeze_for_catb(model, unfreeze_g2=bool(cfg['train']['unfreeze_g2']))
 
     # Split-LR optimizer for Category B (old vs new classifier neurons)
-    old_cls_params = [model.classifier[3].weight[:len(old_classes)], model.classifier[3].bias[:len(old_classes)]]
-    new_cls_params = [model.classifier[3].weight[len(old_classes):], model.classifier[3].bias[len(old_classes):]]
+    head_lr_new = float(cfg['train']['lr_head_new'])
+    head_lr_old = float(cfg['train']['lr_head_old'])
+    old_head_grad_scale = head_lr_old / head_lr_new if head_lr_new > 0 else 1.0
     other_cls_params = [p for name, p in model.classifier.named_parameters() if name not in ['3.weight', '3.bias']]
     
     optimizer = Adam(
@@ -76,8 +77,7 @@ def main():
             {'params': model.features[4:9].parameters(), 'lr': float(cfg['train']['lr_g2'])},
             {'params': model.features[9:].parameters(), 'lr': float(cfg['train']['lr_g3'])},
             {'params': other_cls_params, 'lr': float(cfg['train']['lr_head'])},
-            {'params': old_cls_params, 'lr': float(cfg['train']['lr_head_old'])},  # Lower LR for old classes
-            {'params': new_cls_params, 'lr': float(cfg['train']['lr_head_new'])},  # Higher LR for new classes
+            {'params': [model.classifier[3].weight, model.classifier[3].bias], 'lr': head_lr_new},
         ],
         weight_decay=float(cfg['train']['weight_decay'])
     )
@@ -89,7 +89,10 @@ def main():
     logs = []
     for ep in range(1, int(cfg['train']['max_epochs'])+1):
         t0 = time.perf_counter()
-        tr_loss = train_epoch_mixed(model, old_train_loader, new_train_loader, device, criterion, optimizer)
+        tr_loss = train_epoch_mixed(
+            model, old_train_loader, new_train_loader, device, criterion, optimizer,
+            old_class_count=len(old_classes), old_head_grad_scale=old_head_grad_scale
+        )
         y_old_t, y_old_p = evaluate(model, old_val_loader, device)
         y_new_t, y_new_p = evaluate(model, new_val_loader, device)
         old_s = score(y_old_t, y_old_p)

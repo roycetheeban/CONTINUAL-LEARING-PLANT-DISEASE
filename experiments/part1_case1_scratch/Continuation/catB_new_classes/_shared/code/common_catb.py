@@ -217,7 +217,19 @@ def freeze_for_catb(model: nn.Module, unfreeze_g2: bool = True):
         p.requires_grad = True
 
 
-def train_epoch_mixed(model, old_loader, new_loader, device, criterion, optimizer, lambda_ewc=0.0, fisher=None, theta_star=None):
+def train_epoch_mixed(
+    model,
+    old_loader,
+    new_loader,
+    device,
+    criterion,
+    optimizer,
+    lambda_ewc=0.0,
+    fisher=None,
+    theta_star=None,
+    old_class_count: int | None = None,
+    old_head_grad_scale: float | None = None,
+):
     model.train()
     old_it = iter(old_loader)
     new_it = iter(new_loader)
@@ -261,6 +273,18 @@ def train_epoch_mixed(model, old_loader, new_loader, device, criterion, optimize
             loss = loss + lambda_ewc * pen
         
         loss.backward()
+        if (
+            old_class_count is not None
+            and old_head_grad_scale is not None
+            and 0.0 < old_head_grad_scale < 1.0
+            and hasattr(model, "classifier")
+            and len(model.classifier) > 3
+        ):
+            head = model.classifier[3]
+            if getattr(head, "weight", None) is not None and head.weight.grad is not None:
+                head.weight.grad[:old_class_count] *= old_head_grad_scale
+            if getattr(head, "bias", None) is not None and head.bias.grad is not None:
+                head.bias.grad[:old_class_count] *= old_head_grad_scale
         optimizer.step()
         total_loss += loss.item()
 
