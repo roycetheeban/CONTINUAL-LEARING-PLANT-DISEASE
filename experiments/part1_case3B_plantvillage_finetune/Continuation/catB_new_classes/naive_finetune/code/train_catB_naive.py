@@ -61,27 +61,20 @@ def main():
     expand_head_to_7(model, total_classes=len(global_classes))
     freeze_for_catb(model, unfreeze_g2=bool(cfg['train']['unfreeze_g2']))
 
-    # Split-LR optimizer for Category B (old vs new classifier neurons)
-    old_cls_params = [model.classifier[3].weight[:len(old_classes)], model.classifier[3].bias[:len(old_classes)]]
-    new_cls_params = [model.classifier[3].weight[len(old_classes):], model.classifier[3].bias[len(old_classes):]]
-    other_cls_params = [p for name, p in model.classifier.named_parameters() if name not in ['3.weight', '3.bias']]
-    
+    # Simple uniform optimizer for naive fine-tuning (no split-LR protection)
     optimizer = Adam(
         [
             {'params': model.features[4:9].parameters(), 'lr': float(cfg['train']['lr_g2'])},
             {'params': model.features[9:].parameters(), 'lr': float(cfg['train']['lr_g3'])},
-            {'params': other_cls_params, 'lr': float(cfg['train']['lr_head'])},
-            {'params': old_cls_params, 'lr': float(cfg['train']['lr_head_old'])},  # Lower LR for old classes
-            {'params': new_cls_params, 'lr': float(cfg['train']['lr_head_new'])},  # Higher LR for new classes
+            {'params': model.classifier.parameters(), 'lr': float(cfg['train']['lr_head'])},
         ],
         weight_decay=float(cfg['train']['weight_decay'])
     )
     scheduler = ReduceLROnPlateau(optimizer, mode='max', patience=3, factor=0.5, min_lr=1e-6)
     criterion = nn.CrossEntropyLoss()
 
-    # Early stopping based on old class F1 degradation
+    # No early stopping protection for naive fine-tuning
     cycle_start_old = evaluate(model, old_val_loader, device)
-    floor_old_f1 = cycle_start_old['macro_f1'] * (1.0 - float(cfg['train']['old_f1_drop_tolerance']))
 
     best = {'f1': -1, 'state': None, 'epoch': 0}
     bad = 0
@@ -112,11 +105,7 @@ def main():
         else:
             bad += 1
             
-        # Early stopping conditions
-        if ep >= int(cfg['train']['min_epochs']) and old_s['macro_f1'] < floor_old_f1:
-            print(f"Early stop: old-class val F1 ({old_s['macro_f1']:.4f}) dropped below floor ({floor_old_f1:.4f})")
-            break
-            
+        # Only basic patience-based early stopping (no forgetting protection)
         if ep >= int(cfg['train']['min_epochs']) and bad >= int(cfg['train']['patience']):
             print("Early stop: patience reached")
             break
@@ -145,7 +134,6 @@ def main():
     extra = {
         'best_epoch': best['epoch'],
         'cycle_start_old_f1': cycle_start_old['macro_f1'],
-        'floor_old_f1': floor_old_f1,
         'forgetting_score': cycle_start_old['macro_f1'] - old_stats['macro_f1']
     }
     dump_metrics(dirs, cfg, 'cat_b_naive_head_expand', cfg['meta']['cycle_name'], global_classes, old_classes, new_classes, old_stats, new_stats, runtime, model, extra=extra)
