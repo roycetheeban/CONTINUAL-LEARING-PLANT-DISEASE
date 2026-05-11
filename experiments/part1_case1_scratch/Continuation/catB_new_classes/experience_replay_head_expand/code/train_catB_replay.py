@@ -37,14 +37,27 @@ def main():
     cls_to_idx = {c:i for i,c in enumerate(global_classes)}
     train_tfms, eval_tfms = build_transforms(cfg)
 
-    old_train_ds = RemapImageFolder(cfg['data']['old_replay_dir'], train_tfms, cls_to_idx)
+    # Create combined old data (current cycle + replay buffer) like Category A
+    old_cycle_ds = RemapImageFolder(cfg['data']['old_train_dir'], train_tfms, cls_to_idx)
+    old_replay_ds = RemapImageFolder(cfg['data']['old_replay_dir'], train_tfms, cls_to_idx)
     new_train_ds = RemapImageFolder(cfg['data']['new_train_dir'], train_tfms, cls_to_idx)
+
+    # Combine old cycle + replay buffer samples
+    combined_old_samples = old_cycle_ds.samples + old_replay_ds.samples
+    
+    # Create combined dataset
+    class CombinedOldDataset(RemapImageFolder):
+        def __init__(self, samples, transform):
+            self.samples = samples
+            self.transform = transform
+    
+    old_combined_ds = CombinedOldDataset(combined_old_samples, train_tfms)
 
     bs_old = int(cfg['train']['old_batch_size'])
     bs_new = int(cfg['train']['new_batch_size'])
     nw = int(cfg['num_workers'])
 
-    old_train_loader = DataLoader(old_train_ds, batch_size=bs_old, shuffle=True, num_workers=nw, pin_memory=True, drop_last=True)
+    old_train_loader = DataLoader(old_combined_ds, batch_size=bs_old, shuffle=True, num_workers=nw, pin_memory=True, drop_last=True)
     new_train_loader = DataLoader(new_train_ds, batch_size=bs_new, shuffle=True, num_workers=nw, pin_memory=True, drop_last=True)
 
     old_test_loader, new_test_loader, old_val_loader, new_val_loader = build_eval_loaders(cfg, global_classes, eval_tfms)
@@ -53,11 +66,18 @@ def main():
     expand_head_to_7(model, total_classes=len(global_classes))
     freeze_for_catb(model, unfreeze_g2=bool(cfg['train']['unfreeze_g2']))
 
+    # Split-LR optimizer for Category B (old vs new classifier neurons)
+    old_cls_params = [model.classifier[3].weight[:len(old_classes)], model.classifier[3].bias[:len(old_classes)]]
+    new_cls_params = [model.classifier[3].weight[len(old_classes):], model.classifier[3].bias[len(old_classes):]]
+    other_cls_params = [p for name, p in model.classifier.named_parameters() if name not in ['3.weight', '3.bias']]
+    
     optimizer = Adam(
         [
             {'params': model.features[4:9].parameters(), 'lr': float(cfg['train']['lr_g2'])},
             {'params': model.features[9:].parameters(), 'lr': float(cfg['train']['lr_g3'])},
-            {'params': model.classifier.parameters(), 'lr': float(cfg['train']['lr_head'])},
+            {'params': other_cls_params, 'lr': float(cfg['train']['lr_head'])},
+            {'params': old_cls_params, 'lr': float(cfg['train']['lr_head_old'])},  # Lower LR for old classes
+            {'params': new_cls_params, 'lr': float(cfg['train']['lr_head_new'])},  # Higher LR for new classes
         ],
         weight_decay=float(cfg['train']['weight_decay'])
     )

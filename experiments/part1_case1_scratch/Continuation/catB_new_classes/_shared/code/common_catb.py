@@ -231,12 +231,24 @@ def train_epoch_mixed(model, old_loader, new_loader, device, criterion, optimize
         optimizer.zero_grad(set_to_none=True)
         logits = model(x)
         loss = criterion(logits, y)
+        
         if lambda_ewc > 0.0 and fisher is not None and theta_star is not None:
             pen = torch.tensor(0.0, device=device)
             for n, p in model.named_parameters():
                 if p.requires_grad and n in fisher:
-                    pen = pen + (fisher[n].to(device) * (p - theta_star[n].to(device)).pow(2)).sum()
+                    if n == "classifier.3.weight":
+                        # Apply EWC penalty only to old classifier rows (first 5)
+                        old_rows = min(5, p.shape[0])
+                        pen = pen + (fisher[n][:old_rows].to(device) * (p[:old_rows] - theta_star[n][:old_rows].to(device)).pow(2)).sum()
+                    elif n == "classifier.3.bias":
+                        # Apply EWC penalty only to old classifier bias (first 5)
+                        old_rows = min(5, p.shape[0])
+                        pen = pen + (fisher[n][:old_rows].to(device) * (p[:old_rows] - theta_star[n][:old_rows].to(device)).pow(2)).sum()
+                    else:
+                        # Apply EWC penalty to all other parameters normally
+                        pen = pen + (fisher[n].to(device) * (p - theta_star[n].to(device)).pow(2)).sum()
             loss = loss + lambda_ewc * pen
+        
         loss.backward()
         optimizer.step()
         total_loss += loss.item()

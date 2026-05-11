@@ -35,6 +35,8 @@ train:
   lr_g2: 0.00001
   lr_g3: 0.0001
   lr_head: 0.0002
+  lr_head_old: 0.00005  # Even lower for cycle 2
+  lr_head_new: 0.0005   # Reduced for cycle 2
 
 output:
   root: experiments/part1_case1_scratch/Continuation/catB_new_classes/naive_finetune/outputs/cycle2

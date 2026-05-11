@@ -61,11 +61,18 @@ def main():
     expand_head_to_7(model, total_classes=len(global_classes))
     freeze_for_catb(model, unfreeze_g2=bool(cfg['train']['unfreeze_g2']))
 
+    # Split-LR optimizer for Category B (old vs new classifier neurons)
+    old_cls_params = [model.classifier[3].weight[:len(old_classes)], model.classifier[3].bias[:len(old_classes)]]
+    new_cls_params = [model.classifier[3].weight[len(old_classes):], model.classifier[3].bias[len(old_classes):]]
+    other_cls_params = [p for name, p in model.classifier.named_parameters() if name not in ['3.weight', '3.bias']]
+    
     optimizer = Adam(
         [
             {'params': model.features[4:9].parameters(), 'lr': float(cfg['train']['lr_g2'])},
             {'params': model.features[9:].parameters(), 'lr': float(cfg['train']['lr_g3'])},
-            {'params': model.classifier.parameters(), 'lr': float(cfg['train']['lr_head'])},
+            {'params': other_cls_params, 'lr': float(cfg['train']['lr_head'])},
+            {'params': old_cls_params, 'lr': float(cfg['train']['lr_head_old'])},  # Lower LR for old classes
+            {'params': new_cls_params, 'lr': float(cfg['train']['lr_head_new'])},  # Higher LR for new classes
         ],
         weight_decay=float(cfg['train']['weight_decay'])
     )
