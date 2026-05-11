@@ -140,7 +140,7 @@ def save_confusion(y_true, y_pred, labels, out_png: Path, title: str):
     cm = confusion_matrix(y_true, y_pred, labels=unique_labels)
     
     # Map back to original label names for display
-    display_labels = [labels[i] if i < len(labels) else f"Class_{i}" for i in unique_labels]
+    display_labels = [labels[i] if (0 <= i and i < len(labels)) else f"Class_{i}" for i in unique_labels]
     
     fig = plt.figure(figsize=(8, 6))
     plt.imshow(cm, interpolation="nearest")
