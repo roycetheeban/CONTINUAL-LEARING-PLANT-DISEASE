@@ -1,0 +1,15 @@
+{
+  "cycle": "cycle1",
+  "method": "cat_b_isolation_new_branch",
+  "classes": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "accuracy": 0.9718557607739666,
+  "macro_f1": 0.808470644091816,
+  "macro_precision": 0.8082337406297052,
+  "macro_recall": 0.8089206550034712
+}

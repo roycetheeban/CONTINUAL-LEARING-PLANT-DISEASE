@@ -1,0 +1,19 @@
+{
+  "cycle": "cycle2",
+  "old_replay_dir": "data/02_tomato_5cls/replay_buffer",
+  "old_train_dir": "data/02_tomato_5cls/cl_cycle2_stream",
+  "new_train_dir": "data/03_tomato_new_2cls/cl_cycle2_stream",
+  "old_replay_count": 526,
+  "old_cycle_count": 1420,
+  "combined_old_count": 1946,
+  "new_stream_count": 1292,
+  "global_classes": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy",
+    "Tomato___Septoria_leaf_spot",
+    "Tomato___Spider_mites Two-spotted_spider_mite"
+  ]
+}
