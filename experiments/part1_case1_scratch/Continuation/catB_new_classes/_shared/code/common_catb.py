@@ -184,8 +184,11 @@ def plot_training(log_rows: list[dict], out_png: Path, title: str):
 
 def load_base_model(base_ckpt: str, old_num_classes: int, device: torch.device):
     model = models.mobilenet_v3_small(weights=models.MobileNet_V3_Small_Weights.IMAGENET1K_V1)
-    model.classifier[3] = nn.Linear(1024, old_num_classes)
     state = torch.load(base_ckpt, map_location=device)
+    ckpt_out = old_num_classes
+    if isinstance(state, dict) and "classifier.3.weight" in state:
+        ckpt_out = int(state["classifier.3.weight"].shape[0])
+    model.classifier[3] = nn.Linear(1024, ckpt_out)
     model.load_state_dict(state, strict=True)
     return model.to(device)
 

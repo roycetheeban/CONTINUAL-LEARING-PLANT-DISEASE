@@ -1,4 +1,4 @@
-﻿import argparse
+import argparse
 import json
 import time
 from pathlib import Path
@@ -119,13 +119,16 @@ def main():
     new_stats = score(y_new_t, y_new_p)
 
     save_confusion(y_old_t, y_old_p, old_classes, dirs['figures'] / 'confusion_old.png', 'CatB Replay Old Classes')
-    save_confusion(y_new_t, y_new_p, new_classes, dirs['figures'] / 'confusion_new.png', 'CatB Replay New Classes')
+    save_confusion([v-len(old_classes) for v in y_new_t], [v-len(old_classes) for v in y_new_p], new_classes, dirs['figures'] / 'confusion_new.png', 'CatB Replay New Classes')
 
     manifest = {
         'cycle': cfg['meta']['cycle_name'],
         'old_replay_dir': cfg['data']['old_replay_dir'],
+        'old_train_dir': cfg['data']['old_train_dir'],
         'new_train_dir': cfg['data']['new_train_dir'],
-        'old_replay_count': len(old_train_ds),
+        'old_replay_count': len(old_replay_ds),
+        'old_cycle_count': len(old_cycle_ds),
+        'combined_old_count': len(combined_old_samples),
         'new_stream_count': len(new_train_ds),
         'global_classes': global_classes,
     }
@@ -144,3 +147,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

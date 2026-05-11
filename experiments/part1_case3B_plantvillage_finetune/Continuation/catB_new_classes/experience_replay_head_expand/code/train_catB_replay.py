@@ -1,4 +1,4 @@
-﻿import argparse
+import argparse
 import json
 import time
 from pathlib import Path
@@ -85,8 +85,9 @@ def main():
     criterion = nn.CrossEntropyLoss()
 
     # Early stopping based on old class F1 degradation
-    cycle_start_old = evaluate(model, old_val_loader, device)
-    floor_old_f1 = cycle_start_old['macro_f1'] * (1.0 - float(cfg['train']['old_f1_drop_tolerance']))
+    cycle_start_old_t, cycle_start_old_p = evaluate(model, old_val_loader, device)
+    cycle_start_old = score(cycle_start_old_t, cycle_start_old_p)
+    floor_old_f1 = cycle_start_old['macro_f1'] * (1.0 - float(cfg['train'].get('old_f1_drop_tolerance', 0.05)))
 
     best = {'f1': -1, 'state': None, 'epoch': 0}
     bad = 0
@@ -139,7 +140,7 @@ def main():
     new_stats = score(y_new_t, y_new_p)
 
     save_confusion(y_old_t, y_old_p, old_classes, dirs['figures'] / 'confusion_old.png', 'CatB Replay Old Classes')
-    save_confusion(y_new_t, y_new_p, new_classes, dirs['figures'] / 'confusion_new.png', 'CatB Replay New Classes')
+    save_confusion([v-len(old_classes) for v in y_new_t], [v-len(old_classes) for v in y_new_p], new_classes, dirs['figures'] / 'confusion_new.png', 'CatB Replay New Classes')
 
     manifest = {
         'cycle': cfg['meta']['cycle_name'],
@@ -173,3 +174,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

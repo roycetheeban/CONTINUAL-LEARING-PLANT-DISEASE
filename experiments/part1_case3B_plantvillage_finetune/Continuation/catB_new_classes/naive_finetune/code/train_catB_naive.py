@@ -1,4 +1,4 @@
-﻿import argparse
+import argparse
 import time
 from pathlib import Path
 
@@ -74,7 +74,8 @@ def main():
     criterion = nn.CrossEntropyLoss()
 
     # No early stopping protection for naive fine-tuning
-    cycle_start_old = evaluate(model, old_val_loader, device)
+    cycle_start_old_t, cycle_start_old_p = evaluate(model, old_val_loader, device)
+    cycle_start_old = score(cycle_start_old_t, cycle_start_old_p)
 
     best = {'f1': -1, 'state': None, 'epoch': 0}
     bad = 0
@@ -123,7 +124,7 @@ def main():
     new_stats = score(y_new_t, y_new_p)
 
     save_confusion(y_old_t, y_old_p, old_classes, dirs['figures'] / 'confusion_old.png', 'CatB Naive Old Classes')
-    save_confusion(y_new_t, y_new_p, new_classes, dirs['figures'] / 'confusion_new.png', 'CatB Naive New Classes')
+    save_confusion([v-len(old_classes) for v in y_new_t], [v-len(old_classes) for v in y_new_p], new_classes, dirs['figures'] / 'confusion_new.png', 'CatB Naive New Classes')
 
     runtime = {
         'total_wall_time_sec': round(time.perf_counter()-total_start,4),
@@ -141,3 +142,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

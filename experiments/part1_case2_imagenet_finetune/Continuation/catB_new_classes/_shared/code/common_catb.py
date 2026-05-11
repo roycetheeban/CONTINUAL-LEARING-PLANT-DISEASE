@@ -184,8 +184,11 @@ def plot_training(log_rows: list[dict], out_png: Path, title: str):
 
 def load_base_model(base_ckpt: str, old_num_classes: int, device: torch.device):
     model = models.mobilenet_v3_small(weights=models.MobileNet_V3_Small_Weights.IMAGENET1K_V1)
-    model.classifier[3] = nn.Linear(1024, old_num_classes)
     state = torch.load(base_ckpt, map_location=device)
+    ckpt_out = old_num_classes
+    if isinstance(state, dict) and "classifier.3.weight" in state:
+        ckpt_out = int(state["classifier.3.weight"].shape[0])
+    model.classifier[3] = nn.Linear(1024, ckpt_out)
     model.load_state_dict(state, strict=True)
     return model.to(device)
 
@@ -243,7 +246,14 @@ def train_epoch_mixed(model, old_loader, new_loader, device, criterion, optimize
             pen = torch.tensor(0.0, device=device)
             for n, p in model.named_parameters():
                 if p.requires_grad and n in fisher:
-                    pen = pen + (fisher[n].to(device) * (p - theta_star[n].to(device)).pow(2)).sum()
+                    if n == "classifier.3.weight":
+                        old_rows = min(5, p.shape[0])
+                        pen = pen + (fisher[n][:old_rows].to(device) * (p[:old_rows] - theta_star[n][:old_rows].to(device)).pow(2)).sum()
+                    elif n == "classifier.3.bias":
+                        old_rows = min(5, p.shape[0])
+                        pen = pen + (fisher[n][:old_rows].to(device) * (p[:old_rows] - theta_star[n][:old_rows].to(device)).pow(2)).sum()
+                    else:
+                        pen = pen + (fisher[n].to(device) * (p - theta_star[n].to(device)).pow(2)).sum()
             loss = loss + lambda_ewc * pen
         loss.backward()
         optimizer.step()
