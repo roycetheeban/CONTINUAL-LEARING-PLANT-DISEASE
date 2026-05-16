@@ -1,9 +1,9 @@
 {
-  "cycle": "cycle1",
-  "method": "cat_b_naive_head_expand",
+  "cycle": "cycle2",
+  "method": "cat_b_isolation_new_branch",
   "old": {
-    "cycle": "cycle1",
-    "method": "cat_b_naive_head_expand",
+    "cycle": "cycle2",
+    "method": "cat_b_isolation_new_branch",
     "classes": [
       "Tomato___Bacterial_spot",
       "Tomato___Early_blight",
@@ -11,32 +11,32 @@
       "Tomato___Leaf_Mold",
       "Tomato___healthy"
     ],
-    "accuracy": 0.0,
-    "macro_f1": 0.0,
-    "macro_precision": 0.0,
-    "macro_recall": 0.0
+    "accuracy": 0.9718557607739666,
+    "macro_f1": 0.8085007409397869,
+    "macro_precision": 0.8082413279147577,
+    "macro_recall": 0.8089809395465144
   },
   "new": {
-    "cycle": "cycle1",
-    "method": "cat_b_naive_head_expand",
+    "cycle": "cycle2",
+    "method": "cat_b_isolation_new_branch",
     "classes": [
       "Tomato___Septoria_leaf_spot",
       "Tomato___Spider_mites Two-spotted_spider_mite"
     ],
-    "accuracy": 0.9825918762088974,
-    "macro_f1": 0.9825853609242896,
-    "macro_precision": 0.9824967073754789,
-    "macro_recall": 0.982858041518138
+    "accuracy": 0.0425531914893617,
+    "macro_f1": 0.021825396825396828,
+    "macro_precision": 0.14285714285714285,
+    "macro_recall": 0.011815252416756175
   },
   "runtime": {
-    "total_wall_time_sec": 183.272,
-    "train_wall_time_sec": 174.0893,
-    "peak_vram_mb": 325.71,
-    "process_ram_mb_end": 1301.07
+    "total_wall_time_sec": 100.542,
+    "train_wall_time_sec": 93.3458,
+    "peak_vram_mb": 218.68,
+    "process_ram_mb_end": 1341.7
   },
   "model_footprint": {
-    "num_parameters": 1525031,
-    "model_size_mb": 5.8175
+    "num_parameters": 1563511,
+    "model_size_mb": 5.9643
   },
   "classes": {
     "global": [
@@ -65,15 +65,15 @@
     "num_workers": 0,
     "device": "cuda",
     "meta": {
-      "cycle_name": "cycle1"
+      "cycle_name": "cycle2"
     },
     "model": {
       "base_checkpoint": "experiments/part1_case1_scratch/outputs/case1_scratch_weighted/checkpoints/model.pth"
     },
     "data": {
-      "new_train_dir": "data/03_tomato_new_2cls/cl_cycle1_stream",
-      "old_val_dir": "data/02_tomato_5cls/val",
+      "new_train_dir": "data/03_tomato_new_2cls/cl_cycle2_stream",
       "new_val_dir": "data/03_tomato_new_2cls/val",
+      "old_val_dir": "data/02_tomato_5cls/val",
       "old_test_dir": "data/02_tomato_5cls/test",
       "new_test_dir": "data/03_tomato_new_2cls/test",
       "image_size": 224,
@@ -94,18 +94,16 @@
       "max_epochs": 15,
       "min_epochs": 5,
       "patience": 5,
-      "unfreeze_g2": true,
-      "lr_g2": 5e-05,
-      "lr_g3": 0.0002,
-      "lr_head": 0.0005
+      "lr_branch": 0.001
     },
     "output": {
-      "root": "experiments/part1_case1_scratch/Continuation/catB_new_classes/naive_finetune/outputs/cycle1"
+      "root": "experiments/part1_case1_scratch/Continuation/catB_new_classes tuned/parameter_isolation_new_branch/outputs/cycle2"
+    },
+    "labels": {
+      "new_start_idx": 5
     }
   },
   "extra": {
-    "best_epoch": 7,
-    "cycle_start_old_f1": 0.9586822179997263,
-    "forgetting_score": 0.9586822179997263
+    "best_epoch": 4
   }
 }

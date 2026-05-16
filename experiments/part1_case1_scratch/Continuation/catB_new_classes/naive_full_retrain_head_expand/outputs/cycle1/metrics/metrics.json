@@ -29,10 +29,10 @@
     "macro_recall": 0.3150131304356509
   },
   "runtime": {
-    "total_wall_time_sec": 428.5462,
-    "train_wall_time_sec": 420.6225,
+    "total_wall_time_sec": 422.7359,
+    "train_wall_time_sec": 415.674,
     "peak_vram_mb": 325.39,
-    "process_ram_mb_end": 1320.68
+    "process_ram_mb_end": 1323.38
   },
   "model_footprint": {
     "num_parameters": 1525031,
