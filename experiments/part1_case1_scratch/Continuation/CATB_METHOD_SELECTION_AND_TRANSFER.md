@@ -130,3 +130,49 @@ If helper paths/imports are hardcoded, make them case-relative and robust.
 
 ## Next Action
 Run Replay + EWC for Case 2 and Case 3 using this transferred setup, then compare against each case naive full retrain baseline.
+
+## Execution Order (Must Follow)
+1. Read this file first and use only selected methods (`EWC`, `Replay`) for transfer/tuning.
+2. Run Case 2 and Case 3 Cat B Cycle 1 and Cycle 2 for `EWC` and `Replay`.
+3. Compare against each case `Naive Full Retrain` baseline.
+4. Update tracker tables in this file.
+5. Clean low-performing outputs using archive-first policy (do not hard delete first).
+
+## Commands (Template)
+
+Use this sequence from repo root:
+
+```powershell
+# Case 2
+python experiments/part1_case2_imagenet_finetune/Continuation/catB_new_classes/run_catB.py ewc 1
+python experiments/part1_case2_imagenet_finetune/Continuation/catB_new_classes/run_catB.py ewc 2
+python experiments/part1_case2_imagenet_finetune/Continuation/catB_new_classes/run_catB.py replay 1
+python experiments/part1_case2_imagenet_finetune/Continuation/catB_new_classes/run_catB.py replay 2
+
+# Case 3
+python experiments/part1_case3B_plantvillage_finetune/Continuation/catB_new_classes/run_catB.py ewc 1
+python experiments/part1_case3B_plantvillage_finetune/Continuation/catB_new_classes/run_catB.py ewc 2
+python experiments/part1_case3B_plantvillage_finetune/Continuation/catB_new_classes/run_catB.py replay 1
+python experiments/part1_case3B_plantvillage_finetune/Continuation/catB_new_classes/run_catB.py replay 2
+```
+
+## Low-Performer Cleanup Rule
+
+After comparison for a case:
+- Keep winners: best `EWC` + best `Replay` + `Naive Full Retrain` baseline.
+- Low performers: archive them under `_archived_low_performers/` (same case folder), then optionally delete later.
+- Never remove metrics/logs for winners or baseline.
+
+### Archive-First Example
+```powershell
+# Example path pattern (adjust case/method)
+New-Item -ItemType Directory -Force -Path "experiments/<case>/Continuation/catB_new_classes/_archived_low_performers" | Out-Null
+Move-Item -Force "experiments/<case>/Continuation/catB_new_classes/<low_method>/outputs" "experiments/<case>/Continuation/catB_new_classes/_archived_low_performers/<low_method>_outputs"
+```
+
+## Tracker Update Requirement
+Every time new training results are produced:
+1. Update "Best-Per-Method Tracker"
+2. Append "Run Comparison Log"
+3. Update "Finalized Code Tracker" if a better config/code becomes winner
+4. Record archived methods and reason in run log decision column
