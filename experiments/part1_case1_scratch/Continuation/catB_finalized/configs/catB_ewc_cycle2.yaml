@@ -1,0 +1,51 @@
+﻿seed: 42
+num_workers: 0
+device: cuda
+
+meta:
+  cycle_name: cycle2
+
+model:
+  base_checkpoint: experiments/part1_case1_scratch/Continuation/catB_new_classes tuned/ewc_head_expand/outputs/cycle1/checkpoints/model.pth
+
+data:
+  old_train_dir: data/02_tomato_5cls/cl_cycle2_stream
+  old_replay_dir: data/02_tomato_5cls/replay_buffer
+  new_train_dir: data/03_tomato_new_2cls/cl_cycle2_stream
+  old_val_dir: data/02_tomato_5cls/val
+  new_val_dir: data/03_tomato_new_2cls/val
+  old_test_dir: data/02_tomato_5cls/test
+  new_test_dir: data/03_tomato_new_2cls/test
+  image_size: 224
+  resize_size: 256
+
+classes:
+  old_classes:
+    - Tomato___Bacterial_spot
+    - Tomato___Early_blight
+    - Tomato___Late_blight
+    - Tomato___Leaf_Mold
+    - Tomato___healthy
+
+train:
+  batch_size: 32
+  old_batch_size: 12
+  new_batch_size: 20
+  weight_decay: 0.0001
+  max_epochs: 12
+  min_epochs: 5
+  patience: 5
+  old_f1_drop_tolerance: 0.08
+  unfreeze_g2: true
+  lr_g2: 0.00001
+  lr_g3: 0.0001
+  lr_head: 0.0002
+  lr_head_old: 0.00008
+  lr_head_new: 0.001
+
+ewc:
+  lambda: 400.0
+  fisher_max_batches: 150
+
+output:
+  root: experiments/part1_case1_scratch/Continuation/catB_new_classes tuned/ewc_head_expand/outputs/cycle2
