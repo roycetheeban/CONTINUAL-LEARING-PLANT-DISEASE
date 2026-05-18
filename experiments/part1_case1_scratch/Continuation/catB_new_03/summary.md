@@ -1,27 +1,39 @@
-# Cat B New_02 Summary (Case 1)
+# Cat B New_03 Summary (Case 1)
 
 Generated: 2026-05-17
 
 ## Experiment Results
 
-| Method | Cycle | Old F1 | New F1 | Old Acc | New Acc | Joint F1 `(Old+New)/2` |
-|---|---:|---:|---:|---:|---:|---:|
-| cat_b_ewc_head_expand | cycle1 | 0.6351 | 0.2696 | 0.8109 | 0.9168 | 0.4523 |
-| cat_b_ewc_head_expand | cycle2 | 0.6445 | 0.3156 | 0.8549 | 0.9072 | 0.4800 |
-| cat_b_replay_head_expand | cycle1 | 0.6381 | 0.3191 | 0.8382 | 0.9091 | 0.4786 |
-| cat_b_replay_head_expand | cycle2 | 0.6424 | 0.3162 | 0.8514 | 0.9110 | 0.4793 |
+| Method | Cycle | Old F1 | New F1 | Old Acc | New Acc | Joint F1 `(Old+New)/2` | Epochs Run |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| cat_b_ewc_head_expand | cycle1 | 0.6351 | 0.2696 | 0.8267 | 0.9014 | 0.4523 | 5 |
+| cat_b_ewc_head_expand | cycle2 | 0.6445 | 0.3156 | 0.8575 | 0.9110 | 0.4800 | 12 |
+| cat_b_replay_head_expand | cycle1 | 0.6381 | 0.3191 | 0.8382 | 0.9323 | 0.4786 | 9 |
+| cat_b_replay_head_expand | cycle2 | 0.6424 | 0.3193 | 0.8478 | 0.9246 | 0.4809 | 12 |
+| cat_b_hybrid_replay_ewc | cycle1 | 0.6347 | 0.3187 | 0.8329 | 0.9246 | 0.4767 | 10 |
+| cat_b_hybrid_replay_ewc | cycle2 | 0.6423 | 0.3183 | 0.8478 | 0.9207 | 0.4803 | 12 |
 
-## Baseline Reference (Finalized Target)
+## Best in New_03
 
-| Baseline | Cycle | Old F1 | New F1 | Old Acc | New Acc | Joint F1 |
-|---|---:|---:|---:|---:|---:|---:|
-| naive_full_retrain | 2 | 0.6539 | 0.3207 | 0.8707 | 0.9342 | 0.4873 |
+- Best Cycle 2 joint F1: `Replay` (`0.4809`)
+- Very close second: `Hybrid` (`0.4803`)
+- EWC improved old retention but lower new-class score vs Replay.
 
-## Quick Comparison
+## Baseline Comparison
 
-- Best `new_02` run by joint F1: `EWC cycle2` (`0.4800`).
-- `Replay cycle2` is very close (`0.4793`).
-- Both are still below the finalized naive full-retrain baseline joint (`0.4873`).
+### Against Naive Full Retrain Baseline (Case 1 Cycle 2)
+- Baseline: `Old F1=0.6539`, `New F1=0.3207`, `Joint=0.4873`
+- Best New_03 (Replay c2): `Old F1=0.6424`, `New F1=0.3193`, `Joint=0.4809`
+
+Result:
+- New_03 is **closer** but still **below** naive full retrain baseline.
+
+### Against Cat B Finalized Best CL (Replay c2)
+- Finalized Replay c2 joint: `0.4812`
+- New_03 Replay c2 joint: `0.4809`
+
+Result:
+- New_03 is nearly tied, but slightly below finalized best CL.
 
 ## Output Files Used
 
@@ -29,3 +41,5 @@ Generated: 2026-05-17
 - `ewc_head_expand/outputs/cycle2/metrics/metrics.json`
 - `experience_replay_head_expand/outputs/cycle1/metrics/metrics.json`
 - `experience_replay_head_expand/outputs/cycle2/metrics/metrics.json`
+- `hybrid_ewc_replay_head_expand/outputs/cycle1/metrics/metrics.json`
+- `hybrid_ewc_replay_head_expand/outputs/cycle2/metrics/metrics.json`
