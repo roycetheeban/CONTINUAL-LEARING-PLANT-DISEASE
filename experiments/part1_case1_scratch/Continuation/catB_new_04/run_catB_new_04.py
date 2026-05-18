@@ -8,15 +8,17 @@ def run_method(method_name: str, cycle: int) -> bool:
     method_configs = {
         "ewc": f"ewc_head_expand/configs/catB_ewc_cycle{cycle}.yaml",
         "replay": f"experience_replay_head_expand/configs/catB_replay_cycle{cycle}.yaml",
+        "hybrid": f"hybrid_ewc_replay_head_expand/configs/catB_hybrid_cycle{cycle}.yaml",
     }
     method_scripts = {
         "ewc": "ewc_head_expand/code/train_catB_ewc.py",
         "replay": "experience_replay_head_expand/code/train_catB_replay.py",
+        "hybrid": "hybrid_ewc_replay_head_expand/code/train_catB_hybrid.py",
     }
 
     if method_name not in method_configs:
         print(f"Unknown method: {method_name}")
-        print("Available: ewc, replay")
+        print("Available: ewc, replay, hybrid")
         return False
 
     root = Path(__file__).parent
@@ -43,7 +45,7 @@ def run_method(method_name: str, cycle: int) -> bool:
 def main():
     if len(sys.argv) < 2:
         print("Usage: python run_catB_finalized.py <method> [cycle]")
-        print("Methods: ewc, replay")
+        print("Methods: ewc, replay, hybrid")
         print("Cycles: 1, 2")
         return
 

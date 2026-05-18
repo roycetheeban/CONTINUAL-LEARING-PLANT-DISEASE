@@ -16,7 +16,8 @@ from common_catb import (
     set_seed, ensure_dirs, build_transforms, build_global_classes, RemapImageFolder,
     build_eval_loaders, evaluate, score, load_base_model, expand_head_to_7, freeze_for_catb,
     train_epoch_mixed, compute_fisher, build_theta_star, save_logs, plot_training,
-    save_confusion, dump_metrics, get_process_ram_mb
+    save_confusion, dump_metrics, get_process_ram_mb, set_g1_trainable,
+    compute_class_counts, build_balanced_ce_weights
 )
 
 
@@ -28,6 +29,23 @@ def build_mixed_old_dataset(cfg, tfms, cls_to_idx):
             self.samples = samples
             self.transform = transform
     return CombinedOldDataset(old_cycle_ds.samples + old_replay_ds.samples, tfms), old_cycle_ds, old_replay_ds
+
+
+def blend_fisher(prev_fisher: dict, curr_fisher: dict, alpha: float) -> dict:
+    mixed = {}
+    keys = set(prev_fisher.keys()) | set(curr_fisher.keys())
+    for k in keys:
+        prev_t = prev_fisher.get(k, None)
+        curr_t = curr_fisher.get(k, None)
+        if prev_t is None and curr_t is None:
+            continue
+        if prev_t is None:
+            mixed[k] = curr_t.clone()
+        elif curr_t is None:
+            mixed[k] = prev_t.clone()
+        else:
+            mixed[k] = (alpha * prev_t) + ((1.0 - alpha) * curr_t)
+    return mixed
 
 
 def main():
@@ -63,14 +81,32 @@ def main():
     old_test_loader, new_test_loader, old_val_loader, new_val_loader = build_eval_loaders(cfg, global_classes, eval_tfms)
 
     model = load_base_model(cfg['model']['base_checkpoint'], old_num_classes=len(old_classes), device=device)
+    teacher_model = load_base_model(cfg['model']['base_checkpoint'], old_num_classes=len(old_classes), device=device)
+    teacher_model.eval()
+    for p in teacher_model.parameters():
+        p.requires_grad = False
     freeze_for_catb(model, unfreeze_g2=bool(cfg['train']['unfreeze_g2']))
+    if bool(cfg['train'].get('unfreeze_g1', False)):
+        set_g1_trainable(model, enabled=True)
 
-    # Fisher/theta* before expansion for EWC term
-    fisher, fisher_used = compute_fisher(model, fisher_loader, device, max_batches=int(cfg['ewc']['fisher_max_batches']))
-    theta_star = build_theta_star(model)
+    # E1-compatible flow: expand first, then compute fisher/theta* in 7-class model context.
     expand_head_to_7(model, total_classes=len(global_classes))
+    theta_star = build_theta_star(model)
+    fisher_current, fisher_used = compute_fisher(model, fisher_loader, device, max_batches=int(cfg['ewc']['fisher_max_batches']))
+    fisher = fisher_current
+    fisher_prev_used = False
+    alpha = float(cfg['ewc'].get('online_alpha', 0.5))
+    if bool(cfg['ewc'].get('online_enabled', False)):
+        prev_fisher_path = cfg['ewc'].get('prev_fisher_path', None)
+        if prev_fisher_path:
+            prev_path = Path(prev_fisher_path)
+            if prev_path.exists():
+                fisher_prev = torch.load(prev_path, map_location='cpu')
+                fisher = blend_fisher(fisher_prev, fisher_current, alpha=alpha)
+                fisher_prev_used = True
 
     torch.save(fisher, dirs['metrics'] / 'fisher_matrix.pt')
+    torch.save(fisher_current, dirs['metrics'] / 'fisher_matrix_current.pt')
     torch.save(theta_star, dirs['checkpoints'] / 'theta_star.pt')
 
     head_lr_new = float(cfg['train']['lr_head_new'])
@@ -89,6 +125,12 @@ def main():
     )
     scheduler = ReduceLROnPlateau(optimizer, mode='max', patience=3, factor=0.5, min_lr=1e-6)
     criterion = nn.CrossEntropyLoss()
+    if bool(cfg.get('loss', {}).get('weighted_ce_enabled', False)):
+        old_cnt = len(old_combined_ds)
+        new_cnt = len(new_train_ds)
+        weights = build_balanced_ce_weights(old_cnt, new_cnt, len(old_classes), len(new_classes), device)
+        if weights is not None:
+            criterion = nn.CrossEntropyLoss(weight=weights)
 
     best = {'f1': -1, 'state': None, 'epoch': 0}
     bad = 0
@@ -97,8 +139,14 @@ def main():
         t0 = time.perf_counter()
         tr_loss = train_epoch_mixed(
             model, old_train_loader, new_train_loader, device, criterion, optimizer,
-            lambda_ewc=float(cfg['ewc']['lambda']), fisher=fisher, theta_star=theta_star,
-            old_class_count=len(old_classes), old_head_grad_scale=old_head_grad_scale
+            lambda_ewc=float(cfg['ewc'].get('lambda', 0.0)),
+            lambda_ewc_backbone=float(cfg['ewc'].get('lambda_backbone', cfg['ewc'].get('lambda', 0.0))),
+            lambda_ewc_head_old=float(cfg['ewc'].get('lambda_head_old', cfg['ewc'].get('lambda', 0.0))),
+            fisher=fisher, theta_star=theta_star,
+            old_class_count=len(old_classes), old_head_grad_scale=old_head_grad_scale,
+            teacher_model=teacher_model,
+            kd_weight=float(cfg.get('kd', {}).get('weight', 0.0)),
+            kd_temperature=float(cfg.get('kd', {}).get('temperature', 2.0)),
         )
         y_old_t, y_old_p = evaluate(model, old_val_loader, device)
         y_new_t, y_new_p = evaluate(model, new_val_loader, device)
@@ -110,6 +158,13 @@ def main():
         logs.append({'epoch': ep, 'epoch_time_sec': round(time.perf_counter() - t0, 4), 'train_loss': tr_loss,
                      'val_old_macro_f1': old_s['macro_f1'], 'val_new_macro_f1': new_s['macro_f1'],
                      'val_joint_macro_f1': joint_f1, 'lr': optimizer.param_groups[-1]['lr']})
+        print(
+            f"[HYBRID][StageA][{cfg['meta']['cycle_name']}] "
+            f"epoch={ep} loss={tr_loss:.4f} old_f1={old_s['macro_f1']:.4f} "
+            f"new_f1={new_s['macro_f1']:.4f} joint_f1={joint_f1:.4f} "
+            f"lr={optimizer.param_groups[-1]['lr']:.6g}",
+            flush=True,
+        )
         if joint_f1 > best['f1']:
             best = {'f1': joint_f1, 'state': {k: v.cpu().clone() for k, v in model.state_dict().items()}, 'epoch': ep}
             bad = 0
@@ -155,6 +210,12 @@ def main():
                 bad_hc = 0
             else:
                 bad_hc += 1
+            print(
+                f"[HYBRID][StageB][{cfg['meta']['cycle_name']}] "
+                f"epoch={ep} old_f1={old_s['macro_f1']:.4f} "
+                f"new_f1={new_s['macro_f1']:.4f} joint_f1={joint:.4f}",
+                flush=True,
+            )
             if ep >= min_ep and bad_hc >= patience:
                 break
         if best_hc['state'] is not None:
@@ -182,6 +243,9 @@ def main():
         'combined_old_count': len(old_combined_ds),
         'new_stream_count': len(new_train_ds),
         'global_classes': global_classes,
+        'replay_class_counts': compute_class_counts(old_replay_ds.samples, global_classes),
+        'old_stream_class_counts': compute_class_counts(old_cycle_ds.samples, global_classes),
+        'replay_to_old_stream_ratio': (len(old_replay_ds) / max(len(old_cycle_ds), 1)),
     }
     with (dirs['metrics'] / 'replay_buffer_manifest.json').open('w', encoding='utf-8') as f:
         json.dump(manifest, f, indent=2)
@@ -194,12 +258,17 @@ def main():
     }
     extra = {
         'fisher_batches_used': fisher_used,
+        'fisher_prev_used': fisher_prev_used,
+        'fisher_online_alpha': alpha if bool(cfg['ewc'].get('online_enabled', False)) else None,
         'best_epoch': best['epoch'],
         'head_correction_enabled': bool(hc_cfg.get('enabled', False)),
+        'kd_enabled': bool(cfg.get('kd', {}).get('enabled', False)),
+        'kd_weight': float(cfg.get('kd', {}).get('weight', 0.0)),
+        'kd_temperature': float(cfg.get('kd', {}).get('temperature', 2.0)),
+        'weighted_ce_enabled': bool(cfg.get('loss', {}).get('weighted_ce_enabled', False)),
     }
     dump_metrics(dirs, cfg, 'cat_b_hybrid_replay_ewc', cfg['meta']['cycle_name'], global_classes, old_classes, new_classes, old_stats, new_stats, runtime, model, extra=extra)
 
 
 if __name__ == '__main__':
     main()
-
