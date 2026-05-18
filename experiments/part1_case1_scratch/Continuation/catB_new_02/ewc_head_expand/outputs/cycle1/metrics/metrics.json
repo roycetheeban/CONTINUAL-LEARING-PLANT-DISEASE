@@ -11,10 +11,10 @@
       "Tomato___Leaf_Mold",
       "Tomato___healthy"
     ],
-    "accuracy": 0.8065083553210203,
-    "macro_f1": 0.6259529097635045,
-    "macro_precision": 0.7037660338875572,
-    "macro_recall": 0.567503131216881
+    "accuracy": 0.8267370272647317,
+    "macro_f1": 0.6351226279670049,
+    "macro_precision": 0.693615587380109,
+    "macro_recall": 0.5866869532141498
   },
   "new": {
     "cycle": "cycle1",
@@ -23,16 +23,16 @@
       "Tomato___Septoria_leaf_spot",
       "Tomato___Spider_mites Two-spotted_spider_mite"
     ],
-    "accuracy": 0.9245647969052224,
-    "macro_f1": 0.27209005417491533,
-    "macro_precision": 0.28045835743204167,
-    "macro_recall": 0.26444811516554617
+    "accuracy": 0.9013539651837524,
+    "macro_f1": 0.26957098538297747,
+    "macro_precision": 0.2826873238565813,
+    "macro_recall": 0.2578108618158943
   },
   "runtime": {
-    "total_wall_time_sec": 178.0628,
-    "train_wall_time_sec": 160.3446,
+    "total_wall_time_sec": 342.6915,
+    "train_wall_time_sec": 155.6851,
     "peak_vram_mb": 335.29,
-    "process_ram_mb_end": 1393.07
+    "process_ram_mb_end": 1319.88
   },
   "model_footprint": {
     "num_parameters": 1525031,
@@ -110,15 +110,25 @@
       "lambda": 700.0,
       "fisher_max_batches": 150
     },
+    "head_correction": {
+      "enabled": true,
+      "max_epochs": 8,
+      "min_epochs": 3,
+      "patience": 3,
+      "old_batch_size": 16,
+      "new_batch_size": 16,
+      "lr_head": 0.0002
+    },
     "output": {
-      "root": "experiments/part1_case1_scratch/Continuation/catB_new_01/ewc_head_expand/outputs/cycle1"
+      "root": "experiments/part1_case1_scratch/Continuation/catB_new_02/ewc_head_expand/outputs/cycle1"
     }
   },
   "extra": {
     "fisher_batches_used": 17,
     "best_epoch": 4,
+    "head_correction_enabled": true,
     "cycle_start_old_f1": 0.9586822179997263,
     "floor_old_f1": 0.91074810709974,
-    "forgetting_score": 0.3327293082362218
+    "forgetting_score": 0.3235595900327214
   }
 }

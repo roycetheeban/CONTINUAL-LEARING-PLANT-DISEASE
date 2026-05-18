@@ -1,0 +1,15 @@
+{
+  "cycle": "cycle2",
+  "method": "cat_b_replay_head_expand",
+  "classes": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "accuracy": 0.851363236587511,
+  "macro_f1": 0.6423816374368442,
+  "macro_precision": 0.6931141939665325,
+  "macro_recall": 0.6002805332021895
+}

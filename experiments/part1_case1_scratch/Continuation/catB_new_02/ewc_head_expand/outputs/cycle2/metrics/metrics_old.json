@@ -8,8 +8,8 @@
     "Tomato___Leaf_Mold",
     "Tomato___healthy"
   ],
-  "accuracy": 0.841688654353562,
-  "macro_f1": 0.6379166965315096,
-  "macro_precision": 0.6940188546688012,
-  "macro_recall": 0.5925382163645041
+  "accuracy": 0.8575197889182058,
+  "macro_f1": 0.6444952465537153,
+  "macro_precision": 0.6937218809863782,
+  "macro_recall": 0.6033037534292764
 }

@@ -11,10 +11,10 @@
       "Tomato___Leaf_Mold",
       "Tomato___healthy"
     ],
-    "accuracy": 0.841688654353562,
-    "macro_f1": 0.6379166965315096,
-    "macro_precision": 0.6940188546688012,
-    "macro_recall": 0.5925382163645041
+    "accuracy": 0.8575197889182058,
+    "macro_f1": 0.6444952465537153,
+    "macro_precision": 0.6937218809863782,
+    "macro_recall": 0.6033037534292764
   },
   "new": {
     "cycle": "cycle2",
@@ -23,16 +23,16 @@
       "Tomato___Septoria_leaf_spot",
       "Tomato___Spider_mites Two-spotted_spider_mite"
     ],
-    "accuracy": 0.9168278529980658,
-    "macro_f1": 0.31668487340958745,
-    "macro_precision": 0.32846765824974056,
-    "macro_recall": 0.30605397957044006
+    "accuracy": 0.9110251450676983,
+    "macro_f1": 0.3155869622015897,
+    "macro_precision": 0.3284681338192692,
+    "macro_recall": 0.30417428032231975
   },
   "runtime": {
-    "total_wall_time_sec": 388.6173,
-    "train_wall_time_sec": 376.8435,
+    "total_wall_time_sec": 618.5084,
+    "train_wall_time_sec": 370.4111,
     "peak_vram_mb": 335.29,
-    "process_ram_mb_end": 1385.07
+    "process_ram_mb_end": 1409.19
   },
   "model_footprint": {
     "num_parameters": 1525031,
@@ -68,7 +68,7 @@
       "cycle_name": "cycle2"
     },
     "model": {
-      "base_checkpoint": "experiments/part1_case1_scratch/Continuation/catB_new_01/ewc_head_expand/outputs/cycle1/checkpoints/model.pth"
+      "base_checkpoint": "experiments/part1_case1_scratch/Continuation/catB_new_02/ewc_head_expand/outputs/cycle1/checkpoints/model.pth"
     },
     "data": {
       "old_train_dir": "data/02_tomato_5cls/cl_cycle2_stream",
@@ -110,15 +110,25 @@
       "lambda": 700.0,
       "fisher_max_batches": 150
     },
+    "head_correction": {
+      "enabled": true,
+      "max_epochs": 8,
+      "min_epochs": 3,
+      "patience": 3,
+      "old_batch_size": 16,
+      "new_batch_size": 16,
+      "lr_head": 0.00015
+    },
     "output": {
-      "root": "experiments/part1_case1_scratch/Continuation/catB_new_01/ewc_head_expand/outputs/cycle2"
+      "root": "experiments/part1_case1_scratch/Continuation/catB_new_02/ewc_head_expand/outputs/cycle2"
     }
   },
   "extra": {
     "fisher_batches_used": 17,
     "best_epoch": 9,
-    "cycle_start_old_f1": 0.6091596556013499,
-    "floor_old_f1": 0.5787016728212824,
-    "forgetting_score": -0.02875704093015974
+    "head_correction_enabled": true,
+    "cycle_start_old_f1": 0.6247763565904344,
+    "floor_old_f1": 0.5935375387609126,
+    "forgetting_score": -0.01971888996328086
   }
 }

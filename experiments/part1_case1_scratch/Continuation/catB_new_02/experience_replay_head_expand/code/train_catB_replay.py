@@ -18,6 +18,15 @@ from common_catb import (
     train_epoch_mixed, save_logs, plot_training, save_confusion, dump_metrics, get_process_ram_mb
 )
 
+def build_mixed_old_dataset(cfg, tfms, cls_to_idx):
+    old_cycle_ds = RemapImageFolder(cfg['data']['old_train_dir'], tfms, cls_to_idx)
+    old_replay_ds = RemapImageFolder(cfg['data']['old_replay_dir'], tfms, cls_to_idx)
+    class CombinedOldDataset(RemapImageFolder):
+        def __init__(self, samples, transform):
+            self.samples = samples
+            self.transform = transform
+    return CombinedOldDataset(old_cycle_ds.samples + old_replay_ds.samples, tfms), old_cycle_ds, old_replay_ds
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -112,6 +121,47 @@ def main():
     if best['state'] is not None:
         model.load_state_dict(best['state'])
 
+    # Stage-B head-only correction to recalibrate post-expansion classifier.
+    hc_cfg = cfg.get('head_correction', {})
+    if bool(hc_cfg.get('enabled', False)):
+        for p in model.features.parameters():
+            p.requires_grad = False
+        for p in model.classifier.parameters():
+            p.requires_grad = True
+
+        calib_old_ds, _, _ = build_mixed_old_dataset(cfg, train_tfms, cls_to_idx)
+        calib_new_ds = RemapImageFolder(cfg['data']['new_train_dir'], train_tfms, cls_to_idx)
+        calib_old_loader = DataLoader(calib_old_ds, batch_size=int(hc_cfg.get('old_batch_size', 16)), shuffle=True, num_workers=nw, pin_memory=True, drop_last=True)
+        calib_new_loader = DataLoader(calib_new_ds, batch_size=int(hc_cfg.get('new_batch_size', 16)), shuffle=True, num_workers=nw, pin_memory=True, drop_last=True)
+
+        opt_hc = Adam(model.classifier.parameters(), lr=float(hc_cfg.get('lr_head', 2e-4)), weight_decay=float(cfg['train']['weight_decay']))
+        sch_hc = ReduceLROnPlateau(opt_hc, mode='max', patience=2, factor=0.5, min_lr=1e-6)
+        min_ep = int(hc_cfg.get('min_epochs', 3))
+        max_ep = int(hc_cfg.get('max_epochs', 8))
+        patience = int(hc_cfg.get('patience', 3))
+        best_hc = {'f1': -1, 'state': None, 'epoch': 0}
+        bad_hc = 0
+        for ep in range(1, max_ep + 1):
+            _ = train_epoch_mixed(
+                model, calib_old_loader, calib_new_loader, device, criterion, opt_hc,
+                old_class_count=None, old_head_grad_scale=None
+            )
+            y_old_t, y_old_p = evaluate(model, old_val_loader, device)
+            y_new_t, y_new_p = evaluate(model, new_val_loader, device)
+            old_s = score(y_old_t, y_old_p)
+            new_s = score(y_new_t, y_new_p)
+            joint = 0.5 * (old_s['macro_f1'] + new_s['macro_f1'])
+            sch_hc.step(joint)
+            if joint > best_hc['f1']:
+                best_hc = {'f1': joint, 'state': {k:v.cpu().clone() for k,v in model.state_dict().items()}, 'epoch': ep}
+                bad_hc = 0
+            else:
+                bad_hc += 1
+            if ep >= min_ep and bad_hc >= patience:
+                break
+        if best_hc['state'] is not None:
+            model.load_state_dict(best_hc['state'])
+
     torch.save(model.state_dict(), dirs['checkpoints'] / 'model.pth')
     save_logs(logs, dirs['logs'] / 'train_log.csv')
     plot_training(logs, dirs['figures'] / 'train_val_curves.png', 'CatB Replay Training')
@@ -144,7 +194,11 @@ def main():
         'peak_vram_mb': round(torch.cuda.max_memory_allocated()/(1024**2),2) if device.type=='cuda' else None,
         'process_ram_mb_end': get_process_ram_mb(),
     }
-    extra = {'best_epoch': best['epoch'], 'manifest_path': str((dirs['metrics'] / 'replay_buffer_manifest.json'))}
+    extra = {
+        'best_epoch': best['epoch'],
+        'head_correction_enabled': bool(hc_cfg.get('enabled', False)),
+        'manifest_path': str((dirs['metrics'] / 'replay_buffer_manifest.json'))
+    }
     dump_metrics(dirs, cfg, 'cat_b_replay_head_expand', cfg['meta']['cycle_name'], global_classes, old_classes, new_classes, old_stats, new_stats, runtime, model, extra=extra)
 
 
