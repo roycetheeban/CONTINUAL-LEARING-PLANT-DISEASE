@@ -11,10 +11,10 @@
       "Tomato___Leaf_Mold",
       "Tomato___healthy"
     ],
-    "accuracy": 0.8328935795954265,
-    "macro_f1": 0.6346894945914949,
-    "macro_precision": 0.6954317164632077,
-    "macro_recall": 0.5853058805764043
+    "accuracy": 0.9243623570800352,
+    "macro_f1": 0.6776392611803763,
+    "macro_precision": 0.7002459591495976,
+    "macro_recall": 0.6567029036946799
   },
   "new": {
     "cycle": "cycle1",
@@ -23,16 +23,16 @@
       "Tomato___Septoria_leaf_spot",
       "Tomato___Spider_mites Two-spotted_spider_mite"
     ],
-    "accuracy": 0.9245647969052224,
-    "macro_f1": 0.3186839414024323,
-    "macro_precision": 0.32989876458476325,
-    "macro_recall": 0.3086725778589901
+    "accuracy": 0.8529980657640233,
+    "macro_f1": 0.3059410371910372,
+    "macro_precision": 0.3311025354591923,
+    "macro_recall": 0.28481562471916844
   },
   "runtime": {
-    "total_wall_time_sec": 624.7453,
-    "train_wall_time_sec": 406.8943,
-    "peak_vram_mb": 335.29,
-    "process_ram_mb_end": 1400.55
+    "total_wall_time_sec": 921.5378,
+    "train_wall_time_sec": 653.8511,
+    "peak_vram_mb": 384.75,
+    "process_ram_mb_end": 1363.28
   },
   "model_footprint": {
     "num_parameters": 1525031,
@@ -92,14 +92,15 @@
     },
     "train": {
       "batch_size": 32,
-      "old_batch_size": 16,
-      "new_batch_size": 16,
+      "old_batch_size": 22,
+      "new_batch_size": 10,
       "weight_decay": 0.0001,
       "max_epochs": 15,
       "min_epochs": 5,
       "patience": 5,
       "old_f1_drop_tolerance": 0.05,
       "unfreeze_g2": true,
+      "unfreeze_g1": false,
       "lr_g2": 5e-05,
       "lr_g3": 0.0002,
       "lr_head": 0.0005,
@@ -107,25 +108,46 @@
       "lr_head_new": 0.001
     },
     "ewc": {
-      "lambda": 250.0,
-      "fisher_max_batches": 150
+      "lambda": 150.0,
+      "lambda_backbone": 150.0,
+      "lambda_head_old": 0.0,
+      "backbone_only": true,
+      "fisher_max_batches": 150,
+      "online_enabled": false,
+      "online_alpha": 0.5,
+      "prev_fisher_path": ""
     },
     "head_correction": {
       "enabled": true,
-      "max_epochs": 8,
+      "max_epochs": 12,
       "min_epochs": 3,
-      "patience": 3,
-      "old_batch_size": 16,
-      "new_batch_size": 16,
+      "patience": 4,
+      "old_batch_size": 24,
+      "new_batch_size": 8,
       "lr_head": 0.0002
     },
     "output": {
-      "root": "experiments/part1_case1_scratch/Continuation/catB_new_03/hybrid_ewc_replay_head_expand/outputs/cycle1"
+      "root": "experiments/part1_case1_scratch/Continuation/catB_new_04/hybrid_ewc_replay_head_expand/outputs/cycle1"
+    },
+    "kd": {
+      "enabled": true,
+      "weight": 1.0,
+      "temperature": 2.0
+    },
+    "loss": {
+      "weighted_ce_enabled": true
     }
   },
   "extra": {
     "fisher_batches_used": 17,
-    "best_epoch": 5,
-    "head_correction_enabled": true
+    "fisher_prev_used": false,
+    "fisher_online_alpha": null,
+    "ewc_backbone_only": true,
+    "best_epoch": 15,
+    "head_correction_enabled": true,
+    "kd_enabled": true,
+    "kd_weight": 1.0,
+    "kd_temperature": 2.0,
+    "weighted_ce_enabled": true
   }
 }

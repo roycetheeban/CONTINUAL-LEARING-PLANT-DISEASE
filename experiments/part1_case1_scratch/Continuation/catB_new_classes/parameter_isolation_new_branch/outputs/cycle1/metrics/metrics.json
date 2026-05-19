@@ -11,10 +11,10 @@
       "Tomato___Leaf_Mold",
       "Tomato___healthy"
     ],
-    "accuracy": 0.9718557607739666,
-    "macro_f1": 0.808470644091816,
-    "macro_precision": 0.8082337406297052,
-    "macro_recall": 0.8089206550034712
+    "accuracy": 0.9639401934916447,
+    "macro_f1": 0.689888486298507,
+    "macro_precision": 0.692930220388637,
+    "macro_recall": 0.6869553069928196
   },
   "new": {
     "cycle": "cycle1",
@@ -23,16 +23,16 @@
       "Tomato___Septoria_leaf_spot",
       "Tomato___Spider_mites Two-spotted_spider_mite"
     ],
-    "accuracy": 0.12379110251450677,
-    "macro_f1": 0.05626557959537811,
+    "accuracy": 0.17794970986460348,
+    "macro_f1": 0.08599401635775883,
     "macro_precision": 0.2857142857142857,
-    "macro_recall": 0.034435833465279585
+    "macro_recall": 0.050693038800758296
   },
   "runtime": {
-    "total_wall_time_sec": 173.8417,
-    "train_wall_time_sec": 166.3401,
+    "total_wall_time_sec": 213.4888,
+    "train_wall_time_sec": 206.3688,
     "peak_vram_mb": 218.68,
-    "process_ram_mb_end": 1345.86
+    "process_ram_mb_end": 1339.09
   },
   "model_footprint": {
     "num_parameters": 1563511,
@@ -68,7 +68,8 @@
       "cycle_name": "cycle1"
     },
     "model": {
-      "base_checkpoint": "experiments/part1_case1_scratch/outputs/case1_scratch_weighted/checkpoints/model.pth"
+      "base_checkpoint": "experiments/part1_case1_scratch/outputs/case1_scratch_weighted/checkpoints/model.pth",
+      "prev_branch_checkpoint": ""
     },
     "data": {
       "new_train_dir": "data/03_tomato_new_2cls/cl_cycle1_stream",
@@ -91,10 +92,14 @@
     "train": {
       "batch_size": 32,
       "weight_decay": 0.0001,
-      "max_epochs": 15,
+      "max_epochs": 20,
       "min_epochs": 5,
       "patience": 5,
-      "lr_branch": 0.001
+      "lr_branch": 0.002
+    },
+    "inference": {
+      "old_logit_scale": 1.0,
+      "new_logit_scale": 1.4
     },
     "output": {
       "root": "experiments/part1_case1_scratch/Continuation/catB_new_classes/parameter_isolation_new_branch/outputs/cycle1"
@@ -104,6 +109,9 @@
     }
   },
   "extra": {
-    "best_epoch": 12
+    "best_epoch": 14,
+    "prev_branch_loaded": false,
+    "old_logit_scale": 1.0,
+    "new_logit_scale": 1.4
   }
 }

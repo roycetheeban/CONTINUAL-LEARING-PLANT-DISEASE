@@ -23,16 +23,16 @@
       "Tomato___Septoria_leaf_spot",
       "Tomato___Spider_mites Two-spotted_spider_mite"
     ],
-    "accuracy": 0.0425531914893617,
-    "macro_f1": 0.021825396825396828,
+    "accuracy": 0.04448742746615087,
+    "macro_f1": 0.022738507167572912,
     "macro_precision": 0.14285714285714285,
-    "macro_recall": 0.011815252416756175
+    "macro_recall": 0.012352309344790547
   },
   "runtime": {
-    "total_wall_time_sec": 100.542,
-    "train_wall_time_sec": 93.3458,
+    "total_wall_time_sec": 106.1054,
+    "train_wall_time_sec": 99.2332,
     "peak_vram_mb": 218.68,
-    "process_ram_mb_end": 1341.7
+    "process_ram_mb_end": 1349.53
   },
   "model_footprint": {
     "num_parameters": 1563511,

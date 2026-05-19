@@ -1,4 +1,4 @@
-seed: 42
+﻿seed: 42
 num_workers: 0
 device: cuda
 
@@ -41,3 +41,4 @@ train:
 
 output:
   root: experiments/part1_case1_scratch/Continuation/catB_new_classes/naive_full_retrain_head_expand/outputs/cycle1
+

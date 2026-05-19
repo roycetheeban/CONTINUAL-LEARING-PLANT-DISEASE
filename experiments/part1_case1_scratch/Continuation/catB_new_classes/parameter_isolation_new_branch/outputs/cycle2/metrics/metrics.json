@@ -11,10 +11,10 @@
       "Tomato___Leaf_Mold",
       "Tomato___healthy"
     ],
-    "accuracy": 0.9744942832014072,
-    "macro_f1": 0.971169758330402,
-    "macro_precision": 0.9699140135221291,
-    "macro_recall": 0.9726580051987641
+    "accuracy": 0.9498680738786279,
+    "macro_f1": 0.686465386802322,
+    "macro_precision": 0.6968857683357343,
+    "macro_recall": 0.6764244863970734
   },
   "new": {
     "cycle": "cycle2",
@@ -23,16 +23,16 @@
       "Tomato___Septoria_leaf_spot",
       "Tomato___Spider_mites Two-spotted_spider_mite"
     ],
-    "accuracy": 0.02321083172147002,
-    "macro_f1": 0.012332990750256938,
-    "macro_precision": 0.14285714285714285,
-    "macro_recall": 0.006444683136412459
+    "accuracy": 0.41005802707930367,
+    "macro_f1": 0.16572842934544743,
+    "macro_precision": 0.2857142857142857,
+    "macro_recall": 0.11690509711957754
   },
   "runtime": {
-    "total_wall_time_sec": 122.5405,
-    "train_wall_time_sec": 115.1373,
+    "total_wall_time_sec": 115.9362,
+    "train_wall_time_sec": 108.705,
     "peak_vram_mb": 218.68,
-    "process_ram_mb_end": 1340.23
+    "process_ram_mb_end": 1341.38
   },
   "model_footprint": {
     "num_parameters": 1563511,
@@ -68,7 +68,8 @@
       "cycle_name": "cycle2"
     },
     "model": {
-      "base_checkpoint": "experiments/part1_case1_scratch/outputs/case1_scratch_weighted/checkpoints/model.pth"
+      "base_checkpoint": "experiments/part1_case1_scratch/outputs/case1_scratch_weighted/checkpoints/model.pth",
+      "prev_branch_checkpoint": "experiments/part1_case1_scratch/Continuation/catB_new_classes/parameter_isolation_new_branch/outputs/cycle1/checkpoints/new_branch.pth"
     },
     "data": {
       "new_train_dir": "data/03_tomato_new_2cls/cl_cycle2_stream",
@@ -91,10 +92,14 @@
     "train": {
       "batch_size": 32,
       "weight_decay": 0.0001,
-      "max_epochs": 12,
+      "max_epochs": 20,
       "min_epochs": 5,
       "patience": 5,
       "lr_branch": 0.0005
+    },
+    "inference": {
+      "old_logit_scale": 1.0,
+      "new_logit_scale": 1.6
     },
     "output": {
       "root": "experiments/part1_case1_scratch/Continuation/catB_new_classes/parameter_isolation_new_branch/outputs/cycle2"
@@ -104,6 +109,9 @@
     }
   },
   "extra": {
-    "best_epoch": 5
+    "best_epoch": 5,
+    "prev_branch_loaded": true,
+    "old_logit_scale": 1.0,
+    "new_logit_scale": 1.6
   }
 }

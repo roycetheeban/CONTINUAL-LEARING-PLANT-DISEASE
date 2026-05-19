@@ -16,8 +16,34 @@ from common_catb import (
     set_seed, ensure_dirs, build_transforms, build_global_classes, RemapImageFolder,
     build_eval_loaders, evaluate, score, load_base_model, expand_head_to_7, freeze_for_catb,
     train_epoch_mixed, compute_fisher, build_theta_star, save_logs, plot_training,
-    save_confusion, dump_metrics, get_process_ram_mb
+    save_confusion, dump_metrics, get_process_ram_mb, set_g1_trainable,
+    compute_class_counts, build_balanced_ce_weights
 )
+
+def blend_fisher(prev_fisher: dict, curr_fisher: dict, alpha: float) -> dict:
+    mixed = {}
+    keys = set(prev_fisher.keys()) | set(curr_fisher.keys())
+    for k in keys:
+        prev_t = prev_fisher.get(k, None)
+        curr_t = curr_fisher.get(k, None)
+        if prev_t is None and curr_t is None:
+            continue
+        if prev_t is None:
+            mixed[k] = curr_t.clone()
+        elif curr_t is None:
+            mixed[k] = prev_t.clone()
+        else:
+            mixed[k] = (alpha * prev_t) + ((1.0 - alpha) * curr_t)
+    return mixed
+
+def build_mixed_old_dataset(cfg, tfms, cls_to_idx):
+    old_cycle_ds = RemapImageFolder(cfg['data']['old_train_dir'], tfms, cls_to_idx)
+    old_replay_ds = RemapImageFolder(cfg['data']['old_replay_dir'], tfms, cls_to_idx)
+    class CombinedOldDataset(RemapImageFolder):
+        def __init__(self, samples, transform):
+            self.samples = samples
+            self.transform = transform
+    return CombinedOldDataset(old_cycle_ds.samples + old_replay_ds.samples, tfms)
 
 
 def main():
@@ -53,16 +79,34 @@ def main():
     old_test_loader, new_test_loader, old_val_loader, new_val_loader = build_eval_loaders(cfg, global_classes, eval_tfms)
 
     model = load_base_model(cfg['model']['base_checkpoint'], old_num_classes=len(old_classes), device=device)
+    teacher_model = load_base_model(cfg['model']['base_checkpoint'], old_num_classes=len(old_classes), device=device)
+    teacher_model.eval()
+    for p in teacher_model.parameters():
+        p.requires_grad = False
     freeze_for_catb(model, unfreeze_g2=bool(cfg['train']['unfreeze_g2']))
+    if bool(cfg['train'].get('unfreeze_g1', False)):
+        set_g1_trainable(model, enabled=True)
 
-    # CRITICAL: Compute Fisher on 5-class model BEFORE expansion
-    fisher, fisher_used = compute_fisher(model, replay_loader, device, max_batches=int(cfg['ewc']['fisher_max_batches']))
-    theta_star = build_theta_star(model)
-    
-    # NOW expand head to 7 classes
+    # E1: Expand first, then compute Fisher on old replay with 7-class model.
     expand_head_to_7(model, total_classes=len(global_classes))
-    
+    theta_star = build_theta_star(model)
+    fisher_current, fisher_used = compute_fisher(model, replay_loader, device, max_batches=int(cfg['ewc']['fisher_max_batches']))
+
+    # E3: Optional online Fisher accumulation from previous cycle.
+    fisher = fisher_current
+    fisher_prev_used = False
+    alpha = float(cfg['ewc'].get('online_alpha', 0.5))
+    if bool(cfg['ewc'].get('online_enabled', False)):
+        prev_fisher_path = cfg['ewc'].get('prev_fisher_path', None)
+        if prev_fisher_path:
+            prev_path = Path(prev_fisher_path)
+            if prev_path.exists():
+                fisher_prev = torch.load(prev_path, map_location='cpu')
+                fisher = blend_fisher(fisher_prev, fisher_current, alpha=alpha)
+                fisher_prev_used = True
+
     torch.save(fisher, dirs['metrics'] / 'fisher_matrix.pt')
+    torch.save(fisher_current, dirs['metrics'] / 'fisher_matrix_current.pt')
     torch.save(theta_star, dirs['checkpoints'] / 'theta_star.pt')
 
     # Split-LR optimizer for Category B (old vs new classifier neurons)
@@ -82,6 +126,12 @@ def main():
     )
     scheduler = ReduceLROnPlateau(optimizer, mode='max', patience=3, factor=0.5, min_lr=1e-6)
     criterion = nn.CrossEntropyLoss()
+    if bool(cfg.get('loss', {}).get('weighted_ce_enabled', False)):
+        old_cnt = len(old_train_ds)
+        new_cnt = len(new_train_ds)
+        weights = build_balanced_ce_weights(old_cnt, new_cnt, len(old_classes), len(new_classes), device)
+        if weights is not None:
+            criterion = nn.CrossEntropyLoss(weight=weights)
 
     # Early stopping based on old class F1 degradation (like Category A)
     cycle_start_old_t, cycle_start_old_p = evaluate(model, old_val_loader, device)
@@ -95,8 +145,15 @@ def main():
         t0 = time.perf_counter()
         tr_loss = train_epoch_mixed(
             model, old_train_loader, new_train_loader, device,
-            criterion, optimizer, lambda_ewc=float(cfg['ewc']['lambda']), fisher=fisher, theta_star=theta_star,
-            old_class_count=len(old_classes), old_head_grad_scale=old_head_grad_scale
+            criterion, optimizer,
+            lambda_ewc=float(cfg['ewc'].get('lambda', 0.0)),
+            lambda_ewc_backbone=float(cfg['ewc'].get('lambda_backbone', cfg['ewc'].get('lambda', 0.0))),
+            lambda_ewc_head_old=float(cfg['ewc'].get('lambda_head_old', cfg['ewc'].get('lambda', 0.0))),
+            fisher=fisher, theta_star=theta_star,
+            old_class_count=len(old_classes), old_head_grad_scale=old_head_grad_scale,
+            teacher_model=teacher_model,
+            kd_weight=float(cfg.get('kd', {}).get('weight', 0.0)),
+            kd_temperature=float(cfg.get('kd', {}).get('temperature', 2.0)),
         )
         y_old_t, y_old_p = evaluate(model, old_val_loader, device)
         y_new_t, y_new_p = evaluate(model, new_val_loader, device)
@@ -114,6 +171,13 @@ def main():
             'val_joint_macro_f1': joint_f1,
             'lr': optimizer.param_groups[-1]['lr']
         })
+        print(
+            f"[EWC][StageA][{cfg['meta']['cycle_name']}] "
+            f"epoch={ep} loss={tr_loss:.4f} old_f1={old_s['macro_f1']:.4f} "
+            f"new_f1={new_s['macro_f1']:.4f} joint_f1={joint_f1:.4f} "
+            f"lr={optimizer.param_groups[-1]['lr']:.6g}",
+            flush=True,
+        )
         
         if joint_f1 > best['f1']:
             best = {'f1': joint_f1, 'state': {k:v.cpu().clone() for k,v in model.state_dict().items()}, 'epoch': ep}
@@ -132,6 +196,54 @@ def main():
 
     if best['state'] is not None:
         model.load_state_dict(best['state'])
+
+    # Stage-B head-only correction: calibrate classifier boundaries after CL update.
+    hc_cfg = cfg.get('head_correction', {})
+    if bool(hc_cfg.get('enabled', False)):
+        for p in model.features.parameters():
+            p.requires_grad = False
+        for p in model.classifier.parameters():
+            p.requires_grad = True
+
+        calib_old_ds = build_mixed_old_dataset(cfg, train_tfms, cls_to_idx)
+        calib_new_ds = RemapImageFolder(cfg['data']['new_train_dir'], train_tfms, cls_to_idx)
+        calib_old_loader = DataLoader(calib_old_ds, batch_size=int(hc_cfg.get('old_batch_size', 16)), shuffle=True, num_workers=nw, pin_memory=True, drop_last=True)
+        calib_new_loader = DataLoader(calib_new_ds, batch_size=int(hc_cfg.get('new_batch_size', 16)), shuffle=True, num_workers=nw, pin_memory=True, drop_last=True)
+
+        opt_hc = Adam(model.classifier.parameters(), lr=float(hc_cfg.get('lr_head', 2e-4)), weight_decay=float(cfg['train']['weight_decay']))
+        sch_hc = ReduceLROnPlateau(opt_hc, mode='max', patience=2, factor=0.5, min_lr=1e-6)
+        min_ep = int(hc_cfg.get('min_epochs', 3))
+        max_ep = int(hc_cfg.get('max_epochs', 8))
+        patience = int(hc_cfg.get('patience', 3))
+        best_hc = {'f1': -1, 'state': None, 'epoch': 0}
+        bad_hc = 0
+        for ep in range(1, max_ep + 1):
+            _ = train_epoch_mixed(
+                model, calib_old_loader, calib_new_loader, device,
+                criterion, opt_hc, lambda_ewc=0.0, fisher=None, theta_star=None,
+                old_class_count=None, old_head_grad_scale=None
+            )
+            y_old_t, y_old_p = evaluate(model, old_val_loader, device)
+            y_new_t, y_new_p = evaluate(model, new_val_loader, device)
+            old_s = score(y_old_t, y_old_p)
+            new_s = score(y_new_t, y_new_p)
+            joint = 0.5 * (old_s['macro_f1'] + new_s['macro_f1'])
+            sch_hc.step(joint)
+            if joint > best_hc['f1']:
+                best_hc = {'f1': joint, 'state': {k:v.cpu().clone() for k,v in model.state_dict().items()}, 'epoch': ep}
+                bad_hc = 0
+            else:
+                bad_hc += 1
+            print(
+                f"[EWC][StageB][{cfg['meta']['cycle_name']}] "
+                f"epoch={ep} old_f1={old_s['macro_f1']:.4f} "
+                f"new_f1={new_s['macro_f1']:.4f} joint_f1={joint:.4f}",
+                flush=True,
+            )
+            if ep >= min_ep and bad_hc >= patience:
+                break
+        if best_hc['state'] is not None:
+            model.load_state_dict(best_hc['state'])
 
     torch.save(model.state_dict(), dirs['checkpoints'] / 'model.pth')
     save_logs(logs, dirs['logs'] / 'train_log.csv')
@@ -152,8 +264,17 @@ def main():
         'process_ram_mb_end': get_process_ram_mb(),
     }
     extra = {
-        'fisher_batches_used': fisher_used, 
+        'fisher_batches_used': fisher_used,
+        'fisher_prev_used': fisher_prev_used,
+        'fisher_online_alpha': alpha if bool(cfg['ewc'].get('online_enabled', False)) else None,
+        'kd_enabled': bool(cfg.get('kd', {}).get('enabled', False)),
+        'kd_weight': float(cfg.get('kd', {}).get('weight', 0.0)),
+        'kd_temperature': float(cfg.get('kd', {}).get('temperature', 2.0)),
+        'weighted_ce_enabled': bool(cfg.get('loss', {}).get('weighted_ce_enabled', False)),
+        'replay_buffer_class_counts': compute_class_counts(old_replay_ds.samples, global_classes),
+        'old_stream_class_counts': compute_class_counts(old_train_ds.samples, global_classes),
         'best_epoch': best['epoch'],
+        'head_correction_enabled': bool(hc_cfg.get('enabled', False)),
         'cycle_start_old_f1': cycle_start_old['macro_f1'],
         'floor_old_f1': floor_old_f1,
         'forgetting_score': cycle_start_old['macro_f1'] - old_stats['macro_f1']  # Positive = forgetting

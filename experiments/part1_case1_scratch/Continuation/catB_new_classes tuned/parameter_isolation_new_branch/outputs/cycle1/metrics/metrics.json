@@ -11,10 +11,10 @@
       "Tomato___Leaf_Mold",
       "Tomato___healthy"
     ],
-    "accuracy": 0.9718557607739666,
-    "macro_f1": 0.8086893551021701,
-    "macro_precision": 0.8087965263253597,
-    "macro_recall": 0.808800085917385
+    "accuracy": 0.9736147757255936,
+    "macro_f1": 0.8095762443257354,
+    "macro_precision": 0.8094039677821906,
+    "macro_recall": 0.809965587082886
   },
   "new": {
     "cycle": "cycle1",
@@ -23,16 +23,16 @@
       "Tomato___Septoria_leaf_spot",
       "Tomato___Spider_mites Two-spotted_spider_mite"
     ],
-    "accuracy": 0.07156673114119923,
-    "macro_f1": 0.036261085810163,
+    "accuracy": 0.03481624758220503,
+    "macro_f1": 0.01846935056925806,
     "macro_precision": 0.2857142857142857,
-    "macro_recall": 0.020031581514971263
+    "macro_recall": 0.009731214775698493
   },
   "runtime": {
-    "total_wall_time_sec": 213.7379,
-    "train_wall_time_sec": 206.2202,
+    "total_wall_time_sec": 168.0226,
+    "train_wall_time_sec": 160.6016,
     "peak_vram_mb": 218.68,
-    "process_ram_mb_end": 1347.3
+    "process_ram_mb_end": 1341.11
   },
   "model_footprint": {
     "num_parameters": 1563511,
@@ -104,6 +104,6 @@
     }
   },
   "extra": {
-    "best_epoch": 14
+    "best_epoch": 9
   }
 }

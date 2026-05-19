@@ -37,6 +37,7 @@ train:
   patience: 5
   old_f1_drop_tolerance: 0.05  # Allow 5% drop in old class F1 before early stop
   unfreeze_g2: true
+  unfreeze_g1: false
   lr_g2: 0.00005
   lr_g3: 0.0002
   lr_head: 0.0005
@@ -44,8 +45,31 @@ train:
   lr_head_new: 0.001   # Higher LR for new class neurons (let them learn)
 
 ewc:
-  lambda: 1000.0
-  fisher_max_batches: 100
+  lambda: 700.0
+  lambda_backbone: 400.0
+  lambda_head_old: 1500.0
+  fisher_max_batches: 150
+  online_enabled: false
+  online_alpha: 0.5
+  prev_fisher_path: ""
+
+head_correction:
+  enabled: true
+  max_epochs: 12
+  min_epochs: 3
+  patience: 4
+  old_batch_size: 16
+  new_batch_size: 16
+  lr_head: 0.0002
+
+kd:
+  enabled: true
+  weight: 0.8
+  temperature: 2.5
+
+loss:
+  weighted_ce_enabled: true
 
 output:
   root: experiments/part1_case1_scratch/Continuation/catB_new_classes/ewc_head_expand/outputs/cycle1
+

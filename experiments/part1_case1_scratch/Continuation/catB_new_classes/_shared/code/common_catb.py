@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from PIL import Image
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score
 from torch.optim import Adam
@@ -100,6 +101,22 @@ class RemapImageFolder(Dataset):
         if self.transform is not None:
             img = self.transform(img)
         return img, label
+
+
+class SampleListDataset(Dataset):
+    def __init__(self, samples: list[tuple[str, int]], transform):
+        self.samples = samples
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, idx):
+        path, label = self.samples[idx]
+        img = Image.open(path).convert("RGB")
+        if self.transform is not None:
+            img = self.transform(img)
+        return img, label, idx
 
 
 def build_global_classes(cfg: dict) -> tuple[list[str], list[str], list[str]]:
@@ -217,6 +234,11 @@ def freeze_for_catb(model: nn.Module, unfreeze_g2: bool = True):
         p.requires_grad = True
 
 
+def set_g1_trainable(model: nn.Module, enabled: bool = False):
+    for p in model.features[:4].parameters():
+        p.requires_grad = enabled
+
+
 def train_epoch_mixed(
     model,
     old_loader,
@@ -225,10 +247,16 @@ def train_epoch_mixed(
     criterion,
     optimizer,
     lambda_ewc=0.0,
+    lambda_ewc_backbone: float | None = None,
+    lambda_ewc_head_old: float | None = None,
     fisher=None,
     theta_star=None,
     old_class_count: int | None = None,
     old_head_grad_scale: float | None = None,
+    teacher_model: nn.Module | None = None,
+    kd_weight: float = 0.0,
+    kd_temperature: float = 2.0,
+    ewc_backbone_only: bool = False,
 ):
     model.train()
     old_it = iter(old_loader)
@@ -254,23 +282,42 @@ def train_epoch_mixed(
         optimizer.zero_grad(set_to_none=True)
         logits = model(x)
         loss = criterion(logits, y)
+
+        if teacher_model is not None and kd_weight > 0.0 and old_class_count is not None and old_class_count > 0:
+            with torch.no_grad():
+                teacher_logits = teacher_model(x)
+            s_logits = logits[:, :old_class_count]
+            t_logits = teacher_logits[:, :old_class_count]
+            t = float(kd_temperature)
+            kd = F.kl_div(
+                F.log_softmax(s_logits / t, dim=1),
+                F.softmax(t_logits / t, dim=1),
+                reduction="batchmean",
+            ) * (t * t)
+            loss = loss + (float(kd_weight) * kd)
         
         if lambda_ewc > 0.0 and fisher is not None and theta_star is not None:
-            pen = torch.tensor(0.0, device=device)
+            pen_backbone = torch.tensor(0.0, device=device)
+            pen_head_old = torch.tensor(0.0, device=device)
             for n, p in model.named_parameters():
                 if p.requires_grad and n in fisher:
+                    if ewc_backbone_only and n.startswith("classifier."):
+                        continue
                     if n == "classifier.3.weight":
                         # Apply EWC penalty only to old classifier rows (first 5)
                         old_rows = min(5, p.shape[0])
-                        pen = pen + (fisher[n][:old_rows].to(device) * (p[:old_rows] - theta_star[n][:old_rows].to(device)).pow(2)).sum()
+                        pen_head_old = pen_head_old + (fisher[n][:old_rows].to(device) * (p[:old_rows] - theta_star[n][:old_rows].to(device)).pow(2)).sum()
                     elif n == "classifier.3.bias":
                         # Apply EWC penalty only to old classifier bias (first 5)
                         old_rows = min(5, p.shape[0])
-                        pen = pen + (fisher[n][:old_rows].to(device) * (p[:old_rows] - theta_star[n][:old_rows].to(device)).pow(2)).sum()
+                        pen_head_old = pen_head_old + (fisher[n][:old_rows].to(device) * (p[:old_rows] - theta_star[n][:old_rows].to(device)).pow(2)).sum()
                     else:
-                        # Apply EWC penalty to all other parameters normally
-                        pen = pen + (fisher[n].to(device) * (p - theta_star[n].to(device)).pow(2)).sum()
-            loss = loss + lambda_ewc * pen
+                        # Apply EWC penalty to backbone/other trainable parameters
+                        pen_backbone = pen_backbone + (fisher[n].to(device) * (p - theta_star[n].to(device)).pow(2)).sum()
+
+            lb = float(lambda_ewc if lambda_ewc_backbone is None else lambda_ewc_backbone)
+            lh = float(lambda_ewc if lambda_ewc_head_old is None else lambda_ewc_head_old)
+            loss = loss + (lb * pen_backbone) + (lh * pen_head_old)
         
         loss.backward()
         if (
@@ -289,6 +336,66 @@ def train_epoch_mixed(
         total_loss += loss.item()
 
     return total_loss / max(steps, 1)
+
+
+def compute_class_counts(samples, class_names: list[str]) -> dict[str, int]:
+    counts = {c: 0 for c in class_names}
+    for _, idx in samples:
+        if 0 <= idx < len(class_names):
+            counts[class_names[idx]] += 1
+    return counts
+
+
+def build_balanced_ce_weights(old_count: int, new_count: int, n_old: int, n_new: int, device: torch.device):
+    if n_old <= 0 or n_new <= 0 or old_count <= 0 or new_count <= 0:
+        return None
+    avg_old = old_count / float(n_old)
+    avg_new = new_count / float(n_new)
+    old_w = max(1.0, avg_new / max(avg_old, 1e-8))
+    weights = [old_w] * n_old + [1.0] * n_new
+    return torch.tensor(weights, dtype=torch.float32, device=device)
+
+
+def select_herding_samples(
+    samples: list[tuple[str, int]],
+    feature_model: nn.Module,
+    transform,
+    device: torch.device,
+    per_class: int,
+    num_workers: int = 0,
+    batch_size: int = 64,
+):
+    if per_class <= 0 or len(samples) == 0:
+        return samples
+
+    ds = SampleListDataset(samples, transform)
+    dl = DataLoader(ds, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
+    feature_model.eval()
+
+    by_class = {}
+    with torch.no_grad():
+        for x, y, idx in dl:
+            x = x.to(device, non_blocking=True)
+            feats = feature_model.avgpool(feature_model.features(x))
+            feats = torch.flatten(feats, 1).detach().cpu()
+            for j in range(feats.shape[0]):
+                cls = int(y[j].item())
+                sidx = int(idx[j].item())
+                by_class.setdefault(cls, []).append((sidx, feats[j]))
+
+    selected_indices = []
+    for cls, items in by_class.items():
+        if len(items) <= per_class:
+            selected_indices.extend([i for i, _ in items])
+            continue
+        stacked = torch.stack([f for _, f in items], dim=0)
+        mean = stacked.mean(dim=0, keepdim=True)
+        d2 = ((stacked - mean) ** 2).sum(dim=1)
+        keep = torch.argsort(d2)[:per_class].tolist()
+        selected_indices.extend([items[k][0] for k in keep])
+
+    selected_indices = set(selected_indices)
+    return [s for i, s in enumerate(samples) if i in selected_indices]
 
 
 def compute_fisher(model, loader, device, max_batches=100):

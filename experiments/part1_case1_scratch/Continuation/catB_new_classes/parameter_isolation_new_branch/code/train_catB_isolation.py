@@ -95,23 +95,23 @@ def train_branch(branch, loader, val_loader, device, cfg):
     return branch, logs, best
 
 
-def eval_combined(old_model, branch, loader_old, loader_new, device, old_n):
+def eval_combined(old_model, branch, loader_old, loader_new, device, old_n, old_logit_scale=1.0, new_logit_scale=1.0):
     old_model.eval(); branch.eval()
     y_old_t, y_old_p = [], []
     y_new_t, y_new_p = [], []
     with torch.no_grad():
         for x, y in loader_old:
             x = x.to(device, non_blocking=True)
-            old_logits = old_model(x)
-            new_logits = branch(x)
+            old_logits = old_model(x) * float(old_logit_scale)
+            new_logits = branch(x) * float(new_logit_scale)
             comb = torch.cat([old_logits, new_logits], dim=1)
             p = torch.argmax(comb, dim=1).cpu().tolist()
             y_old_p.extend(p)
             y_old_t.extend(y.tolist())
         for x, y in loader_new:
             x = x.to(device, non_blocking=True)
-            old_logits = old_model(x)
-            new_logits = branch(x)
+            old_logits = old_model(x) * float(old_logit_scale)
+            new_logits = branch(x) * float(new_logit_scale)
             comb = torch.cat([old_logits, new_logits], dim=1)
             p = torch.argmax(comb, dim=1).cpu().tolist()
             y_new_p.extend(p)
@@ -151,18 +151,43 @@ def main():
     old_test_loader, new_test_loader, _, _ = build_eval_loaders(cfg, global_classes, eval_tfms)
 
     branch = NewClassBranch(n_new=len(new_classes)).to(device)
+    prev_branch_ckpt = cfg.get('model', {}).get('prev_branch_checkpoint', '')
+    prev_loaded = False
+    if prev_branch_ckpt:
+        prev_path = Path(prev_branch_ckpt)
+        if not prev_path.is_absolute():
+            prev_path = Path.cwd() / prev_path
+        if prev_path.exists():
+            branch.load_state_dict(torch.load(prev_path, map_location=device))
+            prev_loaded = True
+            print(f"[ISOLATION] loaded previous branch checkpoint: {prev_path}", flush=True)
+        elif str(cfg.get('meta', {}).get('cycle_name', '')).lower() == 'cycle2':
+            raise FileNotFoundError(
+                f"Cycle2 requires previous branch checkpoint, but not found: {prev_path}"
+            )
+
     cfg['labels'] = {'new_start_idx': len(old_classes)}
     branch, logs, best = train_branch(branch, train_loader, new_val_loader, device, cfg)
 
-    torch.save(old_model.state_dict(), dirs['checkpoints'] / 'base_frozen.pth')
-    torch.save(branch.state_dict(), dirs['checkpoints'] / 'new_branch.pth')
+    base_out = dirs['checkpoints'] / 'base_frozen.pth'
+    branch_out = dirs['checkpoints'] / 'new_branch.pth'
+    torch.save(old_model.state_dict(), base_out)
+    torch.save(branch.state_dict(), branch_out)
+    print(f"[ISOLATION] saved base checkpoint: {base_out}", flush=True)
+    print(f"[ISOLATION] saved branch checkpoint: {branch_out}", flush=True)
     with (dirs['metrics'] / 'model_size_mb.txt').open('w', encoding='utf-8') as f:
         f.write(str(round(get_model_size_mb(old_model) + get_model_size_mb(branch), 4)))
 
     save_logs(logs, dirs['logs'] / 'train_log.csv')
     plot_training(logs, dirs['figures'] / 'train_val_curves.png', 'CatB Isolation New Branch Training')
 
-    y_old_t, y_old_p, y_new_t, y_new_p = eval_combined(old_model, branch, old_test_loader, new_test_loader, device, len(old_classes))
+    inf_cfg = cfg.get('inference', {})
+    old_logit_scale = float(inf_cfg.get('old_logit_scale', 1.0))
+    new_logit_scale = float(inf_cfg.get('new_logit_scale', 1.0))
+    y_old_t, y_old_p, y_new_t, y_new_p = eval_combined(
+        old_model, branch, old_test_loader, new_test_loader, device, len(old_classes),
+        old_logit_scale=old_logit_scale, new_logit_scale=new_logit_scale
+    )
     old_stats = score(y_old_t, y_old_p)
     new_stats = score(y_new_t, y_new_p)
 
@@ -175,7 +200,12 @@ def main():
         'peak_vram_mb': round(torch.cuda.max_memory_allocated()/(1024**2),2) if device.type=='cuda' else None,
         'process_ram_mb_end': get_process_ram_mb(),
     }
-    extra = {'best_epoch': best['epoch']}
+    extra = {
+        'best_epoch': best['epoch'],
+        'prev_branch_loaded': prev_loaded,
+        'old_logit_scale': old_logit_scale,
+        'new_logit_scale': new_logit_scale,
+    }
 
     # dummy shell model object just for dump size/params context
     class _Wrap(nn.Module):

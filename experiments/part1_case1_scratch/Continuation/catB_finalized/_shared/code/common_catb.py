@@ -103,6 +103,22 @@ class RemapImageFolder(Dataset):
         return img, label
 
 
+class SampleListDataset(Dataset):
+    def __init__(self, samples: list[tuple[str, int]], transform):
+        self.samples = samples
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, idx):
+        path, label = self.samples[idx]
+        img = Image.open(path).convert("RGB")
+        if self.transform is not None:
+            img = self.transform(img)
+        return img, label, idx
+
+
 def build_global_classes(cfg: dict) -> tuple[list[str], list[str], list[str]]:
     base_classes = list(cfg["classes"]["old_classes"])
     new_ds = datasets.ImageFolder(cfg["data"]["new_train_dir"])
@@ -240,6 +256,7 @@ def train_epoch_mixed(
     teacher_model: nn.Module | None = None,
     kd_weight: float = 0.0,
     kd_temperature: float = 2.0,
+    ewc_backbone_only: bool = False,
 ):
     model.train()
     old_it = iter(old_loader)
@@ -284,6 +301,8 @@ def train_epoch_mixed(
             pen_head_old = torch.tensor(0.0, device=device)
             for n, p in model.named_parameters():
                 if p.requires_grad and n in fisher:
+                    if ewc_backbone_only and n.startswith("classifier."):
+                        continue
                     if n == "classifier.3.weight":
                         # Apply EWC penalty only to old classifier rows (first 5)
                         old_rows = min(5, p.shape[0])
@@ -335,6 +354,48 @@ def build_balanced_ce_weights(old_count: int, new_count: int, n_old: int, n_new:
     old_w = max(1.0, avg_new / max(avg_old, 1e-8))
     weights = [old_w] * n_old + [1.0] * n_new
     return torch.tensor(weights, dtype=torch.float32, device=device)
+
+
+def select_herding_samples(
+    samples: list[tuple[str, int]],
+    feature_model: nn.Module,
+    transform,
+    device: torch.device,
+    per_class: int,
+    num_workers: int = 0,
+    batch_size: int = 64,
+):
+    if per_class <= 0 or len(samples) == 0:
+        return samples
+
+    ds = SampleListDataset(samples, transform)
+    dl = DataLoader(ds, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=True)
+    feature_model.eval()
+
+    by_class = {}
+    with torch.no_grad():
+        for x, y, idx in dl:
+            x = x.to(device, non_blocking=True)
+            feats = feature_model.avgpool(feature_model.features(x))
+            feats = torch.flatten(feats, 1).detach().cpu()
+            for j in range(feats.shape[0]):
+                cls = int(y[j].item())
+                sidx = int(idx[j].item())
+                by_class.setdefault(cls, []).append((sidx, feats[j]))
+
+    selected_indices = []
+    for cls, items in by_class.items():
+        if len(items) <= per_class:
+            selected_indices.extend([i for i, _ in items])
+            continue
+        stacked = torch.stack([f for _, f in items], dim=0)
+        mean = stacked.mean(dim=0, keepdim=True)
+        d2 = ((stacked - mean) ** 2).sum(dim=1)
+        keep = torch.argsort(d2)[:per_class].tolist()
+        selected_indices.extend([items[k][0] for k in keep])
+
+    selected_indices = set(selected_indices)
+    return [s for i, s in enumerate(samples) if i in selected_indices]
 
 
 def compute_fisher(model, loader, device, max_batches=100):

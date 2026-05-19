@@ -5,8 +5,8 @@
     "Tomato___Septoria_leaf_spot",
     "Tomato___Spider_mites Two-spotted_spider_mite"
   ],
-  "accuracy": 0.02321083172147002,
-  "macro_f1": 0.012332990750256938,
-  "macro_precision": 0.14285714285714285,
-  "macro_recall": 0.006444683136412459
+  "accuracy": 0.41005802707930367,
+  "macro_f1": 0.16572842934544743,
+  "macro_precision": 0.2857142857142857,
+  "macro_recall": 0.11690509711957754
 }
