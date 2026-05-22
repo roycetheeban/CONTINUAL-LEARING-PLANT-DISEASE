@@ -1,4 +1,4 @@
-﻿seed: 42
+seed: 42
 num_workers: 0
 device: cuda
 
@@ -6,7 +6,8 @@ meta:
   cycle_name: cycle2
 
 model:
-  base_checkpoint: experiments/part1_case2_imagenet_finetune/outputs_tuned/checkpoints/M2.pth
+  base_checkpoint: experiments/part1_case2_imagenet_finetune/outputs/checkpoints/M2.pth
+  prev_branch_checkpoint: experiments/part1_case2_imagenet_finetune/Continuation/catB_new_classes/parameter_isolation_new_branch/outputs/cycle1/checkpoints/new_branch.pth
 
 data:
   new_train_dir: data/03_tomato_new_2cls/cl_cycle2_stream
@@ -28,10 +29,14 @@ classes:
 train:
   batch_size: 32
   weight_decay: 0.0001
-  max_epochs: 12
+  max_epochs: 20
   min_epochs: 5
   patience: 5
   lr_branch: 0.0005
+
+inference:
+  old_logit_scale: 1.0
+  new_logit_scale: 1.6
 
 output:
   root: experiments/part1_case2_imagenet_finetune/Continuation/catB_new_classes/parameter_isolation_new_branch/outputs/cycle2

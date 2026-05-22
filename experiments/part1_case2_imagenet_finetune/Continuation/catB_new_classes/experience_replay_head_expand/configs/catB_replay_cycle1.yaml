@@ -1,4 +1,4 @@
-﻿seed: 42
+seed: 42
 num_workers: 0
 device: cuda
 
@@ -6,7 +6,7 @@ meta:
   cycle_name: cycle1
 
 model:
-  base_checkpoint: experiments/part1_case2_imagenet_finetune/outputs_tuned/checkpoints/M2.pth
+  base_checkpoint: experiments/part1_case2_imagenet_finetune/outputs/checkpoints/M2.pth
 
 data:
   old_train_dir: data/02_tomato_5cls/cl_cycle1_stream
@@ -35,15 +35,24 @@ train:
   max_epochs: 15
   min_epochs: 5
   patience: 5
-  old_f1_drop_tolerance: 0.05  # Allow 5% drop in old class F1 before early stop
+  old_f1_drop_tolerance: 0.05
   unfreeze_g2: true
   lr_g2: 0.00005
   lr_g3: 0.0002
   lr_head: 0.0005
-  lr_head_old: 0.0001  # Lower LR for old class neurons
-  lr_head_new: 0.001   # Higher LR for new class neurons
+  lr_head_old: 0.0001
+  lr_head_new: 0.001
 
 output:
   root: experiments/part1_case2_imagenet_finetune/Continuation/catB_new_classes/experience_replay_head_expand/outputs/cycle1
+
+head_correction:
+  enabled: true
+  max_epochs: 8
+  min_epochs: 3
+  patience: 3
+  old_batch_size: 16
+  new_batch_size: 16
+  lr_head: 0.0002
 
 

@@ -1,0 +1,12 @@
+{
+  "cycle": "cycle1",
+  "method": "cat_b_replay_head_expand",
+  "classes": [
+    "Tomato___Septoria_leaf_spot",
+    "Tomato___Spider_mites Two-spotted_spider_mite"
+  ],
+  "accuracy": 0.9806576402321083,
+  "macro_f1": 0.49419117423436026,
+  "macro_precision": 0.49800796812749004,
+  "macro_recall": 0.49048917113500884
+}

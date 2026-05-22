@@ -1,0 +1,112 @@
+{
+  "cycle": "cycle1",
+  "method": "cat_b_naive_full_retrain_head_expand",
+  "old": {
+    "cycle": "cycle1",
+    "method": "cat_b_naive_full_retrain_head_expand",
+    "classes": [
+      "Tomato___Bacterial_spot",
+      "Tomato___Early_blight",
+      "Tomato___Late_blight",
+      "Tomato___Leaf_Mold",
+      "Tomato___healthy"
+    ],
+    "accuracy": 0.9384344766930519,
+    "macro_f1": 0.6764671365308769,
+    "macro_precision": 0.6893094178775426,
+    "macro_recall": 0.664567920897455
+  },
+  "new": {
+    "cycle": "cycle1",
+    "method": "cat_b_naive_full_retrain_head_expand",
+    "classes": [
+      "Tomato___Septoria_leaf_spot",
+      "Tomato___Spider_mites Two-spotted_spider_mite"
+    ],
+    "accuracy": 0.9748549323017408,
+    "macro_f1": 0.39419349904397705,
+    "macro_precision": 0.39841857703186284,
+    "macro_recall": 0.39009076476050686
+  },
+  "runtime": {
+    "total_wall_time_sec": 413.9866,
+    "train_wall_time_sec": 406.9971,
+    "peak_vram_mb": 325.39,
+    "process_ram_mb_end": 1241.32
+  },
+  "model_footprint": {
+    "num_parameters": 1525031,
+    "model_size_mb": 5.8175
+  },
+  "classes": {
+    "global": [
+      "Tomato___Bacterial_spot",
+      "Tomato___Early_blight",
+      "Tomato___Late_blight",
+      "Tomato___Leaf_Mold",
+      "Tomato___healthy",
+      "Tomato___Septoria_leaf_spot",
+      "Tomato___Spider_mites Two-spotted_spider_mite"
+    ],
+    "old": [
+      "Tomato___Bacterial_spot",
+      "Tomato___Early_blight",
+      "Tomato___Late_blight",
+      "Tomato___Leaf_Mold",
+      "Tomato___healthy"
+    ],
+    "new": [
+      "Tomato___Septoria_leaf_spot",
+      "Tomato___Spider_mites Two-spotted_spider_mite"
+    ]
+  },
+  "config": {
+    "seed": 42,
+    "num_workers": 0,
+    "device": "cuda",
+    "meta": {
+      "cycle_name": "cycle1"
+    },
+    "model": {
+      "base_checkpoint": "experiments/part1_case3B_plantvillage_finetune/outputs/checkpoints/model.pth"
+    },
+    "data": {
+      "old_train_dir": "data/02_tomato_5cls/cl_cycle1_stream",
+      "new_train_dir": "data/03_tomato_new_2cls/cl_cycle1_stream",
+      "old_val_dir": "data/02_tomato_5cls/val",
+      "new_val_dir": "data/03_tomato_new_2cls/val",
+      "old_test_dir": "data/02_tomato_5cls/test",
+      "new_test_dir": "data/03_tomato_new_2cls/test",
+      "image_size": 224,
+      "resize_size": 256
+    },
+    "classes": {
+      "old_classes": [
+        "Tomato___Bacterial_spot",
+        "Tomato___Early_blight",
+        "Tomato___Late_blight",
+        "Tomato___Leaf_Mold",
+        "Tomato___healthy"
+      ]
+    },
+    "train": {
+      "batch_size": 32,
+      "old_batch_size": 16,
+      "new_batch_size": 16,
+      "weight_decay": 0.0001,
+      "max_epochs": 15,
+      "min_epochs": 5,
+      "patience": 5,
+      "unfreeze_g2": true,
+      "lr_g2": 5e-05,
+      "lr_g3": 0.0002,
+      "lr_head": 0.0005
+    },
+    "output": {
+      "root": "experiments/part1_case3B_plantvillage_finetune/Continuation/catB_new_classes/naive_full_retrain_head_expand/outputs/cycle1"
+    }
+  },
+  "extra": {
+    "best_epoch": 12
+  }
+}

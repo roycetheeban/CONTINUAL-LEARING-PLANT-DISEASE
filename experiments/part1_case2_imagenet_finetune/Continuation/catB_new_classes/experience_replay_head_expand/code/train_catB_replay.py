@@ -18,6 +18,15 @@ from common_catb import (
     train_epoch_mixed, save_logs, plot_training, save_confusion, dump_metrics, get_process_ram_mb
 )
 
+def build_mixed_old_dataset(cfg, tfms, cls_to_idx):
+    old_cycle_ds = RemapImageFolder(cfg['data']['old_train_dir'], tfms, cls_to_idx)
+    old_replay_ds = RemapImageFolder(cfg['data']['old_replay_dir'], tfms, cls_to_idx)
+    class CombinedOldDataset(RemapImageFolder):
+        def __init__(self, samples, transform):
+            self.samples = samples
+            self.transform = transform
+    return CombinedOldDataset(old_cycle_ds.samples + old_replay_ds.samples, tfms), old_cycle_ds, old_replay_ds
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -38,20 +47,9 @@ def main():
     train_tfms, eval_tfms = build_transforms(cfg)
 
     # Create combined old data (current cycle + replay buffer) like Category A
-    old_cycle_ds = RemapImageFolder(cfg['data']['old_train_dir'], train_tfms, cls_to_idx)
-    old_replay_ds = RemapImageFolder(cfg['data']['old_replay_dir'], train_tfms, cls_to_idx)
+    old_combined_ds, old_cycle_ds, old_replay_ds = build_mixed_old_dataset(cfg, train_tfms, cls_to_idx)
     new_train_ds = RemapImageFolder(cfg['data']['new_train_dir'], train_tfms, cls_to_idx)
-
-    # Combine old cycle + replay buffer samples
-    combined_old_samples = old_cycle_ds.samples + old_replay_ds.samples
-    
-    # Create combined dataset
-    class CombinedOldDataset(RemapImageFolder):
-        def __init__(self, samples, transform):
-            self.samples = samples
-            self.transform = transform
-    
-    old_combined_ds = CombinedOldDataset(combined_old_samples, train_tfms)
+    combined_old_samples = old_combined_ds.samples
 
     bs_old = int(cfg['train']['old_batch_size'])
     bs_new = int(cfg['train']['new_batch_size'])
@@ -84,11 +82,6 @@ def main():
     scheduler = ReduceLROnPlateau(optimizer, mode='max', patience=3, factor=0.5, min_lr=1e-6)
     criterion = nn.CrossEntropyLoss()
 
-    # Early stopping based on old class F1 degradation
-    cycle_start_old_t, cycle_start_old_p = evaluate(model, old_val_loader, device)
-    cycle_start_old = score(cycle_start_old_t, cycle_start_old_p)
-    floor_old_f1 = cycle_start_old['macro_f1'] * (1.0 - float(cfg['train'].get('old_f1_drop_tolerance', 0.05)))
-
     best = {'f1': -1, 'state': None, 'epoch': 0}
     bad = 0
     logs = []
@@ -105,33 +98,58 @@ def main():
         joint_f1 = 0.5 * (old_s['macro_f1'] + new_s['macro_f1'])
         scheduler.step(joint_f1)
 
-        logs.append({
-            'epoch': ep,
-            'epoch_time_sec': round(time.perf_counter()-t0,4),
-            'train_loss': tr_loss,
-            'val_old_macro_f1': old_s['macro_f1'],
-            'val_new_macro_f1': new_s['macro_f1'],
-            'val_joint_macro_f1': joint_f1,
-            'lr': optimizer.param_groups[-1]['lr']
-        })
-        
+        logs.append({'epoch': ep,'epoch_time_sec': round(time.perf_counter()-t0,4),'train_loss': tr_loss,'val_old_macro_f1': old_s['macro_f1'],'val_new_macro_f1': new_s['macro_f1'],'val_joint_macro_f1': joint_f1,'lr': optimizer.param_groups[-1]['lr']})
         if joint_f1 > best['f1']:
             best = {'f1': joint_f1, 'state': {k:v.cpu().clone() for k,v in model.state_dict().items()}, 'epoch': ep}
             bad = 0
         else:
             bad += 1
-            
-        # Early stopping conditions
-        if ep >= int(cfg['train']['min_epochs']) and old_s['macro_f1'] < floor_old_f1:
-            print(f"Early stop: old-class val F1 ({old_s['macro_f1']:.4f}) dropped below floor ({floor_old_f1:.4f})")
-            break
-            
         if ep >= int(cfg['train']['min_epochs']) and bad >= int(cfg['train']['patience']):
-            print("Early stop: patience reached")
             break
 
     if best['state'] is not None:
         model.load_state_dict(best['state'])
+
+    # Stage-B: short head-only correction on mixed old+new, no extra CL regularizer.
+    hc_cfg = cfg.get('head_correction', {})
+    if bool(hc_cfg.get('enabled', False)):
+        for p in model.features.parameters():
+            p.requires_grad = False
+        for p in model.classifier.parameters():
+            p.requires_grad = True
+
+        calib_old_ds, _, _ = build_mixed_old_dataset(cfg, train_tfms, cls_to_idx)
+        calib_new_ds = RemapImageFolder(cfg['data']['new_train_dir'], train_tfms, cls_to_idx)
+        calib_old_loader = DataLoader(calib_old_ds, batch_size=int(hc_cfg.get('old_batch_size', 16)), shuffle=True, num_workers=nw, pin_memory=True, drop_last=True)
+        calib_new_loader = DataLoader(calib_new_ds, batch_size=int(hc_cfg.get('new_batch_size', 16)), shuffle=True, num_workers=nw, pin_memory=True, drop_last=True)
+
+        opt_hc = Adam(model.classifier.parameters(), lr=float(hc_cfg.get('lr_head', 2e-4)), weight_decay=float(cfg['train']['weight_decay']))
+        sch_hc = ReduceLROnPlateau(opt_hc, mode='max', patience=2, factor=0.5, min_lr=1e-6)
+        min_ep = int(hc_cfg.get('min_epochs', 3))
+        max_ep = int(hc_cfg.get('max_epochs', 8))
+        patience = int(hc_cfg.get('patience', 3))
+        best_hc = {'f1': -1, 'state': None, 'epoch': 0}
+        bad_hc = 0
+        for ep in range(1, max_ep + 1):
+            _ = train_epoch_mixed(
+                model, calib_old_loader, calib_new_loader, device, criterion, opt_hc,
+                old_class_count=None, old_head_grad_scale=None
+            )
+            y_old_t, y_old_p = evaluate(model, old_val_loader, device)
+            y_new_t, y_new_p = evaluate(model, new_val_loader, device)
+            old_s = score(y_old_t, y_old_p)
+            new_s = score(y_new_t, y_new_p)
+            joint = 0.5 * (old_s['macro_f1'] + new_s['macro_f1'])
+            sch_hc.step(joint)
+            if joint > best_hc['f1']:
+                best_hc = {'f1': joint, 'state': {k:v.cpu().clone() for k,v in model.state_dict().items()}, 'epoch': ep}
+                bad_hc = 0
+            else:
+                bad_hc += 1
+            if ep >= min_ep and bad_hc >= patience:
+                break
+        if best_hc['state'] is not None:
+            model.load_state_dict(best_hc['state'])
 
     torch.save(model.state_dict(), dirs['checkpoints'] / 'model.pth')
     save_logs(logs, dirs['logs'] / 'train_log.csv')
@@ -166,11 +184,9 @@ def main():
         'process_ram_mb_end': get_process_ram_mb(),
     }
     extra = {
-        'best_epoch': best['epoch'], 
-        'manifest_path': str((dirs['metrics'] / 'replay_buffer_manifest.json')),
-        'cycle_start_old_f1': cycle_start_old['macro_f1'],
-        'floor_old_f1': floor_old_f1,
-        'forgetting_score': cycle_start_old['macro_f1'] - old_stats['macro_f1']
+        'best_epoch': best['epoch'],
+        'head_correction_enabled': bool(hc_cfg.get('enabled', False)),
+        'manifest_path': str((dirs['metrics'] / 'replay_buffer_manifest.json'))
     }
     dump_metrics(dirs, cfg, 'cat_b_replay_head_expand', cfg['meta']['cycle_name'], global_classes, old_classes, new_classes, old_stats, new_stats, runtime, model, extra=extra)
 
