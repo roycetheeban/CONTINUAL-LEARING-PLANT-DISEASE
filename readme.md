@@ -2,7 +2,7 @@
 
 > Deep learning-based continual learning research for accurate plant disease classification with dynamic adaptation to new diseases over time.
 
-![AIOT Architecture](docs/images/AIOT_new.png)
+![AIOT Architecture](docs/AIOT_new.png)
 
 **Version:** 1.0  
 **Status:** Complete Research Phase  
@@ -186,11 +186,11 @@ continual-learning-plant-disease/
     ├── flow.md                          # Pipeline explanation
     ├── inout_out flow.md                # Data flow diagram
     ├── layer_strategy.md                # Architecture strategy
+    ├── AIOT_new.png                     # Project architecture diagram
     ├── key_knowlege_theory/             # CL algorithms background
     ├── decisions/                       # Design rationale
     ├── part_01/                         # Baseline study details
-    ├── study_notes/                     # Research findings & analysis
-    └── images/                          # Documentation images
+    └── study_notes/                     # Research findings & analysis
 ```
 
 ---
