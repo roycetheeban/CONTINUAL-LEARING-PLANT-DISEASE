@@ -1,0 +1,35 @@
+seed: 42
+num_workers: 0
+device: cuda
+
+data:
+  train_dir: data/02_tomato_5cls/initial_train
+  val_dir: data/02_tomato_5cls/val
+  test_dir: data/02_tomato_5cls/test
+  image_size: 224
+  resize_size: 256
+
+train:
+  batch_size: 32
+  weight_decay: 0.0001
+  min_epochs: 5
+  patience: 6
+  phase1:
+    max_epochs: 20
+    lr_head: 0.0008
+  phase2:
+    max_epochs: 30
+    lr_g3: 0.00005
+    lr_head: 0.0005
+
+output:
+  root: experiments/part1_case2_imagenet_finetune/outputs_tuned
+  checkpoints_dir: checkpoints
+  logs_dir: logs
+  metrics_dir: metrics
+  figures_dir: figures
+
+ewc_prep:
+  enabled: true
+  fisher_max_batches: 100
+  save_theta_star: true

@@ -1,0 +1,31 @@
+seed: 42
+num_workers: 0
+device: cuda
+
+model:
+  num_classes: 5
+
+data:
+  train_dir: data/02_tomato_5cls/initial_train
+  val_dir: data/02_tomato_5cls/val
+  test_dir: data/02_tomato_5cls/test
+  image_size: 224
+  resize_size: 256
+
+train:
+  batch_size: 32
+  lr: 0.001
+  weight_decay: 0.0001
+  max_epochs: 50
+  min_epochs: 5
+  patience: 10
+  weighted_sampling:
+    enabled: true
+fim:
+  batch_size: 32
+  max_batches: 100
+  # Preferred source for CL-EWC Fisher estimation.
+  fisher_dir: data/02_tomato_5cls/replay_buffer
+
+output:
+  root: experiments/part1_case1_scratch/outputs/case1_scratch_weighted
