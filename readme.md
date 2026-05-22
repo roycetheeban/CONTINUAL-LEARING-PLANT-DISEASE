@@ -1,8 +1,8 @@
-﻿# Continual Learning for Plant Disease Detection
+# Continual Learning for Plant Disease Detection
 
 > Deep learning-based continual learning research for accurate plant disease classification with dynamic adaptation to new diseases over time.
 
-![AIOT Architecture](AIOT_new.png)
+![AIOT Architecture](docs/images/AIOT_new.png)
 
 **Version:** 1.0  
 **Status:** Complete Research Phase  
@@ -189,7 +189,8 @@ continual-learning-plant-disease/
     ├── key_knowlege_theory/             # CL algorithms background
     ├── decisions/                       # Design rationale
     ├── part_01/                         # Baseline study details
-    └── study_notes/                     # Research findings & analysis
+    ├── study_notes/                     # Research findings & analysis
+    └── images/                          # Documentation images
 ```
 
 ---
@@ -421,54 +422,4 @@ MIT License - See LICENSE file for details
 ---
 
 **Last Updated**: May 2024  
-**Project Status**: Research Complete ✓isease classification using MobileNetV3 on the PlantVillage dataset, with edge deployment as a target.
-
-## Project Scope
-- Initial training on selected tomato classes
-- Continual learning updates across multiple cycles
-- Comparison of EWC, Experience Replay, Parameter Isolation, and Naive Fine-tuning
-- Edge-focused optimization with pruning and quantization
-
-## Current Research Focus
-- Model: MobileNetV3-Small
-- Dataset: PlantVillage
-- Main plan/journal: `docs/flow.md`
-
-## Repository Structure
-- `docs/`: Research journal, study notes, decisions, references
-- `data/`: Dataset structure placeholders and split organization
-- `data_analysis/`: Data analysis notebooks/scripts
-- `notebooks/`: Experiment notebooks
-- `src/`: Core Python modules (training, CL methods, evaluation, deployment)
-- `configs/`: Experiment configuration files
-- `models/`: Saved checkpoints (ignored in git by default)
-- `results/`: Metrics/figures/reports (large outputs ignored by default)
-- `scripts/`: Utility scripts
-- `tests/`: Test and validation code
-
-## Key Documents
-- `docs/flow.md`
-- `docs/study_notes/theory_notes.txt`
-- `docs/study_notes/code_notes.txt`
-
-## Quick Start
-1. Create a Python 3.10+ environment
-2. Install core dependencies: `torch`, `torchvision`, `timm`, `scikit-learn`, `pandas`, `matplotlib`, `seaborn`, `tqdm`
-3. Prepare dataset splits in `data/` (keep raw data local)
-4. Follow execution plan in `docs/flow.md`
-
-## Data and Artifact Policy
-- Large data, model weights, and generated artifacts are excluded from git via `.gitignore`
-- Folder `README.md` files are kept to preserve project structure
-
-## Versioning
-- `v1.0`: Initial project scaffold, documentation baseline, and CL research plan integration
-
-## Citation Focus
-- EWC (Kirkpatrick et al., 2017)
-- Experience Replay (Rolnick et al., 2019)
-- Progressive/Isolation approaches (Rusu et al., 2016)
-- MobileNetV3 (Howard et al., 2019)
-#   C O N T I N U A L - L E A R I N G - P L A N T - D I S E A S E 
- 
- 
+**Project Status**: Research Complete ✓
