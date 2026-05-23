@@ -12,37 +12,37 @@
   "fisher_batches_used": 17,
   "train_summary": {
     "cycle_start_val": {
-      "accuracy": 0.9604221635883905,
-      "macro_f1": 0.9554871957369986,
-      "macro_precision": 0.9513195613007298,
-      "macro_recall": 0.9604515398088074
+      "accuracy": 0.9630606860158312,
+      "macro_f1": 0.9602474792427135,
+      "macro_precision": 0.9575317993933217,
+      "macro_recall": 0.9632905942355043
     },
     "best_epoch": 1,
-    "best_val_macro_f1": 0.9521824463483588,
-    "old_f1_floor": 0.9268225798648886,
-    "train_wall_time_sec": 85.9635
+    "best_val_macro_f1": 0.9556074691265823,
+    "old_f1_floor": 0.931440054865432,
+    "train_wall_time_sec": 90.6048
   },
   "runtime": {
-    "total_wall_time_sec": 96.2839,
-    "train_wall_time_sec": 85.9635,
+    "total_wall_time_sec": 102.3275,
+    "train_wall_time_sec": 90.6048,
     "peak_vram_mb": 169.51,
-    "process_ram_mb_end": 1297.55
+    "process_ram_mb_end": 1301.03
   },
   "model_footprint": {
     "num_parameters": 1522981,
     "model_size_mb": 5.8097
   },
   "val": {
-    "accuracy": 0.9551451187335093,
-    "macro_f1": 0.9521824463483588,
-    "macro_precision": 0.9498010851889512,
-    "macro_recall": 0.955941488410124
+    "accuracy": 0.9577836411609498,
+    "macro_f1": 0.9556074691265823,
+    "macro_precision": 0.9511512163104122,
+    "macro_recall": 0.9619607513035671
   },
   "test": {
-    "accuracy": 0.9665787159190853,
-    "macro_f1": 0.9634658638499284,
-    "macro_precision": 0.9625788984085526,
-    "macro_recall": 0.9650285225763511
+    "accuracy": 0.9744942832014072,
+    "macro_f1": 0.9720197121334676,
+    "macro_precision": 0.9705306431763686,
+    "macro_recall": 0.9740682202422212
   },
   "config": {
     "seed": 42,
@@ -74,7 +74,7 @@
       "lr_head": 0.0002
     },
     "ewc": {
-      "lambda": 1000.0,
+      "lambda": 3000.0,
       "fisher_max_batches": 100
     },
     "output": {

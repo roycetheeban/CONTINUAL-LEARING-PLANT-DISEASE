@@ -3,11 +3,11 @@ num_workers: 0
 device: cuda
 
 meta:
-  cycle_name: cycle2_lambda3000
+  cycle_name: cycle2
 
 model:
   num_classes: 5
-  base_checkpoint: experiments/part1_case1_scratch/Continuation/catA_same_classes/ewc/outputs/cycle1_lambda3000/checkpoints/model.pth
+  base_checkpoint: experiments/part1_case1_scratch/Continuation/catA_same_classes/ewc/outputs/catA_ewc_cycle1/checkpoints/model.pth
 
 data:
   train_dir: data/02_tomato_5cls/cl_cycle2_stream
@@ -32,7 +32,7 @@ ewc:
   fisher_max_batches: 100
 
 output:
-  root: experiments/part1_case1_scratch/Continuation/catA_same_classes/ewc/outputs/cycle2_lambda3000
+  root: experiments/part1_case1_scratch/Continuation/catA_same_classes/ewc/outputs/catA_ewc_cycle2
 
 
 

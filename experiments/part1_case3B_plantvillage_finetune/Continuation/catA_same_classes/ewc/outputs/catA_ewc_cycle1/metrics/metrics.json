@@ -17,32 +17,32 @@
       "macro_precision": 0.9530341658351142,
       "macro_recall": 0.962568040187483
     },
-    "best_epoch": 2,
-    "best_val_macro_f1": 0.9554871957369986,
+    "best_epoch": 12,
+    "best_val_macro_f1": 0.9602474792427135,
     "old_f1_floor": 0.9285083378020511,
-    "train_wall_time_sec": 99.1871
+    "train_wall_time_sec": 224.836
   },
   "runtime": {
-    "total_wall_time_sec": 110.4102,
-    "train_wall_time_sec": 99.1871,
+    "total_wall_time_sec": 236.8097,
+    "train_wall_time_sec": 224.836,
     "peak_vram_mb": 169.51,
-    "process_ram_mb_end": 1291.16
+    "process_ram_mb_end": 1289.0
   },
   "model_footprint": {
     "num_parameters": 1522981,
     "model_size_mb": 5.8097
   },
   "val": {
-    "accuracy": 0.9604221635883905,
-    "macro_f1": 0.9554871957369986,
-    "macro_precision": 0.9513195613007298,
-    "macro_recall": 0.9604515398088074
+    "accuracy": 0.9630606860158312,
+    "macro_f1": 0.9602474792427135,
+    "macro_precision": 0.9575317993933217,
+    "macro_recall": 0.9632905942355043
   },
   "test": {
-    "accuracy": 0.961301671064204,
-    "macro_f1": 0.9565850434238067,
-    "macro_precision": 0.9566003422135992,
-    "macro_recall": 0.9566766922300035
+    "accuracy": 0.9762532981530343,
+    "macro_f1": 0.9735765319159683,
+    "macro_precision": 0.9726529347371132,
+    "macro_recall": 0.974604331272056
   },
   "config": {
     "seed": 42,
@@ -74,7 +74,7 @@
       "lr_head": 0.0005
     },
     "ewc": {
-      "lambda": 1000.0,
+      "lambda": 10000.0,
       "fisher_max_batches": 100
     },
     "output": {

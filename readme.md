@@ -211,7 +211,7 @@ Average accuracy across Cycle 1 & Cycle 2:
 
 **Case 1 (Scratch)** | **Case 2 (ImageNet)** | **Case 3 (PlantVillage)**
 ---|---|---
-EWC: 97.58% | EWC: 98.02% | EWC: 96.40%
+EWC: 97.67% | EWC: 98.02% | EWC: 97.54% 
 Replay: 97.32% | Replay: N/A | Replay: 98.15%
 Isolation: 96.44% | Isolation: N/A | Isolation: 96.57%
 Naive: 97.59% | Naive: N/A | Naive: 97.36%
