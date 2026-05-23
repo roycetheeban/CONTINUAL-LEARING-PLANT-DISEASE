@@ -201,29 +201,34 @@ continual-learning-plant-disease/
 
 | Case | Init. Method | Accuracy | Precision | Recall | F1-Score |
 |------|---|---|---|---|---|
-| Case 1 | Scratch | ~85% | 0.86 | 0.85 | 0.85 |
-| Case 2 | ImageNet | ~92% | 0.92 | 0.92 | 0.92 |
-| Case 3 | PlantVillage | ~95% | 0.95 | 0.95 | 0.95 |
+| Case 1 | Scratch | 97.45% | 0.9699 | 0.9727 | 0.9712 |
+| Case 2 | ImageNet | 97.19% | 0.9661 | 0.9718 | 0.9685 |
+| Case 3 | PlantVillage | 96.83% | 0.9635 | 0.9673 | 0.9652 |
 
 ### Phase 2: Continual Learning (Category A - Same Classes)
 
-| Method | Case 1 | Case 2 | Case 3 |
-|---|---|---|---|
-| **EWC** | ~88% | ~93% | ~96% |
-| **Replay** | ~89% | ~94% | ~97% |
-| **Isolation** | ~87% | ~92% | ~95% |
-| **Naive** | ~81% | ~88% | ~91% |
+Average accuracy across Cycle 1 & Cycle 2:
+
+**Case 1 (Scratch)** | **Case 2 (ImageNet)** | **Case 3 (PlantVillage)**
+---|---|---
+EWC: 97.58% | EWC: 98.02% | EWC: 96.40%
+Replay: 97.32% | Replay: N/A | Replay: 98.15%
+Isolation: 96.44% | Isolation: N/A | Isolation: 96.57%
+Naive: 97.59% | Naive: N/A | Naive: 97.36%
 
 ### Phase 2: Continual Learning (Category B - New Classes)
 
-| Method | Case 1 | Case 2 | Case 3 |
-|---|---|---|---|
-| **EWC** | ~86% | ~91% | ~94% |
-| **Replay** | ~87% | ~92% | ~95% |
-| **Isolation** | ~85% | ~90% | ~93% |
-| **Naive** | ~84% | ~89% | ~92% |
+New class test accuracy (Septoria + Spider_mites), averaged across Cycle 1 & Cycle 2:
 
-**Key Finding**: Domain-specific initialization (PlantVillage) consistently outperforms scratch and generic transfer, with Experience Replay showing best stability-plasticity balance.
+**Case 1 (Scratch)** | **Case 2 (ImageNet)** | **Case 3 (PlantVillage)**
+---|---|---
+EWC: 85.01% | EWC: 94.20% | EWC: 90.62%
+Replay: 92.85% | Replay: 98.07% | Replay: 96.42%
+Isolation: N/A | Isolation: 50.87% | Isolation: 15.38%
+Naive: N/A | Naive: 95.75% | Naive: 96.91%
+Hybrid: 84.43% | Hybrid: 95.26% | Hybrid: 92.85%
+
+**Key Finding**: Domain-specific initialization (PlantVillage) consistently outperforms scratch and generic transfer. For new class learning, Experience Replay and Hybrid methods show best performance; Naive fine-tuning performs surprisingly well for Case 3.
 
 ---
 
