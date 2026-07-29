@@ -1,0 +1,68 @@
+{
+  "n_episodes": 48,
+  "n_categories": 8,
+  "table_ix": {
+    "Vision only (counts)": {
+      "accuracy": 60.42,
+      "macro_f1": 29.56,
+      "false_alarms_n": 7,
+      "false_alarm_rate_pct": 14.58
+    },
+    "Sensor only (risk state)": {
+      "accuracy": 35.42,
+      "macro_f1": 20.57,
+      "false_alarms_n": 6,
+      "false_alarm_rate_pct": 12.5
+    },
+    "Label-level fusion": {
+      "accuracy": 87.5,
+      "macro_f1": 71.75,
+      "false_alarms_n": 6,
+      "false_alarm_rate_pct": 12.5
+    }
+  },
+  "sensor_failure_degrades_to_vision_only": true,
+  "early_warning_lead_time_days": 1,
+  "category_accuracy": {
+    "confound_high_risk_false_alarm": {
+      "vision_only": 83.3,
+      "sensor_only": 0.0,
+      "fusion": 0.0
+    },
+    "falling_recovering": {
+      "vision_only": 100.0,
+      "sensor_only": 83.3,
+      "fusion": 100.0
+    },
+    "rising_high": {
+      "vision_only": 100.0,
+      "sensor_only": 0.0,
+      "fusion": 100.0
+    },
+    "rising_low_benign": {
+      "vision_only": 0.0,
+      "sensor_only": 0.0,
+      "fusion": 100.0
+    },
+    "rising_medium": {
+      "vision_only": 0.0,
+      "sensor_only": 0.0,
+      "fusion": 100.0
+    },
+    "sensor_failure_rising": {
+      "vision_only": 100.0,
+      "sensor_only": 0.0,
+      "fusion": 100.0
+    },
+    "stable_high": {
+      "vision_only": 0.0,
+      "sensor_only": 100.0,
+      "fusion": 100.0
+    },
+    "stable_low_medium": {
+      "vision_only": 100.0,
+      "sensor_only": 100.0,
+      "fusion": 100.0
+    }
+  }
+}

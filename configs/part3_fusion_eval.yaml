@@ -1,0 +1,91 @@
+# E2 -- Label-Level Fusion Evaluation (Table IX / Fig. 5)
+# See jounal_contents/journal/06_EXPERIMENT_PROTOCOL.md PART 2 and the plan.
+# Vision branch: REAL inference from the trained Case 2 + Replay (cycle 2) checkpoint
+# on real held-out tomato test images. Sensor branch: REAL E1 risk windows (test
+# period, day > val_end_day). Episodes themselves are CONSTRUCTED (day-by-day image
+# counts chosen to realize each row of the fusion rule), disclosed in the paper.
+
+seed: 42
+
+model:
+  checkpoint: experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/experience_replay/outputs/catA_replay_cycle2/checkpoints/model.pth
+  num_classes: 5
+  image_size: 224
+  # ImageFolder alphabetical order, confirmed from that run's metrics.json -- no
+  # saved label-map file exists, so this order must be hardcoded correctly here.
+  class_names:
+    - Tomato___Bacterial_spot
+    - Tomato___Early_blight
+    - Tomato___Late_blight
+    - Tomato___Leaf_Mold
+    - Tomato___healthy
+  imagenet_mean: [0.485, 0.456, 0.406]
+  imagenet_std: [0.229, 0.224, 0.225]
+
+data:
+  # confirmed never used in training/replay/model-selection for any Case/cycle
+  image_pool_root: data/02_tomato_5cls/test
+  target_class: Tomato___Early_blight   # disease-in-focus for all episodes + Fig. 5
+
+env_risk:
+  windows_csv: experiments/part2_env_risk/outputs/windows_labelled.csv
+  sensors_csv: experiments/part2_env_risk/outputs/sensors_raw.csv
+  test_period_start_day: 161   # configs/part2_env_risk.yaml split.val_end_day (160) + 1
+
+episodes:
+  days_per_episode: 5          # matches E1 accum_window_days for consistency
+  n_replicates_per_category: 6 # 7 categories x 6 = 42 episodes
+  # target per-day counts of the focus class realizing each trend shape (before
+  # classifier noise is applied -- actual counted leaf class is the model's
+  # PREDICTION on each sampled image, not its folder ground-truth label)
+  day_counts:
+    rising:  [2, 3, 5, 7, 9]
+    stable:  [2, 2, 3, 2, 2]
+    falling: [8, 6, 5, 3, 2]
+  background_classes_per_day: [2, 4]   # range of images/day sampled from the other 4 classes
+  rising_threshold_pct: 20.0           # Delta > +20% over the window => "rising"
+  falling_threshold_pct: -20.0         # Delta < -20% over the window => "falling"
+
+# Phi -- explicit fusion rule (fixed before evaluation, per protocol PART 2 step 1)
+# and the two single-modality baseline rules it is compared against.
+fusion_rule:
+  # trend in {rising, stable, falling}; risk in {Low, Medium, High, NA(sensor failure)}
+  table:
+    - {trend: rising,  risk: High,        output: Alert}
+    - {trend: rising,  risk: Medium,      output: Watch}
+    - {trend: rising,  risk: Low,         output: Observe}
+    - {trend: stable,  risk: High,        output: Watch}
+    - {trend: stable,  risk: Low_Medium,  output: Normal}
+    - {trend: falling, risk: any,         output: Normal}
+    - {trend: any,     risk: NA,          output: "== vision_only"}   # graceful degradation
+
+vision_only_rule:
+  rising: Alert
+  stable: Normal
+  falling: Normal
+
+sensor_only_rule:
+  High: Watch
+  Medium: Observe
+  Low: Normal
+  NA: Unknown
+
+# episode categories -> {trend shape, risk source, ground-truth outcome}. Ground
+# truth is independently reasoned from each category's TRUE CAUSE (not read off the
+# fusion table), so the three decision sources can genuinely disagree. See README.
+categories:
+  rising_high:          {trend: rising,  risk_bin: High,       ground_truth: Alert}
+  rising_medium:        {trend: rising,  risk_bin: Medium,     ground_truth: Watch}
+  rising_low_benign:     {trend: rising,  risk_bin: Low,        ground_truth: Observe}
+  stable_high:          {trend: stable,  risk_bin: High,       ground_truth: Watch}
+  stable_low_medium:     {trend: stable,  risk_bin: Low_Medium, ground_truth: Normal}
+  falling_recovering:   {trend: falling, risk_bin: Low_Medium, ground_truth: Normal}
+  sensor_failure_rising: {trend: rising,  risk_bin: NA,         ground_truth: Alert}
+  # Adversarial confound: humidity happens to be High for a reason unrelated to
+  # infection risk (e.g. a recent irrigation cycle), and the leaf-count signature is
+  # stable -- the TRUE outcome is Normal, but Phi cannot distinguish this from
+  # stable_high (identical trend+risk signature) and necessarily also predicts
+  # Watch here. This is deliberately NOT solvable by Phi -- it demonstrates that a
+  # 2-input discrete rule has irreducible error against coincidental risk factors,
+  # rather than evaluating fusion only on cases it was designed to get right.
+  confound_high_risk_false_alarm: {trend: stable, risk_bin: High, ground_truth: Normal}

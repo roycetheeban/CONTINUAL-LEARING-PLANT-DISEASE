@@ -1,0 +1,4 @@
+condition,accuracy
+clean,86.25
+sensor noise x2,75.0
+10% dropout,85.0

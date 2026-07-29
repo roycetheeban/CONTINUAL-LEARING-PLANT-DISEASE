@@ -1,0 +1,52 @@
+# E3/E5 -- On-device cycle cost + FP16 gate: LAPTOP-GPU PROXY, not Jetson Orin Nano.
+# Detection/segmentation numbers are NOT measured here -- they are cited from the
+# prior conference paper (ref21, jounal_contents/prior_papers/
+# IEEE_Conference_lightweight_Modular_Pipeline.pdf, Table IV). Only what is genuinely
+# new to this paper -- the continual-learning classifier's retrain cycle, ONNX
+# export, and FP16 accuracy-delta gate -- is measured fresh, on this laptop's GPU,
+# and disclosed as a proxy pending real Jetson Orin Nano hardware.
+
+seed: 42
+
+model:
+  # the real, already-trained Case 2 + Replay cycle-2 checkpoint (98.42% test acc)
+  base_checkpoint: experiments/part1_case2_imagenet_finetune/Continuation/catA_same_classes/experience_replay/outputs/catA_replay_cycle2/checkpoints/model.pth
+  num_classes: 5
+  image_size: 224
+  class_names:
+    - Tomato___Bacterial_spot
+    - Tomato___Early_blight
+    - Tomato___Late_blight
+    - Tomato___Leaf_Mold
+    - Tomato___healthy
+  imagenet_mean: [0.485, 0.456, 0.406]
+  imagenet_std: [0.229, 0.224, 0.225]
+
+# re-time the REAL cycle-2 replay config as-is (same data/hyperparams/seed) --
+# output redirected to a fresh dir, never overwriting the real cycle-2 artifact
+# that E2 depends on.
+retrain_timing:
+  source_config: configs/part1_case2_imagenet/continuation/cat_a/replay/cycle2/catA_replay_cycle2.yaml
+  output_root: experiments/part4_ondevice_proxy/outputs/retrain_timing
+  ram_sample_interval_s: 0.5
+
+data:
+  test_dir: data/02_tomato_5cls/test
+  capture_set_size: 8   # matches the paper's "8-image capture set" definition
+
+export:
+  onnx_path: experiments/part4_ondevice_proxy/outputs/model.onnx
+  opset: 17
+
+compile:
+  # try TensorRT FP16 first; on failure, fall back to PyTorch model.half() and
+  # record which path actually ran (see README) -- never silently mislabel this.
+  attempt_tensorrt: true
+  fallback: pytorch_fp16_amp
+
+# cited reference numbers (NOT measured in this experiment) -- kept here only so
+# the paper-integration step pulls from one place, not re-typed by hand.
+cited_from_ref21:
+  citation_key: ref21
+  detection: {map50: 0.632, fps: 82.1, size_mb: 6.15}
+  segmentation: {pixel_acc_pct: 99.5, miou: 0.915, fps: 200.0, size_mb: 6.15}

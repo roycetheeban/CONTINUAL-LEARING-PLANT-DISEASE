@@ -1,0 +1,6 @@
+model,accuracy,macro_f1,latency_us,size_kb,interpretable
+Majority baseline,43.75,20.29,0.77,0.72,no
+Logistic Regression,81.25,78.69,15.24,1.93,no
+Decision Tree,86.25,85.63,9.38,3.85,yes
+Random Forest,85.0,84.31,683.32,666.33,no
+Gradient Boosting,85.0,83.67,33.16,708.43,no

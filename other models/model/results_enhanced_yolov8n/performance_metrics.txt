@@ -1,0 +1,16 @@
+Model Version: enhanced_01_n
+Evaluation Time: 2025-06-23 16:21:44
+
+Test Set Metrics:
+mAP50: 0.6640
+mAP50-95: 0.3916
+Precision (mean): 0.6721
+Recall (mean): 0.6258
+Inference Speed: 10.45 ms/img
+
+Class-wise Performance:
+turmeric_leaf:
+  Precision: 0.6721
+  Recall: 0.6258
+  AP50: 0.6640
+  AP50-95: 0.3916

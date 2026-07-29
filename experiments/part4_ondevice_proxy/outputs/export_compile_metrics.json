@@ -1,0 +1,9 @@
+{
+  "onnx_export_sec": 1.4568,
+  "onnx_path": "G:\\AIOT_PHASE_03\\CONTINUAL-LEARING-PLANT-DESEASE\\experiments\\part4_ondevice_proxy\\outputs\\model.onnx",
+  "onnx_size_mb": 5.819,
+  "compiled_path_used": "pytorch_fp16_fallback",
+  "tensorrt_failure_reason": "ModuleNotFoundError: No module named 'tensorrt'",
+  "tensorrt_install_note": "TensorRT could not be installed in this environment: the pip packages (tensorrt / tensorrt-cu12) pull nvidia-cuda-runtime-cu13, whose wheel fails to build against this machine's CUDA 12.1 torch build on Windows. Not a code defect -- an environment constraint. ONNX Runtime GPU (CUDAExecutionProvider) is benchmarked instead as the compiled-graph comparison point.",
+  "engine_build_sec": null
+}

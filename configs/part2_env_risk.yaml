@@ -1,0 +1,70 @@
+# E1 -- Environmental Risk Model (turmeric-parameterised infection oracle)
+# See jounal_contents/journal/06_EXPERIMENT_PROTOCOL.md (E1) and the plan.
+# Data is SIMULATED (disclosed in the paper). Labels come from the Magarey et al.
+# (2005) generic foliar-fungal infection model, parameterised for turmeric leaf
+# blotch (Taphrina maculans) / leaf spot (Colletotrichum) from Gohel et al. (2022).
+
+seed: 42
+
+sim:
+  days: 200
+  # simulate hourly (24 pts/day) -- enough for leaf-wetness-hours + multi-day windows.
+  # (the deployed device samples far faster; aggregation is identical.)
+  seasonal_period_days: 38    # recurring wet/dry cycle -> ~5 cycles over 200 days, so
+                              # any ~40-day block (incl. the test block) spans wet+dry.
+
+# realistic diurnal + recurring seasonal + AR(1) + sensor-noise + dropout per variable
+environment:
+  temp:     {base: 25.5, diurnal_amp: 4.0,  seasonal_amp: 1.0,  noise_sd: 0.5, ar1: 0.80, lo: 8.0,  hi: 40.0}
+  humidity: {base: 78.0, diurnal_amp: 15.0, seasonal_amp: 11.0, noise_sd: 3.0, ar1: 0.88, lo: 30.0, hi: 100.0}
+  soil:     {base: 42.0, diurnal_amp: 4.0,  seasonal_amp: 8.0,  noise_sd: 2.0, ar1: 0.90, lo: 10.0, hi: 95.0}
+  co2:      {base: 620.0, diurnal_amp: 120.0, seasonal_amp: 40.0, noise_sd: 25.0, ar1: 0.85, lo: 380.0, hi: 1600.0}
+  dropout_frac: 0.02          # fraction of readings set missing (sensor dropout)
+
+# Magarey et al. (2005) generic infection model, turmeric cardinal temperatures.
+# Turmeric foliar fungi are mesophilic and moisture-driven (Gohel et al. 2022):
+# favoured ~21-30 C with sustained high humidity. Exact cardinal temps for
+# T. maculans are not tabulated in the literature -> stated as a parameterisation
+# assumption in the paper.
+infection_model:
+  T_min: 13.0
+  T_opt: 25.0
+  T_max: 33.0
+  rh_wet_threshold: 90.0      # RH >= this (%) => leaf considered wet (oracle internal)
+  wetness_min_hours: 4.0      # critical leaf-wetness hours for infection at T_opt
+  wetness_max_hours: 20.0     # saturation of the wetness benefit
+  accum_window_days: 5        # infection severity accumulates over a trailing window
+  # Low/Med/High thresholds are auto-calibrated at run time on the TRAINING period
+  # only (percentiles below) -> ~40/35/25 on train, no test leakage.
+  calib_low_pct: 40           # accum-severity percentile splitting Low|Medium
+  calib_med_pct: 72           # accum-severity percentile splitting Medium|High
+
+# model features per trailing window, evaluated at each capture set.
+# Window = the infection-accumulation horizon (accum_window_days x 24 = 120h) so the
+# features can actually predict the accumulated risk. Deliberately raw-ish aggregates
+# -- NOT the oracle internals (no w(T), no >=90% wet-hour count, no accumulated sev).
+features:
+  window_hours: 120
+  captures_per_day: 2         # 2 capture sets/day -> 2 windows/day (~400 samples)
+  capture_hours: [8, 18]      # morning + evening capture times
+  temp_band_lo: 21.0          # "favourable" temperature band for hours-in-band feature
+  temp_band_hi: 30.0
+  rh_high_threshold: 85.0     # note: != oracle's 90 -> keeps a learning gap
+
+labels:
+  noise_frac: 0.05            # label noise (real diagnostic uncertainty; avoids trivial 100%)
+
+# time-block split by day (NEVER random -- consecutive readings autocorrelate)
+split:
+  train_end_day: 145          # train = days 1..145 (no monsoon)
+  val_end_day: 160            # val   = 146..160
+  # test = 161..200  (includes the monsoon regime 150..184 -> generalisation probe)
+
+models: [majority, logreg, decision_tree, random_forest, gradient_boosting]
+decision_tree:    {max_depth: 5, min_samples_leaf: 10}
+random_forest:    {n_estimators: 200, max_depth: 8, min_samples_leaf: 5}
+gradient_boosting: {n_estimators: 200, max_depth: 3, learning_rate: 0.05}
+
+robustness:
+  noise_multiplier: 2.0       # re-evaluate with sensor noise x2
+  dropout_frac: 0.10          # re-evaluate with 10% feature dropout

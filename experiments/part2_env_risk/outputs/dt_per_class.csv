@@ -1,0 +1,4 @@
+risk_class,precision,recall,f1,support
+Low,1.0,0.829,0.906,35.0
+Medium,0.72,0.857,0.783,21.0
+High,0.846,0.917,0.88,24.0

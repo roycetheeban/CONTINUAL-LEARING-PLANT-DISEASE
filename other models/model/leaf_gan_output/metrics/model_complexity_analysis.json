@@ -1,0 +1,17 @@
+{
+  "generator": {
+    "parameters": 177822,
+    "layers": 123,
+    "size_mb": 0.6783370971679688
+  },
+  "discriminator": {
+    "parameters": 696193,
+    "layers": 15,
+    "size_mb": 2.6557655334472656
+  },
+  "total": {
+    "parameters": 874015,
+    "layers": 138,
+    "size_mb": 3.3341026306152344
+  }
+}

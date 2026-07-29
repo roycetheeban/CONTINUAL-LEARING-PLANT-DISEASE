@@ -1,0 +1,3 @@
+train: 515 images, 515 labels
+valid: 37 images, 37 labels
+test: 37 images, 37 labels

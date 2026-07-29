@@ -1,0 +1,11 @@
+{
+  "note": "re-timing of the real cycle-2 replay config on this laptop's GPU; same data/hyperparameters/seed as the real cycle-2 run, output redirected so the real artifact is untouched",
+  "runtime": {
+    "total_wall_time_sec": 373.217,
+    "train_wall_time_sec": 348.3596,
+    "peak_vram_mb": 155.58,
+    "process_ram_mb_end": 1245.05
+  },
+  "test_accuracy": 0.9841688654353562,
+  "test_macro_f1": 0.9826559305323894
+}

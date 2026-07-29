@@ -1,0 +1,14 @@
+feature,importance
+hours_rh_above_85,0.4731
+rh_mean,0.3146
+rh_trend,0.0845
+soil_mean,0.0635
+temp_min,0.0252
+temp_range,0.0244
+co2_mean,0.0086
+rh_std,0.0061
+temp_mean,0.0
+hours_temp_in_band,0.0
+temp_max,0.0
+rh_min,0.0
+rh_max,0.0

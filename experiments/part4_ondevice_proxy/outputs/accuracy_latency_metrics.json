@@ -1,0 +1,20 @@
+{
+  "compiled_path_used": "pytorch_fp16_fallback",
+  "hardware_note": "measured on this laptop's GPU, NOT a Jetson Orin Nano -- proxy only",
+  "n_test_images": 1137,
+  "capture_set_size": 8,
+  "onnxruntime_gpu": {
+    "available": true,
+    "provider": "CUDAExecutionProvider",
+    "accuracy_pct": 98.505,
+    "latency_per_image_ms": 3.7834,
+    "latency_per_capture_set_ms": 4.6282
+  },
+  "accuracy_fp32_pct": 98.505,
+  "accuracy_fp16_pct": 98.593,
+  "accuracy_delta_pct": 0.088,
+  "latency_fp32_per_image_ms": 10.2351,
+  "latency_fp16_per_image_ms": 12.3833,
+  "latency_fp32_per_capture_set_ms": 10.5867,
+  "latency_fp16_per_capture_set_ms": 12.4369
+}
