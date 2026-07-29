@@ -1,0 +1,100 @@
+# E4 -- Turmeric Continual-Learning Validation (Table XIV)
+#
+# Purpose: test whether the CL recipe selected on tomato (Case 2 ImageNet init +
+# Replay, layer groups G1-G4 with split learning rates) transfers to the deployed
+# target crop. Mirrors the tomato CatA protocol deliberately so the comparison is
+# meaningful.
+#
+# Splits built by data/06_scripts/splitters/split_turmeric_5cls.py:
+#   initial_train 417 | cl_cycle1_stream 210 | cl_cycle2_stream 207
+#   replay_buffer 198 | val 102 | test 107
+# test/ and val/ are carried over unchanged from the shipped split so that the
+# existing phase3 checkpoint (89.81% retention) stays a valid reference point.
+#
+# !! STATISTICAL CEILING: 107 test images => 95% CI of +/-5.7 pp on a single
+# accuracy. Method-vs-method differences MUST be assessed with the paired McNemar
+# test on saved per-image predictions, not by comparing overlapping CIs, and
+# results are reported as mean +/- std over multiple seeds. E4 is a feasibility
+# check that the recipe transfers -- not a precision benchmark.
+
+seeds: [42, 43, 44]        # multi-seed; Table XIV reports mean +/- std
+num_workers: 0
+device: cuda
+
+model:
+  num_classes: 5
+  # Case 2 = torchvision MobileNetV3-Small, ImageNet weights.
+  # NOT the timm phase3 checkpoint -- its block structure does not map onto the
+  # G1-G4 grouping this recipe is defined by. See common_turmeric.py docstring.
+  arch: mobilenet_v3_small
+  pretrained: imagenet
+
+data:
+  root: data/07_turmeric_5cls
+  initial_train: initial_train
+  cycle1: cl_cycle1_stream
+  cycle2: cl_cycle2_stream
+  replay_buffer: replay_buffer
+  val: val
+  test: test
+  image_size: 224
+  resize_size: 256
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+  # class order comes from ImageFolder (alphabetical) on data/07_turmeric_5cls:
+  #   Aphids_Disease_=0, Blotch_=1, Dry Leaf_=2, Healthy_Leaf_=3, Leaf_Spot_=4
+  # NOTE this differs from the phase3 checkpoint's stored class_to_idx
+  # (Healthy=0, Leaf_Spot=1, Blotch=2, Dry=3, Aphids=4). Do not mix them.
+
+train:
+  batch_size: 32
+  weight_decay: 0.0001
+  # Patience raised 5 -> 8 and min_epochs 5 -> 10 after inspecting the first run:
+  # val is only 102 images, so macro-F1 swings several points epoch-to-epoch
+  # (0.52 -> 0.91 -> 0.67 -> 0.81 in one run). With patience 5 that noise
+  # triggered false early stops -- seeds 43 and 44 both peaked at epoch 6 and
+  # halted while still improving, which is what produced the 3.7 pp spread.
+  patience: 8
+  min_epochs: 10
+
+# ---- base training (Table II of the paper) --------------------------------
+base:
+  # Phase i: classifier warm-up. Backbone entirely frozen so large early head
+  # gradients cannot corrupt the pretrained features.
+  phase1:
+    max_epochs: 30         # was 15; seed 43 hit that ceiling while still improving
+    lr_head: 0.001
+  # Phase ii: unfreeze G3 (features[9:]); G1-G2 stay frozen.
+  phase2:
+    max_epochs: 40         # was 30
+    lr_g3: 0.0001
+    lr_head: 0.001
+
+# ---- continual learning cycles --------------------------------------------
+cl:
+  cycle1:
+    max_epochs: 12
+    lr_g3: 0.0001
+    lr_head: 0.0005
+  cycle2:
+    max_epochs: 12
+    lr_g3: 0.00005
+    lr_head: 0.0002
+
+methods: [replay, ewc, naive]
+
+replay:
+  # Tomato used "15% per class, min 100". Unsatisfiable here: initial_train is
+  # only 76-92 images/class. Redefined as min(40, 50% of initial_train) -> 38-40
+  # per class. THIS CHANGE MUST BE STATED IN THE PAPER -- silently applying a
+  # different buffer rule across datasets is exactly what reviewers catch.
+  old_per_batch: 16
+  new_per_batch: 16
+
+ewc:
+  lambda: 10000            # cycle-1 optimum from the tomato grid search
+  lambda_cycle2: 3000      # cycle-2 optimum -- the paper's per-cycle schedule
+  fisher_max_batches: 40
+
+output:
+  root: experiments/part5_turmeric_cl/outputs

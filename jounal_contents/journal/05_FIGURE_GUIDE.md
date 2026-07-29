@@ -4,9 +4,9 @@ Labels are final and match `04_FULL_PAPER_LATEX.md`. For each: what tool, what e
 
 ---
 
-## ⭐ BUILD STATUS (updated 2026-07-24)
+## ⭐ BUILD STATUS (updated 2026-07-29)
 
-**8 of 9 figures are generated and finalised** as vector PDFs in `journal/figures/`, produced **programmatically with Python + Matplotlib** (not draw.io — we generated the diagrams as code so they are reproducible and consistent with the data plots). Each was visually inspected and polished.
+**All 8 figures are generated and finalised** — Fig. 9 was **removed from the paper** (see below), so the set is now 8, not 9. They are as vector PDFs in `journal/figures/`, produced **programmatically with Python + Matplotlib** (not draw.io — we generated the diagrams as code so they are reproducible and consistent with the data plots). Each was visually inspected and polished.
 
 | Fig | File | Status | How it was made | Data source |
 |---|---|---|---|---|
@@ -14,11 +14,11 @@ Labels are final and match `04_FULL_PAPER_LATEX.md`. For each: what tool, what e
 | 2 | `fig2_pipeline.pdf` | ✅ **FINAL** | matplotlib (`src/fig2_pipeline.py`) | conceptual |
 | 3 | `fig3_cl_cycle.pdf` | ✅ **FINAL** | matplotlib (`src/fig3_cl_cycle.py`) | conceptual |
 | 4 | `fig4_layer_groups.pdf` | ✅ **FINAL** | matplotlib (`src/fig4_layer_groups.py`) | conceptual |
-| 5 | `fig5_fusion.pdf` | ✅ **FINAL** | matplotlib (`src/fig5_fusion.py`) | **E1 + E2 — real.** Panel (a): real Case2+Replay classifier predictions on real held-out tomato images (constructed episode sequencing). Panel (b): real E1 hourly sensor trace. Panel (c): real Φ inputs/output. Dashboard colour-matching (Fig 9) still pending hardware. |
+| 5 | `fig5_fusion.pdf` | ✅ **FINAL** | matplotlib (`src/fig5_fusion.py`) | **E1 + E2 — real.** Panel (a): real Case2+Replay classifier predictions on real held-out tomato images (constructed episode sequencing). Panel (b): real E1 hourly sensor trace. Panel (c): real Φ inputs/output, with an explicit Φ rule box. Revised 2026-07-29: absolute leaf count ("+7 leaves") replaces the misleading "+700%"; arrows/box widths fixed. |
 | 6 | `fig6_cata.pdf` | ✅ **FINAL** | matplotlib (`src/make_data_figs.py`) | **Table VI — real** |
 | 7 | `fig7_lambda.pdf` | ✅ **FINAL** | matplotlib (`src/make_data_figs.py`) | **Table VII — real** |
-| 8 | `fig8_catb_scatter.pdf` | ✅ **FINAL** | matplotlib (`src/make_data_figs.py`) | **Table IX — real** |
-| 9 | `fig9_deployment.pdf` | 🔴 **BLOCKED — hardware** | camera + screenshot | needs installed unit + running Streamlit dashboard |
+| 8 | `fig8_catb_scatter.pdf` | ✅ **FINAL** | matplotlib (`src/make_data_figs.py`) | **Table X — real** |
+| ~~9~~ | ~~`fig9_deployment.pdf`~~ | ❌ **REMOVED 2026-07-29** | — | No unit is installed, so the deployment photograph cannot be produced, and a dashboard screenshot alone does not carry the claim. The figure was never referenced from the body text, so nothing else depended on it. Deployment-conditional wording elsewhere was softened at the same time. **If a unit is later installed, restore this figure AND revisit those sentences.** |
 
 **Reproduce / edit any finalised figure:** scripts live in `journal/figures/src/` (`ls_style.py` = shared palette + rcParams; `ls_diagram.py` = box/arrow helpers). Run e.g. `python make_data_figs.py` or `python fig1_architecture.py`. PNG previews are written to `journal/figures/_preview/`.
 
@@ -26,12 +26,12 @@ Labels are final and match `04_FULL_PAPER_LATEX.md`. For each: what tool, what e
 
 | Item | Action needed |
 |---|---|
-| **Fig 9** (deployment) | **You** must photograph the installed greenhouse unit + screenshot the live Streamlit dashboard. Nothing to script. PNG/TIFF, not JPG; get consent/crop if a person appears. |
+| ~~Fig 9~~ | **Removed** — no longer an outstanding item. |
 | Fig 6/7/8 numbers | Already real — no change unless the underlying CL tables change. |
 | Optional Fig 6 add-on | A second panel with training-time (log axis) was left out for clarity; add if you want the EWC-efficiency point shown visually. |
-| Optional Fig 5/9 palette pass | Once hardware is ready, re-check that Fig 5's colours match the real dashboard (Fig 9) so all 9 read as one system — Fig 5 currently uses the shared `ls_style.py` palette only. |
+| ~~Optional Fig 5/9 palette pass~~ | Moot — Fig 9 removed. Fig 5 uses the shared `ls_style.py` palette, consistent with Figs 1–8. |
 
-> **Note:** the per-figure draw.io specs below (Figs 1–5) are kept for reference and manual editing only. Figs 1–8 are already built as code (Fig 5 via `src/fig5_fusion.py`) — the draw.io route is optional if you'd rather hand-edit one.
+> **Note:** the per-figure draw.io specs below (Figs 1–5) are kept for reference and manual editing only. All 8 figures are already built as code (Fig 5 via `src/fig5_fusion.py`) — the draw.io route is optional if you'd rather hand-edit one. **The Fig. 9 spec further below is retained only as a build recipe should hardware become available; the figure is not currently in the paper.**
 
 ---
 
@@ -43,7 +43,7 @@ Labels are final and match `04_FULL_PAPER_LATEX.md`. For each: what tool, what e
 | 6, 7, 8       | **Python + Matplotlib**                                       | Data plots — must come from your real metrics JSON, never redrawn by hand |
 | 9             | **Camera + screenshot**, composed in draw.io or PowerPoint    | Photo panel + dashboard screenshot                                         |
 
-**Alternatives if you prefer:** Figma or Excalidraw for 1–5 (Excalidraw looks hand-drawn — avoid for a journal); Inkscape if you want full vector control; PowerPoint works but export quality is worse — only use it for Fig. 9.
+**Alternatives if you prefer:** Figma or Excalidraw for 1–5 (Excalidraw looks hand-drawn — avoid for a journal); Inkscape if you want full vector control; PowerPoint works but export quality is worse — only use it for the (now removed) Fig. 9 recipe.
 
 ## IEEE Access rules that apply to every figure
 
@@ -51,7 +51,7 @@ Labels are final and match `04_FULL_PAPER_LATEX.md`. For each: what tool, what e
 - **Width:** single column ≈ **88 mm**, double column (`figure*`) ≈ **181 mm**. Fig. 1 is the only `figure*`.
 - **Fonts:** sans-serif (Arial/Helvetica), **minimum 8 pt after scaling down to column width**. This is the #1 rejection cause — draw at final size, don't shrink a big diagram.
 - **Must survive greyscale printing.** Never encode meaning in colour alone — always pair colour with a shape, pattern, or label.
-- **Colour-blind safe palette** (use these hex values throughout, all 9 figures):
+- **Colour-blind safe palette** (use these hex values throughout, all 8 figures):
   `#0072B2` blue · `#E69F00` orange · `#009E73` green · `#D55E00` vermillion · `#CC79A7` pink · `#56B4E9` sky · `#999999` grey
 - No figure titles inside the image — the LaTeX `\caption{}` is the title.
 - Save editable sources in `journal/figures/src/`, exports in `journal/figures/`.
@@ -189,7 +189,7 @@ Easiest route: generate panels (a) and (b) in Matplotlib as one stacked PDF, the
 - Right input: `Risk state = HIGH (humidity > 85% sustained)`
 - → Output box (`#009E73`): **"Elevated fungal risk — inspect and consider fungicide"**
 
-Add small `(a)`, `(b)`, `(c)` labels in the top-left of each panel. Keep the same colours as your actual dashboard so Fig. 5 and Fig. 9 look like one system.
+Add small `(a)`, `(b)`, `(c)` labels in the top-left of each panel. (The original spec said to colour-match the dashboard in Fig. 9; **Fig. 9 has since been removed**, so Fig. 5 simply uses the shared `ls_style.py` palette.)
 
 ---
 
@@ -250,7 +250,9 @@ This is the most important figure in the paper — it makes three findings visib
 
 ---
 
-# Fig. 9 — Greenhouse Deployment & Dashboard
+# ~~Fig. 9~~ — Greenhouse Deployment & Dashboard  ❌ REMOVED FROM THE PAPER (2026-07-29)
+
+> Retained below only as a **build recipe** in case a unit is installed later. This figure is **not** in the current draft — there is no deployment to photograph, and the paper's deployment wording was softened to conditional to match. Restoring it means restoring those sentences too.
 
 **Tool: camera + screenshot, composed in draw.io or PowerPoint** · **Single column, 88 mm** · file: `fig9_deployment.pdf`
 
@@ -270,6 +272,6 @@ Compose side by side or stacked, label `(a)` and `(b)`. Export at 600 dpi minimu
 2. **Figs 2, 4** — smallest diagrams, good for settling your draw.io colour/font style.
 3. **Figs 1, 3** — largest diagrams, reuse the style from step 2.
 4. **Fig. 5** — needs the decision-tree work (E1) finished so the risk state in panel (c) is real.
-5. **Fig. 9** — needs the hardware installed and the dashboard running.
+5. ~~**Fig. 9**~~ — removed; no longer part of the build order.
 
 Write one Matplotlib style block and `%run` it at the top of all three plot scripts so Figs 6–8 are visually identical siblings.

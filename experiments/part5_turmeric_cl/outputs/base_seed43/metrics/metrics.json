@@ -1,0 +1,39 @@
+{
+  "stage": "base",
+  "seed": 43,
+  "classes": [
+    "Aphids_Disease_",
+    "Blotch_",
+    "Dry Leaf_",
+    "Healthy_Leaf_",
+    "Leaf_Spot_"
+  ],
+  "phase1": {
+    "phase": "phase1",
+    "best_epoch": 21,
+    "best_val_macro_f1": 0.8666328793158062,
+    "wall_time_sec": 119.403
+  },
+  "phase2": {
+    "phase": "phase2",
+    "best_epoch": 9,
+    "best_val_macro_f1": 0.889883855981417,
+    "wall_time_sec": 66.826
+  },
+  "test": {
+    "accuracy": 0.8878504672897196,
+    "macro_f1": 0.8894700036805301,
+    "macro_precision": 0.9085714285714286,
+    "macro_recall": 0.8910685805422647
+  },
+  "runtime": {
+    "total_wall_time_sec": 186.7,
+    "peak_vram_mb": 159.83,
+    "process_ram_mb": 1220.75
+  },
+  "counts": {
+    "initial_train": 417,
+    "val": 102,
+    "test": 107
+  }
+}

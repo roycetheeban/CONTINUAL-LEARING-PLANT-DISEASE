@@ -1,0 +1,108 @@
+path,y_true,y_pred,confidence,correct
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(104).jpg,0,0,0.970259,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(105).jpg,0,0,0.791488,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(106).jpg,0,0,0.841054,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(12).jpg,0,3,0.564342,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(120).jpg,0,0,0.999995,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(123).jpg,0,0,0.983791,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(125).jpg,0,0,0.952430,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(131).jpg,0,0,0.999803,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(15).jpg,0,3,0.630906,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(151).jpg,0,0,0.999684,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(153).jpg,0,0,0.998798,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(156).jpg,0,0,0.997685,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(163).jpg,0,0,0.887745,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(201).jpg,0,0,0.984690,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(27).jpg,0,3,0.984325,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(37).jpg,0,0,0.994680,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(48).jpg,0,0,0.981552,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(59).jpg,0,0,0.810143,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(68).jpg,0,0,0.813858,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(81).jpg,0,0,0.999696,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(82).jpg,0,0,0.991322,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Aphids_Disease_\aphids_disease_(96).jpg,0,0,0.999652,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(100).jpg,1,1,0.995606,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(104).jpg,1,1,0.848945,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(107).jpg,1,1,0.743176,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(113).jpg,1,1,0.460772,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(114).jpg,1,1,0.742950,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(115).jpg,1,1,0.797870,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(116).jpg,1,1,0.970126,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(127).jpg,1,4,0.719812,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(150).jpg,1,1,0.504380,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(151).jpg,1,1,0.775608,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(152).jpg,1,1,0.668570,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(154).jpg,1,4,0.488923,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(157).jpg,1,1,0.706112,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(164).jpg,1,1,0.859037,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(18).jpg,1,1,0.979723,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(181).jpg,1,1,0.413204,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(222).jpg,1,1,0.883489,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(231).jpg,1,1,0.936702,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(25).jpg,1,3,0.628850,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(36).jpg,1,1,0.996142,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(54).jpg,1,1,0.994384,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(88).jpg,1,1,0.918970,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(91).jpg,1,4,0.699190,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Blotch_\blotch_(93).jpg,1,4,0.413135,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00007.jpg,2,2,0.905966,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00010.jpg,2,2,0.999998,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00041.jpg,2,2,0.999998,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00042.jpg,2,2,0.999741,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00046.jpg,2,2,0.999997,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00052.jpg,2,2,0.999310,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00057.jpg,2,2,0.999981,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00061.jpg,2,2,0.999951,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00064.jpg,2,2,0.999921,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00069.jpg,2,2,0.999923,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00086.jpg,2,2,0.999995,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00098.jpg,2,2,0.999926,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00106.jpg,2,2,0.999737,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00121.jpg,2,2,0.999918,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00172.jpg,2,2,0.999996,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00180.jpg,2,2,0.997504,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00189.jpg,2,2,0.999977,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00197.jpg,2,2,0.999890,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00200.jpg,2,2,0.999925,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Dry Leaf_\Dry Leaf00201.jpg,2,2,0.999999,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(10).jpg,3,3,0.999784,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(103).jpg,3,3,0.999962,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(112).jpg,3,3,0.999991,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(146).jpg,3,3,0.933976,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(168).jpg,3,3,0.995839,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(175).jpg,3,3,0.997967,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(180).jpg,3,3,0.904130,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(187).jpg,3,3,0.995402,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(189).jpg,3,3,0.969240,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(193).jpg,3,3,0.846896,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(195).jpg,3,3,0.988568,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(196).jpg,3,3,0.994695,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(206).jpg,3,3,0.999537,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(209).jpg,3,3,0.995646,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(31).jpg,3,3,0.989786,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(4).jpg,3,3,0.996684,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(41).jpg,3,3,0.999902,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(68).jpg,3,3,0.995236,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(80).jpg,3,3,0.997157,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(83).jpg,3,3,0.999988,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(85).jpg,3,3,0.999987,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Healthy_Leaf_\healthy_(91).jpg,3,3,0.999472,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(126).jpg,4,4,0.890408,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(141).jpg,4,3,0.904575,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(143).jpg,4,3,0.682802,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(149).jpg,4,0,0.822234,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(153).jpg,4,4,0.859011,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(158).jpg,4,4,0.434904,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(162).jpg,4,4,0.909364,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(163).jpg,4,4,0.968040,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(170).jpg,4,4,0.991403,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(172).jpg,4,4,0.820099,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(181).jpg,4,4,0.965335,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(31).jpg,4,4,0.952932,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(38).jpg,4,4,0.812043,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(51).jpg,4,4,0.870772,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(63).jpg,4,4,0.914388,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(87).jpg,4,0,0.629271,0
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(9).jpg,4,4,0.737097,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(91).jpg,4,4,0.542317,1
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\data\07_turmeric_5cls\test\Leaf_Spot_\leaf_spot_(92).jpg,4,4,0.961699,1

@@ -1,0 +1,196 @@
+{
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "methods": [
+    "replay",
+    "ewc",
+    "naive"
+  ],
+  "n_test_images": 107,
+  "single_run_95ci_halfwidth_pp_at_p90": 5.68,
+  "table_xiv": [
+    {
+      "stage": "base",
+      "n_seeds": 3,
+      "accuracy_mean": 89.1,
+      "accuracy_std": 2.35,
+      "macro_f1_mean": 89.18,
+      "macro_f1_std": 2.16,
+      "accuracy_per_seed": "91.59|88.79|86.92"
+    },
+    {
+      "stage": "replay_cycle1",
+      "n_seeds": 3,
+      "accuracy_mean": 92.52,
+      "accuracy_std": 3.37,
+      "macro_f1_mean": 92.29,
+      "macro_f1_std": 3.76,
+      "accuracy_per_seed": "93.46|88.79|95.33"
+    },
+    {
+      "stage": "replay_cycle2",
+      "n_seeds": 3,
+      "accuracy_mean": 90.03,
+      "accuracy_std": 3.54,
+      "macro_f1_mean": 89.93,
+      "macro_f1_std": 3.73,
+      "accuracy_per_seed": "85.98|92.52|91.59"
+    },
+    {
+      "stage": "ewc_cycle1",
+      "n_seeds": 3,
+      "accuracy_mean": 87.85,
+      "accuracy_std": 2.47,
+      "macro_f1_mean": 87.82,
+      "macro_f1_std": 2.59,
+      "accuracy_per_seed": "86.92|85.98|90.65"
+    },
+    {
+      "stage": "ewc_cycle2",
+      "n_seeds": 3,
+      "accuracy_mean": 88.79,
+      "accuracy_std": 1.62,
+      "macro_f1_mean": 88.58,
+      "macro_f1_std": 1.97,
+      "accuracy_per_seed": "86.92|89.72|89.72"
+    },
+    {
+      "stage": "naive_cycle1",
+      "n_seeds": 3,
+      "accuracy_mean": 89.41,
+      "accuracy_std": 4.21,
+      "macro_f1_mean": 89.32,
+      "macro_f1_std": 4.37,
+      "accuracy_per_seed": "89.72|85.05|93.46"
+    },
+    {
+      "stage": "naive_cycle2",
+      "n_seeds": 3,
+      "accuracy_mean": 87.85,
+      "accuracy_std": 2.47,
+      "macro_f1_mean": 87.72,
+      "macro_f1_std": 2.68,
+      "accuracy_per_seed": "85.98|86.92|90.65"
+    }
+  ],
+  "retention_vs_base": {
+    "replay": {
+      "final_acc_mean_pct": 90.03,
+      "delta_vs_base_pp": 0.93
+    },
+    "ewc": {
+      "final_acc_mean_pct": 88.79,
+      "delta_vs_base_pp": -0.31
+    },
+    "naive": {
+      "final_acc_mean_pct": 87.85,
+      "delta_vs_base_pp": -1.25
+    }
+  },
+  "mcnemar": [
+    {
+      "seed": 42,
+      "model_a": "replay_cycle2",
+      "model_b": "ewc_cycle2",
+      "n_compared": 107,
+      "a_right_b_wrong": 3,
+      "b_right_a_wrong": 4,
+      "n_discordant": 7,
+      "p_value": 1.0,
+      "verdict": "not significant"
+    },
+    {
+      "seed": 43,
+      "model_a": "replay_cycle2",
+      "model_b": "ewc_cycle2",
+      "n_compared": 107,
+      "a_right_b_wrong": 5,
+      "b_right_a_wrong": 2,
+      "n_discordant": 7,
+      "p_value": 0.453125,
+      "verdict": "not significant"
+    },
+    {
+      "seed": 44,
+      "model_a": "replay_cycle2",
+      "model_b": "ewc_cycle2",
+      "n_compared": 107,
+      "a_right_b_wrong": 5,
+      "b_right_a_wrong": 3,
+      "n_discordant": 8,
+      "p_value": 0.7265625,
+      "verdict": "not significant"
+    },
+    {
+      "seed": 42,
+      "model_a": "replay_cycle2",
+      "model_b": "naive_cycle2",
+      "n_compared": 107,
+      "a_right_b_wrong": 3,
+      "b_right_a_wrong": 3,
+      "n_discordant": 6,
+      "p_value": 1.0,
+      "verdict": "not significant"
+    },
+    {
+      "seed": 43,
+      "model_a": "replay_cycle2",
+      "model_b": "naive_cycle2",
+      "n_compared": 107,
+      "a_right_b_wrong": 8,
+      "b_right_a_wrong": 2,
+      "n_discordant": 10,
+      "p_value": 0.109375,
+      "verdict": "not significant"
+    },
+    {
+      "seed": 44,
+      "model_a": "replay_cycle2",
+      "model_b": "naive_cycle2",
+      "n_compared": 107,
+      "a_right_b_wrong": 3,
+      "b_right_a_wrong": 2,
+      "n_discordant": 5,
+      "p_value": 1.0,
+      "verdict": "not significant"
+    },
+    {
+      "seed": 42,
+      "model_a": "ewc_cycle2",
+      "model_b": "naive_cycle2",
+      "n_compared": 107,
+      "a_right_b_wrong": 1,
+      "b_right_a_wrong": 0,
+      "n_discordant": 1,
+      "p_value": 1.0,
+      "verdict": "not significant"
+    },
+    {
+      "seed": 43,
+      "model_a": "ewc_cycle2",
+      "model_b": "naive_cycle2",
+      "n_compared": 107,
+      "a_right_b_wrong": 5,
+      "b_right_a_wrong": 2,
+      "n_discordant": 7,
+      "p_value": 0.453125,
+      "verdict": "not significant"
+    },
+    {
+      "seed": 44,
+      "model_a": "ewc_cycle2",
+      "model_b": "naive_cycle2",
+      "n_compared": 107,
+      "a_right_b_wrong": 2,
+      "b_right_a_wrong": 3,
+      "n_discordant": 5,
+      "p_value": 1.0,
+      "verdict": "not significant"
+    }
+  ],
+  "missing_runs": [],
+  "interpretation_note": "With n_test=107 a single run's 95% CI is about +/-5.7 pp, so differences smaller than that are NOT resolvable from one run. Method comparisons use the paired McNemar test on identical test images; where p >= 0.05 the methods are not distinguishable on this dataset and must not be reported as different. E4 is a feasibility check that the recipe transfers, not a precision benchmark."
+}

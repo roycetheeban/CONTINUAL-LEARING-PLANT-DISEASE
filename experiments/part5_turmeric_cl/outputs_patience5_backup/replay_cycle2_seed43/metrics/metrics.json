@@ -1,0 +1,39 @@
+{
+  "stage": "cycle2",
+  "method": "replay",
+  "seed": 43,
+  "base_checkpoint": "G:\\AIOT_PHASE_03\\CONTINUAL-LEARING-PLANT-DESEASE\\experiments\\part5_turmeric_cl\\outputs\\replay_cycle1_seed43\\checkpoints\\model.pth",
+  "classes": [
+    "Aphids_Disease_",
+    "Blotch_",
+    "Dry Leaf_",
+    "Healthy_Leaf_",
+    "Leaf_Spot_"
+  ],
+  "lambda_ewc": null,
+  "best_epoch": 12,
+  "best_val_macro_f1": 0.9504909560723516,
+  "incumbent_test": {
+    "accuracy": 0.897196261682243,
+    "macro_f1": 0.8956832824713805
+  },
+  "test": {
+    "accuracy": 0.9252336448598131,
+    "macro_f1": 0.9238800052861107,
+    "macro_precision": 0.9288043478260869,
+    "macro_recall": 0.9230462519936203
+  },
+  "delta_vs_incumbent": {
+    "accuracy": 0.028037,
+    "macro_f1": 0.028197
+  },
+  "runtime": {
+    "wall_time_sec": 63.343,
+    "peak_vram_mb": 155.88,
+    "process_ram_mb": 1249.91
+  },
+  "counts": {
+    "stream": 207,
+    "replay_buffer": 198
+  }
+}

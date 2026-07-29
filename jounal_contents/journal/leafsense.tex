@@ -985,12 +985,12 @@ Section~\ref{subsec:ondevice} are taken on the Jetson Orin Nano target.
 evaluate the environmental risk model of Section~\ref{sec:fusion} are
 \emph{simulated} --- diurnal and recurring seasonal cycles with autocorrelated
 drift, datasheet-scaled sensor noise, and dropout, calibrated to plausible
-greenhouse ranges --- and are not yet collected from the deployed unit. Training
-labels are distilled from a validated, published infection model rather than
-self-defined thresholds (Section~\ref{sec:fusion}), which avoids circularity, but
-the absolute risk-model accuracies in Table~\ref{tab:dt} should be read as a
-methodology validation pending replacement with in-situ sensor logs from the
-installed turmeric greenhouse unit.
+greenhouse ranges. No unit is currently installed, so no in-situ readings exist.
+Training labels are distilled from a validated, published infection model rather
+than self-defined thresholds (Section~\ref{sec:fusion}), which avoids circularity,
+but the absolute risk-model accuracies in Table~\ref{tab:dt} should be read as a
+methodology validation, to be revisited against in-situ sensor logs once a turmeric
+greenhouse unit is deployed.
 
 \textbf{Fusion evaluation disclosure.} Table~\ref{tab:fusion} is likewise evaluated
 on \emph{constructed} episodes rather than field-labelled deployment windows: the
@@ -1386,51 +1386,66 @@ duty-cycle argument rather than as a measured end-to-end deployment latency.
 \subsection{Turmeric Deployment Validation}
 \label{subsec:turmeric}
 
-%% >>> PLACEHOLDER P13 --- TABLE XI (experiment E4) <<<
-%% Run the two winning recipes (Case 2 + Replay, Case 2 + EWC) on the 5-class
-%% turmeric dataset, CatA protocol, 2 cycles, ~200 images/class. Report the same
-%% columns as Table III so the transfer is directly comparable. Include a naive
-%% baseline row so the protective effect is visible on the target crop too.
-%% If a new turmeric disease class becomes available, add a CatB row --- that would
-%% make the deployment claim substantially stronger.
-\begin{table}[!t]
-\caption{Turmeric Deployment Validation --- Best Recipes on the Target Crop}
+The recipe selected on the tomato benchmark --- Case 2 initialization with
+experience replay --- is applied unchanged to the five-class turmeric dataset under
+the CatA protocol, two cycles, using the same layer-group schedule. Results are
+reported in Table~\ref{tab:turmeric} as mean $\pm$ standard deviation over three
+seeds.
+
+\begin{table}[!tbp]
+\caption{Turmeric Deployment Validation --- Transfer of the Selected Recipe}
 \label{tab:turmeric}
 \centering
 \small
-\begin{tabular}{@{}lccccc@{}}
+\begin{tabular}{@{}lcc@{}}
 \toprule
-\textbf{Method} & \textbf{C1 Acc} & \textbf{C1 F1} & \textbf{C2 Acc} & \textbf{C2 F1} & \textbf{Avg} \\
+\textbf{Stage} & \textbf{Accuracy} & \textbf{Macro F1} \\
 \midrule
-Case 2 --- Replay & ---\% & --- & ---\% & --- & ---\% \\
-Case 2 --- EWC    & ---\% & --- & ---\% & --- & ---\% \\
-Naive (ref.)      & ---\% & --- & ---\% & --- & ---\% \\
+Base (Case 2, ImageNet)      & 89.10 $\pm$ 2.35 & 89.18 $\pm$ 2.16 \\
+Case 2 --- Replay, cycle 1   & 92.52 $\pm$ 3.37 & 92.29 $\pm$ 3.76 \\
+\textbf{Case 2 --- Replay, cycle 2} & \textbf{90.03 $\pm$ 3.54} & \textbf{89.93 $\pm$ 3.73} \\
+\midrule
+Naive fine-tuning, cycle 2$^{\dagger}$ & 87.85 $\pm$ 2.47 & 87.72 $\pm$ 2.68 \\
 \bottomrule
-\multicolumn{6}{@{}l}{\footnotesize Five turmeric classes: healthy, leaf blotch, leaf spot, dry, aphid disease.}
 \end{tabular}
+
+\vspace{2pt}
+\begin{minipage}{\columnwidth}
+\footnotesize Five turmeric classes: healthy, leaf blotch, leaf spot, dry, aphid
+disease. Mean $\pm$ std over three seeds; test set $n=107$.
+$^{\dagger}$Reference condition only --- not a valid continual-learning method.
+\end{minipage}
 \end{table}
 
-%% >>> Write 2 paragraphs once filled: (a) does the tomato-derived recipe transfer
-%% to turmeric, and is the accuracy ordering of methods preserved? (b) how does the
-%% much smaller per-class volume (~200 vs ~600 images) affect the replay buffer floor
-%% and the lambda schedule --- this is where reviewers will probe, so address it
-%% directly rather than waiting to be asked.
+Two observations follow, and a limitation that must be stated with them. First, the
+recipe transfers: replay trains successfully on the target crop and is the only
+configuration that ends above its own starting point ($+0.93$ percentage points over
+the base model), whereas naive fine-tuning ends $1.25$ points below it. The
+qualitative ordering observed on tomato is preserved. Second, the much smaller
+per-class volume forces one documented change to the protocol. The tomato replay
+buffer rule --- 15\% per class with a floor of 100 images --- is unsatisfiable when
+initial training holds only 76--92 images per class, so the floor is redefined for
+turmeric as $\min(40,\,50\%$ of initial training$)$, yielding 38--40 images per
+class. The $\lambda$ schedule is carried over unchanged.
 
-%% >>> PLACEHOLDER P9 <<<
-%% FIGURE 9 --- Deployment.
-%% Content: Two-panel figure. (a) Photograph of the installed unit in the greenhouse:
-%% Jetson Orin Nano enclosure, rotating camera mount, sensor probes --- include
-%% something for scale. (b) Screenshot of the local Streamlit dashboard showing the
-%% 5-line per-class daily count trend, the current fused risk state, and the retrain
-%% / capture-now controls. Crop the screenshot tightly; avoid unreadable small text.
-\begin{figure}[!t]
-\centering
-\includegraphics[width=\columnwidth]{figures/fig9_deployment.pdf}
-\caption{LEAFSENSE deployment. (a) Installed edge unit with rotating camera mount
-and environmental sensors. (b) Local offline dashboard showing per-class count
-trends and the fused risk state.}
-\label{fig:deploy}
-\end{figure}
+The limitation is the test set. With $n=107$, a single image is worth $0.93$
+percentage points and one run carries a 95\% confidence interval of roughly $\pm5.7$
+points. Applying McNemar's paired test to the per-image predictions --- the
+appropriate test when two models are scored on identical data --- no pairwise
+difference between replay, EWC and naive reaches significance ($p \geq 0.109$ for
+every comparison across all three seeds), and per-seed accuracies vary by up to
+$6.5$ points within a single method. Table~\ref{tab:turmeric} should therefore be
+read as evidence that the recipe \emph{transfers and remains stable} on the target
+crop, and explicitly not as a ranking of continual-learning methods on turmeric;
+establishing such a ranking would require substantially more data than the
+approximately 200 images per class currently available.
+
+%% Figure 9 (deployment photograph + dashboard screenshot) was REMOVED.
+%% Reason: no physical unit is installed, so the photograph cannot be produced, and
+%% a dashboard screenshot alone does not carry the deployment claim on its own. The
+%% figure was never referenced from the body text, so nothing else depends on it.
+%% Deployment-conditional wording elsewhere was softened at the same time -- if a
+%% unit is later installed, restore this figure AND revisit those sentences.
 
 \subsection{Cross-Cutting Discussion}
 
@@ -1576,10 +1591,18 @@ M. Tan and Q. V. Le, ``EfficientNet: Rethinking model scaling for convolutional 
 networks,'' in \emph{Proc. 36th Int. Conf. Mach. Learn. (ICML)}, Long Beach, CA, USA,
 2019, pp. 6105--6114.
 
+%% >>> REPLACED 2026-07-29. The previous entry here --- H. Sharma and M. Patel,
+%% "Edge computing challenges for deep learning-based plant disease detection
+%% systems," IEEE Internet Things J., vol. 9, no. 12, pp. 9876-9888, 2022,
+%% doi: 10.1109/JIOT.2022.3142890 --- DOES NOT EXIST. Its DOI returns HTTP 404,
+%% and IEEE IoT J. vol. 9 no. 12 runs ...9858-9871 then 9889-9903, so the claimed
+%% page range 9876-9888 falls in a gap occupied by no article. Replaced with a
+%% Crossref-verified reference supporting the same claim. (The bad entry was
+%% inherited from the prior conference paper, where it appears as [4].) <<<
 \bibitem{ref5}
-H. Sharma and M. Patel, ``Edge computing challenges for deep learning-based plant
-disease detection systems,'' \emph{IEEE Internet Things J.}, vol. 9, no. 12,
-pp. 9876--9888, Jun. 2022, doi: 10.1109/JIOT.2022.3142890.
+A. T. Khan, S. M. Jensen, A. R. Khan, and S. Li, ``Plant disease detection model
+for edge computing devices,'' \emph{Front. Plant Sci.}, vol. 14, Dec. 2023,
+Art. no. 1308528, doi: 10.3389/fpls.2023.1308528.
 
 \bibitem{ref6}
 A. Howard \emph{et al.}, ``Searching for MobileNetV3,'' in \emph{Proc. IEEE/CVF Int.
@@ -1607,7 +1630,7 @@ Art. no. 1355941, doi: 10.3389/fpls.2024.1355941.
 
 \bibitem{ref11}
 Y. Miao, W. Meng, and X. Zhou, ``SerpensGate-YOLOv8: An enhanced YOLOv8 model for
-accurate plant disease detection,'' \emph{Front. Plant Sci.}, vol. 15, Dec. 2024,
+accurate plant disease detection,'' \emph{Front. Plant Sci.}, vol. 15, Jan. 2025,
 Art. no. 1514832, doi: 10.3389/fpls.2024.1514832.
 
 \bibitem{ref12}
@@ -1638,7 +1661,7 @@ Australia, 2017, pp. 3987--3995.
 \bibitem{ref17}
 S.-A. Rebuffi, A. Kolesnikov, G. Sperl, and C. H. Lampert, ``iCaRL: Incremental
 classifier and representation learning,'' in \emph{Proc. IEEE Conf. Comput. Vis.
-Pattern Recognit. (CVPR)}, Honolulu, HI, USA, 2017, pp. 2001--2010,
+Pattern Recognit. (CVPR)}, Honolulu, HI, USA, Jul. 2017, pp. 5533--5542,
 doi: 10.1109/CVPR.2017.587.
 
 \bibitem{ref18}
@@ -1657,17 +1680,20 @@ iterative pruning,'' in \emph{Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit
 doi: 10.1109/CVPR.2018.00810.
 
 \bibitem{ref21}
-%% >>> YOUR PRIOR PAPER 1 --- update with the actual venue, year, pages and DOI
-%% once the IEEE conference paper is indexed on Xplore. <<<
+%% Crossref-verified: DOI resolves, event metadata confirms Peradeniya, Sri Lanka,
+%% 16-17 Jan 2026, pp. 395-400, all three authors present.
 R. Roycetheeban, A. M. Mathushanth, and M. Tharmakulasingam, ``A lightweight modular
-pipeline for edge-optimized leaf disease detection,'' in \emph{Proc. IEEE Int. Conf.
-[VENUE]}, [CITY], [YEAR], pp. [PP--PP].
+pipeline for edge-optimized leaf disease detection,'' in \emph{Proc. IEEE 19th Int.
+Conf. Ind. Inf. Syst. (ICIIS)}, Peradeniya, Sri Lanka, Jan. 2026, pp. 395--400,
+doi: 10.1109/ICIIS69028.2026.11450780.
 
 \bibitem{ref22}
-%% >>> YOUR PRIOR PAPER 2 --- update with actual venue, year, pages and DOI. <<<
+%% No DOI: published as a proceedings volume by the University of Jaffna, not
+%% DOI-registered (confirmed absent from Crossref). Page range 7-16 confirmed
+%% against the proceedings table of contents.
 R. Roycetheeban, A. M. Mathushanth, and M. Tharmakulasingam, ``GAN-based leaf image
-inpainting for occlusion recovery,'' in \emph{Proc. IEEE Int. Conf. [VENUE]}, [CITY],
-[YEAR], pp. [PP--PP].
+inpainting for occlusion recovery,'' in \emph{Proc. 2nd Int. Conf. Digit. Technol.
+Sustain. Agricult. (ICDTSA)}, Kilinochchi, Sri Lanka, May 2025, pp. 7--16.
 
 \bibitem{ref23}
 G. Zhang, L. Wang, G. Kang, L. Chen, and Y. Wei, ``SLCA: Slow learner with classifier
@@ -1690,10 +1716,13 @@ diseases from sequential environmental data,'' \emph{Plant Methods}, vol. 19,
 Dec. 2023, Art. no. 145, doi: 10.1186/s13007-023-01122-x.
 
 \bibitem{ref27}
-%% >>> Your turmeric dataset sources (both Mendeley DOIs from the slides):
-%% 10.17632/jtttfbx342.1 and 10.17632/g46dvrcvwn.1 --- confirm author names. <<<
-[Author(s)], ``Image dataset for turmeric plant leaf disease detection,''
-\emph{Mendeley Data}, V1, 2025, doi: 10.17632/jtttfbx342.1.
+%% Author lists retrieved and verified via the DataCite API (Mendeley Data DOIs are
+%% registered with DataCite, not Crossref, so they do not resolve on Crossref).
+M. R. Hossain \emph{et al.}, ``Image dataset for turmeric plant leaf disease
+detection,'' \emph{Mendeley Data}, 2025, doi: 10.17632/jtttfbx342.1; and
+A. K. M. F. K. Siam, M. A. S. Nirob, and P. Bishshash, ``Turmeric plant disease
+dataset: Advancing AI for agricultural sustainability,'' \emph{Mendeley Data}, 2024,
+doi: 10.17632/g46dvrcvwn.1.
 
 \bibitem{ref28}
 C. Rudin, ``Stop explaining black box machine learning models for high stakes
@@ -1711,7 +1740,8 @@ under 256\,KB memory,'' in \emph{Proc. 36th Conf. Neural Inf. Process. Syst.
 (NeurIPS)}, New Orleans, LA, USA, 2022, pp. 22941--22954.
 
 \bibitem{ref31}
-%% >>> VERIFY page range against PMLR vol. 54 before submission. <<<
+%% Page range VERIFIED against the publisher: proceedings.mlr.press/v54/mcmahan17a
+%% states "PMLR 54:1273-1282". Not in Crossref (PMLR proceedings are not DOI-registered).
 H. B. McMahan, E. Moore, D. Ramage, S. Hampson, and B. A. y Arcas,
 ``Communication-efficient learning of deep networks from decentralized data,'' in
 \emph{Proc. 20th Int. Conf. Artif. Intell. Statist. (AISTATS)}, Fort Lauderdale, FL,
@@ -1724,7 +1754,11 @@ Pattern Recognit. (CVPR)}, Seattle, WA, USA, 2020, pp. 10684--10695,
 doi: 10.1109/CVPR42600.2020.01070.
 
 \bibitem{ref33}
-%% >>> VERIFY exact page range in the NeurIPS 2020 proceedings before submission. <<<
+%% Paper and author list VERIFIED present in the NeurIPS 2020 proceedings index
+%% (papers.nips.cc). The page range 596-608 is from the Curran Associates printed
+%% volume (Adv. NIPS 33) and is the range used throughout the literature; the
+%% NeurIPS site itself publishes no pagination, so it could not be confirmed
+%% against a primary publisher API. Not DOI-registered.
 K. Sohn \emph{et al.}, ``FixMatch: Simplifying semi-supervised learning with
 consistency and confidence,'' in \emph{Proc. 34th Conf. Neural Inf. Process. Syst.
 (NeurIPS)}, 2020, pp. 596--608.

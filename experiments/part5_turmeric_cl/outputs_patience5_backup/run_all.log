@@ -1,0 +1,575 @@
+device=cuda seed=42 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\base_seed42
+classes: ['Aphids_Disease_', 'Blotch_', 'Dry Leaf_', 'Healthy_Leaf_', 'Leaf_Spot_']
+initial_train=417 val=102 test=107
+[phase1] epoch=01 loss=1.0308 val_acc=0.5196 val_f1=0.4867
+[phase1] epoch=02 loss=0.5301 val_acc=0.5000 val_f1=0.4495
+[phase1] epoch=03 loss=0.5668 val_acc=0.5196 val_f1=0.5108
+[phase1] epoch=04 loss=0.5454 val_acc=0.7647 val_f1=0.7663
+[phase1] epoch=05 loss=0.6590 val_acc=0.6275 val_f1=0.5819
+[phase1] epoch=06 loss=0.5927 val_acc=0.6471 val_f1=0.6452
+[phase1] epoch=07 loss=0.4514 val_acc=0.7451 val_f1=0.7358
+[phase1] epoch=08 loss=0.7592 val_acc=0.7353 val_f1=0.7262
+[phase1] epoch=09 loss=0.6613 val_acc=0.7647 val_f1=0.7615
+[phase1] early stop at epoch 9
+[phase2] epoch=01 loss=0.7887 val_acc=0.6863 val_f1=0.6802
+[phase2] epoch=02 loss=0.5838 val_acc=0.6275 val_f1=0.5869
+[phase2] epoch=03 loss=0.4687 val_acc=0.6765 val_f1=0.6677
+[phase2] epoch=04 loss=0.3640 val_acc=0.8039 val_f1=0.8018
+[phase2] epoch=05 loss=0.5639 val_acc=0.7353 val_f1=0.7228
+[phase2] epoch=06 loss=0.3491 val_acc=0.7353 val_f1=0.7243
+[phase2] epoch=07 loss=0.2799 val_acc=0.8137 val_f1=0.8133
+[phase2] epoch=08 loss=0.2665 val_acc=0.8431 val_f1=0.8383
+[phase2] epoch=09 loss=0.3398 val_acc=0.7843 val_f1=0.7679
+[phase2] epoch=10 loss=0.5790 val_acc=0.7353 val_f1=0.7040
+[phase2] epoch=11 loss=0.4573 val_acc=0.9118 val_f1=0.9101
+[phase2] epoch=12 loss=0.4265 val_acc=0.8039 val_f1=0.7874
+[phase2] epoch=13 loss=0.5261 val_acc=0.8333 val_f1=0.8147
+[phase2] epoch=14 loss=0.5578 val_acc=0.7451 val_f1=0.7188
+[phase2] epoch=15 loss=0.2630 val_acc=0.6667 val_f1=0.6646
+[phase2] epoch=16 loss=0.4827 val_acc=0.8137 val_f1=0.8098
+[phase2] early stop at epoch 16
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\base_seed42\checkpoints\base_model.pth
+BASE test: acc=0.9252 macro_f1=0.9256
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=replay cycle=1 seed=42 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle1_seed42
+stream(cl_cycle1_stream)=210 val=102 test=107
+resumed from base_model.pth
+incumbent test: acc=0.9252 f1=0.9256
+replay buffer: 198 images
+epoch=01 loss=0.1819 val_acc=0.7941 val_f1=0.7694
+epoch=02 loss=0.1599 val_acc=0.8529 val_f1=0.8421
+epoch=03 loss=0.1629 val_acc=0.8627 val_f1=0.8508
+epoch=04 loss=0.1549 val_acc=0.8235 val_f1=0.8161
+epoch=05 loss=0.0987 val_acc=0.8725 val_f1=0.8608
+epoch=06 loss=0.1463 val_acc=0.8529 val_f1=0.8389
+epoch=07 loss=0.1321 val_acc=0.8039 val_f1=0.7864
+epoch=08 loss=0.1329 val_acc=0.8824 val_f1=0.8774
+epoch=09 loss=0.1366 val_acc=0.8824 val_f1=0.8749
+epoch=10 loss=0.0976 val_acc=0.8725 val_f1=0.8653
+epoch=11 loss=0.1216 val_acc=0.9118 val_f1=0.9097
+epoch=12 loss=0.1023 val_acc=0.8922 val_f1=0.8857
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle1_seed42\checkpoints\model.pth
+replay cycle1 test: acc=0.9159 f1=0.9133 (incumbent 0.9252)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=replay cycle=2 seed=42 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle2_seed42
+stream(cl_cycle2_stream)=207 val=102 test=107
+resumed from model.pth
+incumbent test: acc=0.9159 f1=0.9133
+replay buffer: 198 images
+epoch=01 loss=0.1340 val_acc=0.8922 val_f1=0.8857
+epoch=02 loss=0.1342 val_acc=0.8431 val_f1=0.8337
+epoch=03 loss=0.0856 val_acc=0.8824 val_f1=0.8738
+epoch=04 loss=0.0834 val_acc=0.9118 val_f1=0.9068
+epoch=05 loss=0.1024 val_acc=0.9118 val_f1=0.9066
+epoch=06 loss=0.0704 val_acc=0.9020 val_f1=0.8977
+epoch=07 loss=0.0956 val_acc=0.9020 val_f1=0.8977
+epoch=08 loss=0.1109 val_acc=0.9118 val_f1=0.9076
+epoch=09 loss=0.0802 val_acc=0.8824 val_f1=0.8774
+epoch=10 loss=0.0762 val_acc=0.9020 val_f1=0.8973
+epoch=11 loss=0.0772 val_acc=0.9020 val_f1=0.8948
+epoch=12 loss=0.0748 val_acc=0.9216 val_f1=0.9188
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle2_seed42\checkpoints\model.pth
+replay cycle2 test: acc=0.9065 f1=0.9054 (incumbent 0.9159)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=ewc cycle=1 seed=42 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle1_seed42
+stream(cl_cycle1_stream)=210 val=102 test=107
+resumed from base_model.pth
+incumbent test: acc=0.9252 f1=0.9256
+fisher over 14 batches (417 imgs), lambda=10000.0
+epoch=01 loss=0.2613 val_acc=0.8431 val_f1=0.8200
+epoch=02 loss=0.2318 val_acc=0.8137 val_f1=0.7937
+epoch=03 loss=0.2532 val_acc=0.8235 val_f1=0.8025
+epoch=04 loss=0.1931 val_acc=0.8529 val_f1=0.8341
+epoch=05 loss=0.2130 val_acc=0.8824 val_f1=0.8744
+epoch=06 loss=0.2058 val_acc=0.8431 val_f1=0.8304
+epoch=07 loss=0.1420 val_acc=0.8333 val_f1=0.8116
+epoch=08 loss=0.1693 val_acc=0.8824 val_f1=0.8742
+epoch=09 loss=0.1725 val_acc=0.8725 val_f1=0.8653
+epoch=10 loss=0.1430 val_acc=0.8725 val_f1=0.8608
+early stop at epoch 10
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle1_seed42\checkpoints\model.pth
+ewc cycle1 test: acc=0.8785 f1=0.8747 (incumbent 0.9252)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=ewc cycle=2 seed=42 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle2_seed42
+stream(cl_cycle2_stream)=207 val=102 test=107
+resumed from model.pth
+incumbent test: acc=0.8785 f1=0.8747
+fisher over 20 batches (627 imgs), lambda=3000.0
+epoch=01 loss=0.2882 val_acc=0.8431 val_f1=0.8263
+epoch=02 loss=0.1946 val_acc=0.8529 val_f1=0.8352
+epoch=03 loss=0.1627 val_acc=0.8529 val_f1=0.8352
+epoch=04 loss=0.1788 val_acc=0.8529 val_f1=0.8352
+epoch=05 loss=0.1522 val_acc=0.8529 val_f1=0.8352
+epoch=06 loss=0.1621 val_acc=0.8431 val_f1=0.8210
+epoch=07 loss=0.1538 val_acc=0.8431 val_f1=0.8210
+early stop at epoch 7
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle2_seed42\checkpoints\model.pth
+ewc cycle2 test: acc=0.8411 f1=0.8253 (incumbent 0.8785)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=naive cycle=1 seed=42 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle1_seed42
+stream(cl_cycle1_stream)=210 val=102 test=107
+resumed from base_model.pth
+incumbent test: acc=0.9252 f1=0.9256
+epoch=01 loss=0.2658 val_acc=0.8039 val_f1=0.7816
+epoch=02 loss=0.2431 val_acc=0.7451 val_f1=0.7036
+epoch=03 loss=0.2461 val_acc=0.7549 val_f1=0.7224
+epoch=04 loss=0.1795 val_acc=0.7843 val_f1=0.7627
+epoch=05 loss=0.1316 val_acc=0.8235 val_f1=0.8095
+epoch=06 loss=0.2228 val_acc=0.8235 val_f1=0.8025
+epoch=07 loss=0.1088 val_acc=0.8333 val_f1=0.8113
+epoch=08 loss=0.1471 val_acc=0.8137 val_f1=0.7927
+epoch=09 loss=0.1156 val_acc=0.8235 val_f1=0.8025
+epoch=10 loss=0.1482 val_acc=0.8137 val_f1=0.8003
+epoch=11 loss=0.1437 val_acc=0.8431 val_f1=0.8316
+epoch=12 loss=0.1771 val_acc=0.8529 val_f1=0.8390
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle1_seed42\checkpoints\model.pth
+naive cycle1 test: acc=0.8411 f1=0.8258 (incumbent 0.9252)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=naive cycle=2 seed=42 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle2_seed42
+stream(cl_cycle2_stream)=207 val=102 test=107
+resumed from model.pth
+incumbent test: acc=0.8411 f1=0.8258
+epoch=01 loss=0.1344 val_acc=0.8431 val_f1=0.8240
+epoch=02 loss=0.1600 val_acc=0.8431 val_f1=0.8240
+epoch=03 loss=0.1856 val_acc=0.8235 val_f1=0.7960
+epoch=04 loss=0.1789 val_acc=0.8137 val_f1=0.7872
+epoch=05 loss=0.1235 val_acc=0.8137 val_f1=0.7872
+epoch=06 loss=0.1758 val_acc=0.8137 val_f1=0.7872
+early stop at epoch 6
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle2_seed42\checkpoints\model.pth
+naive cycle2 test: acc=0.8598 f1=0.8418 (incumbent 0.8411)
+device=cuda seed=43 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\base_seed43
+classes: ['Aphids_Disease_', 'Blotch_', 'Dry Leaf_', 'Healthy_Leaf_', 'Leaf_Spot_']
+initial_train=417 val=102 test=107
+[phase1] epoch=01 loss=1.0418 val_acc=0.5784 val_f1=0.5443
+[phase1] epoch=02 loss=0.6286 val_acc=0.5784 val_f1=0.5384
+[phase1] epoch=03 loss=0.5815 val_acc=0.5294 val_f1=0.4918
+[phase1] epoch=04 loss=0.3596 val_acc=0.6667 val_f1=0.6260
+[phase1] epoch=05 loss=0.5297 val_acc=0.5686 val_f1=0.5125
+[phase1] epoch=06 loss=0.4500 val_acc=0.7647 val_f1=0.7696
+[phase1] epoch=07 loss=0.5913 val_acc=0.6373 val_f1=0.6039
+[phase1] epoch=08 loss=0.7330 val_acc=0.7647 val_f1=0.7571
+[phase1] epoch=09 loss=0.5244 val_acc=0.7255 val_f1=0.7016
+[phase1] epoch=10 loss=0.3655 val_acc=0.8235 val_f1=0.8111
+[phase1] epoch=11 loss=0.5922 val_acc=0.7549 val_f1=0.7303
+[phase1] epoch=12 loss=0.7895 val_acc=0.7745 val_f1=0.7621
+[phase1] epoch=13 loss=0.4816 val_acc=0.8137 val_f1=0.7954
+[phase1] epoch=14 loss=0.4191 val_acc=0.8137 val_f1=0.8046
+[phase1] epoch=15 loss=0.5902 val_acc=0.8431 val_f1=0.8349
+[phase2] epoch=01 loss=0.3749 val_acc=0.7941 val_f1=0.7818
+[phase2] epoch=02 loss=0.4859 val_acc=0.8039 val_f1=0.7845
+[phase2] epoch=03 loss=0.5084 val_acc=0.7843 val_f1=0.7630
+[phase2] epoch=04 loss=0.5715 val_acc=0.7157 val_f1=0.6787
+[phase2] epoch=05 loss=0.5398 val_acc=0.8235 val_f1=0.8128
+[phase2] epoch=06 loss=0.3930 val_acc=0.8333 val_f1=0.8293
+[phase2] epoch=07 loss=0.3387 val_acc=0.7941 val_f1=0.7763
+[phase2] epoch=08 loss=0.4062 val_acc=0.8235 val_f1=0.8077
+[phase2] epoch=09 loss=0.5433 val_acc=0.6863 val_f1=0.6335
+[phase2] epoch=10 loss=0.6641 val_acc=0.8235 val_f1=0.8144
+[phase2] epoch=11 loss=0.3717 val_acc=0.8039 val_f1=0.7934
+[phase2] early stop at epoch 11
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\base_seed43\checkpoints\base_model.pth
+BASE test: acc=0.8505 macro_f1=0.8506
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=replay cycle=1 seed=43 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle1_seed43
+stream(cl_cycle1_stream)=210 val=102 test=107
+resumed from base_model.pth
+incumbent test: acc=0.8505 f1=0.8506
+replay buffer: 198 images
+epoch=01 loss=0.2425 val_acc=0.7647 val_f1=0.7292
+epoch=02 loss=0.1541 val_acc=0.8824 val_f1=0.8750
+epoch=03 loss=0.1743 val_acc=0.8431 val_f1=0.8308
+epoch=04 loss=0.1276 val_acc=0.8235 val_f1=0.8094
+epoch=05 loss=0.1661 val_acc=0.8333 val_f1=0.8218
+epoch=06 loss=0.1769 val_acc=0.8333 val_f1=0.8181
+epoch=07 loss=0.1312 val_acc=0.8824 val_f1=0.8781
+epoch=08 loss=0.1214 val_acc=0.8529 val_f1=0.8435
+epoch=09 loss=0.1079 val_acc=0.8529 val_f1=0.8431
+epoch=10 loss=0.0880 val_acc=0.8725 val_f1=0.8680
+epoch=11 loss=0.1105 val_acc=0.8922 val_f1=0.8884
+epoch=12 loss=0.1045 val_acc=0.8824 val_f1=0.8771
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle1_seed43\checkpoints\model.pth
+replay cycle1 test: acc=0.8972 f1=0.8957 (incumbent 0.8505)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=replay cycle=2 seed=43 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle2_seed43
+stream(cl_cycle2_stream)=207 val=102 test=107
+resumed from model.pth
+incumbent test: acc=0.8972 f1=0.8957
+replay buffer: 198 images
+epoch=01 loss=0.1169 val_acc=0.8529 val_f1=0.8434
+epoch=02 loss=0.1228 val_acc=0.8627 val_f1=0.8554
+epoch=03 loss=0.1358 val_acc=0.9020 val_f1=0.9004
+epoch=04 loss=0.0816 val_acc=0.9216 val_f1=0.9203
+epoch=05 loss=0.1288 val_acc=0.9118 val_f1=0.9108
+epoch=06 loss=0.0789 val_acc=0.9118 val_f1=0.9104
+epoch=07 loss=0.1022 val_acc=0.9216 val_f1=0.9205
+epoch=08 loss=0.0947 val_acc=0.8922 val_f1=0.8902
+epoch=09 loss=0.0792 val_acc=0.9216 val_f1=0.9199
+epoch=10 loss=0.0730 val_acc=0.9314 val_f1=0.9298
+epoch=11 loss=0.0619 val_acc=0.9412 val_f1=0.9405
+epoch=12 loss=0.0876 val_acc=0.9510 val_f1=0.9505
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle2_seed43\checkpoints\model.pth
+replay cycle2 test: acc=0.9252 f1=0.9239 (incumbent 0.8972)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=ewc cycle=1 seed=43 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle1_seed43
+stream(cl_cycle1_stream)=210 val=102 test=107
+resumed from base_model.pth
+incumbent test: acc=0.8505 f1=0.8506
+fisher over 14 batches (417 imgs), lambda=10000.0
+epoch=01 loss=0.4469 val_acc=0.8627 val_f1=0.8513
+epoch=02 loss=0.3401 val_acc=0.8529 val_f1=0.8386
+epoch=03 loss=0.2335 val_acc=0.8431 val_f1=0.8254
+epoch=04 loss=0.2998 val_acc=0.8725 val_f1=0.8665
+epoch=05 loss=0.2570 val_acc=0.8922 val_f1=0.8856
+epoch=06 loss=0.2007 val_acc=0.9020 val_f1=0.8979
+epoch=07 loss=0.2965 val_acc=0.8824 val_f1=0.8765
+epoch=08 loss=0.2475 val_acc=0.8824 val_f1=0.8742
+epoch=09 loss=0.2012 val_acc=0.8824 val_f1=0.8742
+epoch=10 loss=0.2566 val_acc=0.8824 val_f1=0.8764
+epoch=11 loss=0.2394 val_acc=0.8725 val_f1=0.8668
+early stop at epoch 11
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle1_seed43\checkpoints\model.pth
+ewc cycle1 test: acc=0.8879 f1=0.8857 (incumbent 0.8505)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=ewc cycle=2 seed=43 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle2_seed43
+stream(cl_cycle2_stream)=207 val=102 test=107
+resumed from model.pth
+incumbent test: acc=0.8879 f1=0.8857
+fisher over 20 batches (627 imgs), lambda=3000.0
+epoch=01 loss=0.2540 val_acc=0.8627 val_f1=0.8532
+epoch=02 loss=0.2333 val_acc=0.8922 val_f1=0.8858
+epoch=03 loss=0.1918 val_acc=0.8922 val_f1=0.8825
+epoch=04 loss=0.1931 val_acc=0.8922 val_f1=0.8825
+epoch=05 loss=0.1489 val_acc=0.8725 val_f1=0.8647
+epoch=06 loss=0.2075 val_acc=0.8529 val_f1=0.8399
+epoch=07 loss=0.2648 val_acc=0.8529 val_f1=0.8399
+early stop at epoch 7
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle2_seed43\checkpoints\model.pth
+ewc cycle2 test: acc=0.8785 f1=0.8731 (incumbent 0.8879)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=naive cycle=1 seed=43 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle1_seed43
+stream(cl_cycle1_stream)=210 val=102 test=107
+resumed from base_model.pth
+incumbent test: acc=0.8505 f1=0.8506
+epoch=01 loss=0.3217 val_acc=0.8431 val_f1=0.8316
+epoch=02 loss=0.2884 val_acc=0.7941 val_f1=0.7731
+epoch=03 loss=0.2900 val_acc=0.7549 val_f1=0.7358
+epoch=04 loss=0.1359 val_acc=0.7745 val_f1=0.7531
+epoch=05 loss=0.2252 val_acc=0.8627 val_f1=0.8508
+epoch=06 loss=0.1170 val_acc=0.8333 val_f1=0.8190
+epoch=07 loss=0.1185 val_acc=0.8431 val_f1=0.8284
+epoch=08 loss=0.1487 val_acc=0.8627 val_f1=0.8559
+epoch=09 loss=0.1389 val_acc=0.8627 val_f1=0.8508
+epoch=10 loss=0.1578 val_acc=0.8725 val_f1=0.8630
+epoch=11 loss=0.1347 val_acc=0.8529 val_f1=0.8462
+epoch=12 loss=0.1450 val_acc=0.9020 val_f1=0.8998
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle1_seed43\checkpoints\model.pth
+naive cycle1 test: acc=0.8879 f1=0.8888 (incumbent 0.8505)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=naive cycle=2 seed=43 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle2_seed43
+stream(cl_cycle2_stream)=207 val=102 test=107
+resumed from model.pth
+incumbent test: acc=0.8879 f1=0.8888
+epoch=01 loss=0.1743 val_acc=0.8627 val_f1=0.8561
+epoch=02 loss=0.2074 val_acc=0.8824 val_f1=0.8761
+epoch=03 loss=0.1933 val_acc=0.8431 val_f1=0.8296
+epoch=04 loss=0.2336 val_acc=0.8431 val_f1=0.8328
+epoch=05 loss=0.1203 val_acc=0.8922 val_f1=0.8866
+epoch=06 loss=0.1421 val_acc=0.9412 val_f1=0.9404
+epoch=07 loss=0.1564 val_acc=0.8922 val_f1=0.8888
+epoch=08 loss=0.1068 val_acc=0.9020 val_f1=0.8988
+epoch=09 loss=0.1590 val_acc=0.9020 val_f1=0.8977
+epoch=10 loss=0.2394 val_acc=0.9020 val_f1=0.8981
+epoch=11 loss=0.1086 val_acc=0.8922 val_f1=0.8882
+early stop at epoch 11
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle2_seed43\checkpoints\model.pth
+naive cycle2 test: acc=0.9065 f1=0.9029 (incumbent 0.8879)
+device=cuda seed=44 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\base_seed44
+classes: ['Aphids_Disease_', 'Blotch_', 'Dry Leaf_', 'Healthy_Leaf_', 'Leaf_Spot_']
+initial_train=417 val=102 test=107
+[phase1] epoch=01 loss=0.9939 val_acc=0.5490 val_f1=0.5208
+[phase1] epoch=02 loss=0.6248 val_acc=0.5196 val_f1=0.4776
+[phase1] epoch=03 loss=0.5154 val_acc=0.5784 val_f1=0.5619
+[phase1] epoch=04 loss=0.4990 val_acc=0.5882 val_f1=0.5576
+[phase1] epoch=05 loss=0.4534 val_acc=0.6471 val_f1=0.6140
+[phase1] epoch=06 loss=0.6457 val_acc=0.6275 val_f1=0.5748
+[phase1] epoch=07 loss=0.5568 val_acc=0.7059 val_f1=0.6853
+[phase1] epoch=08 loss=0.3979 val_acc=0.7451 val_f1=0.7385
+[phase1] epoch=09 loss=0.3906 val_acc=0.7255 val_f1=0.7133
+[phase1] epoch=10 loss=0.2652 val_acc=0.7941 val_f1=0.7905
+[phase1] epoch=11 loss=0.5255 val_acc=0.7059 val_f1=0.6902
+[phase1] epoch=12 loss=0.6256 val_acc=0.7647 val_f1=0.7612
+[phase1] epoch=13 loss=0.4329 val_acc=0.8137 val_f1=0.8135
+[phase1] epoch=14 loss=0.6232 val_acc=0.7745 val_f1=0.7638
+[phase1] epoch=15 loss=0.5214 val_acc=0.8235 val_f1=0.8108
+[phase2] epoch=01 loss=0.6145 val_acc=0.7843 val_f1=0.7783
+[phase2] epoch=02 loss=0.6680 val_acc=0.8529 val_f1=0.8382
+[phase2] epoch=03 loss=0.5305 val_acc=0.7451 val_f1=0.7290
+[phase2] epoch=04 loss=0.5453 val_acc=0.8333 val_f1=0.8237
+[phase2] epoch=05 loss=0.5350 val_acc=0.7353 val_f1=0.7281
+[phase2] epoch=06 loss=0.3733 val_acc=0.8922 val_f1=0.8876
+[phase2] epoch=07 loss=0.4571 val_acc=0.8235 val_f1=0.8044
+[phase2] epoch=08 loss=0.4189 val_acc=0.7647 val_f1=0.7422
+[phase2] epoch=09 loss=0.5528 val_acc=0.7451 val_f1=0.7192
+[phase2] epoch=10 loss=0.6743 val_acc=0.8824 val_f1=0.8826
+[phase2] epoch=11 loss=0.4076 val_acc=0.7843 val_f1=0.7648
+[phase2] early stop at epoch 11
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\base_seed44\checkpoints\base_model.pth
+BASE test: acc=0.8879 macro_f1=0.8874
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=replay cycle=1 seed=44 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle1_seed44
+stream(cl_cycle1_stream)=210 val=102 test=107
+resumed from base_model.pth
+incumbent test: acc=0.8879 f1=0.8874
+replay buffer: 198 images
+epoch=01 loss=0.2323 val_acc=0.7843 val_f1=0.7607
+epoch=02 loss=0.1689 val_acc=0.8235 val_f1=0.8090
+epoch=03 loss=0.1509 val_acc=0.8333 val_f1=0.8182
+epoch=04 loss=0.1476 val_acc=0.8627 val_f1=0.8541
+epoch=05 loss=0.1415 val_acc=0.8627 val_f1=0.8433
+epoch=06 loss=0.1840 val_acc=0.8627 val_f1=0.8545
+epoch=07 loss=0.1325 val_acc=0.8922 val_f1=0.8855
+epoch=08 loss=0.1503 val_acc=0.9118 val_f1=0.9093
+epoch=09 loss=0.1617 val_acc=0.8529 val_f1=0.8467
+epoch=10 loss=0.1187 val_acc=0.8824 val_f1=0.8763
+epoch=11 loss=0.1468 val_acc=0.8725 val_f1=0.8677
+epoch=12 loss=0.0949 val_acc=0.8824 val_f1=0.8785
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle1_seed44\checkpoints\model.pth
+replay cycle1 test: acc=0.8785 f1=0.8747 (incumbent 0.8879)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=replay cycle=2 seed=44 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle2_seed44
+stream(cl_cycle2_stream)=207 val=102 test=107
+resumed from model.pth
+incumbent test: acc=0.8785 f1=0.8747
+replay buffer: 198 images
+epoch=01 loss=0.1557 val_acc=0.8922 val_f1=0.8874
+epoch=02 loss=0.1796 val_acc=0.8529 val_f1=0.8480
+epoch=03 loss=0.0937 val_acc=0.8627 val_f1=0.8583
+epoch=04 loss=0.1191 val_acc=0.8922 val_f1=0.8874
+epoch=05 loss=0.1004 val_acc=0.9020 val_f1=0.8997
+epoch=06 loss=0.1311 val_acc=0.9216 val_f1=0.9188
+epoch=07 loss=0.0919 val_acc=0.9020 val_f1=0.8987
+epoch=08 loss=0.1072 val_acc=0.8922 val_f1=0.8867
+epoch=09 loss=0.0933 val_acc=0.9020 val_f1=0.8987
+epoch=10 loss=0.0889 val_acc=0.9118 val_f1=0.9104
+epoch=11 loss=0.0629 val_acc=0.9118 val_f1=0.9104
+early stop at epoch 11
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\replay_cycle2_seed44\checkpoints\model.pth
+replay cycle2 test: acc=0.8879 f1=0.8840 (incumbent 0.8785)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=ewc cycle=1 seed=44 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle1_seed44
+stream(cl_cycle1_stream)=210 val=102 test=107
+resumed from base_model.pth
+incumbent test: acc=0.8879 f1=0.8874
+fisher over 14 batches (417 imgs), lambda=10000.0
+epoch=01 loss=0.2789 val_acc=0.8137 val_f1=0.7947
+epoch=02 loss=0.2719 val_acc=0.8235 val_f1=0.8111
+epoch=03 loss=0.2486 val_acc=0.8333 val_f1=0.8139
+epoch=04 loss=0.2632 val_acc=0.8039 val_f1=0.7854
+epoch=05 loss=0.1927 val_acc=0.8235 val_f1=0.8108
+epoch=06 loss=0.2508 val_acc=0.8725 val_f1=0.8647
+epoch=07 loss=0.2200 val_acc=0.8627 val_f1=0.8582
+epoch=08 loss=0.1817 val_acc=0.8235 val_f1=0.8120
+epoch=09 loss=0.2388 val_acc=0.8431 val_f1=0.8315
+epoch=10 loss=0.1803 val_acc=0.8824 val_f1=0.8771
+epoch=11 loss=0.1638 val_acc=0.8725 val_f1=0.8689
+epoch=12 loss=0.1687 val_acc=0.8627 val_f1=0.8582
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle1_seed44\checkpoints\model.pth
+ewc cycle1 test: acc=0.8785 f1=0.8716 (incumbent 0.8879)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=ewc cycle=2 seed=44 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle2_seed44
+stream(cl_cycle2_stream)=207 val=102 test=107
+resumed from model.pth
+incumbent test: acc=0.8785 f1=0.8716
+fisher over 20 batches (627 imgs), lambda=3000.0
+epoch=01 loss=0.2088 val_acc=0.8333 val_f1=0.8218
+epoch=02 loss=0.1911 val_acc=0.8725 val_f1=0.8677
+epoch=03 loss=0.2239 val_acc=0.8529 val_f1=0.8447
+epoch=04 loss=0.1951 val_acc=0.8431 val_f1=0.8384
+epoch=05 loss=0.2160 val_acc=0.8431 val_f1=0.8384
+epoch=06 loss=0.1379 val_acc=0.8529 val_f1=0.8442
+epoch=07 loss=0.1449 val_acc=0.8627 val_f1=0.8559
+early stop at epoch 7
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\ewc_cycle2_seed44\checkpoints\model.pth
+ewc cycle2 test: acc=0.8785 f1=0.8700 (incumbent 0.8785)
+G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=naive cycle=1 seed=44 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle1_seed44
+stream(cl_cycle1_stream)=210 val=102 test=107
+resumed from base_model.pth
+incumbent test: acc=0.8879 f1=0.8874
+epoch=01 loss=0.2788 val_acc=0.7843 val_f1=0.7636
+epoch=02 loss=0.2029 val_acc=0.7353 val_f1=0.6991
+epoch=03 loss=0.2239 val_acc=0.8235 val_f1=0.8103
+epoch=04 loss=0.1861 val_acc=0.8431 val_f1=0.8379
+epoch=05 loss=0.1976 val_acc=0.8922 val_f1=0.8854
+epoch=06 loss=0.1733 val_acc=0.8333 val_f1=0.8203
+epoch=07 loss=0.1638 val_acc=0.7941 val_f1=0.7817
+epoch=08 loss=0.1255 val_acc=0.8039 val_f1=0.7834
+epoch=09 loss=0.1619 val_acc=0.8431 val_f1=0.8329
+epoch=10 loss=0.1881 val_acc=0.8333 val_f1=0.8272
+early stop at epoch 10
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle1_seed44\checkpoints\model.pth
+naive cycle1 test: acc=0.8879 f1=0.8825 (incumbent 0.8879)
+seeds=[42, 43, 44] methods=['replay', 'ewc', 'naive']
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_base_turmeric.py --seed 42 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 119.1s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method replay --cycle 1 --seed 42 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 79.5s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method replay --cycle 2 --seed 42 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 78.2s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method ewc --cycle 1 --seed 42 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 47.5s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method ewc --cycle 2 --seed 42 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 36.3s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method naive --cycle 1 --seed 42 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 44.7s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method naive --cycle 2 --seed 42 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 27.6s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_base_turmeric.py --seed 43 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 142.4s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method replay --cycle 1 --seed 43 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 77.2s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method replay --cycle 2 --seed 43 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 74.9s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method ewc --cycle 1 --seed 43 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 47.4s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method ewc --cycle 2 --seed 43 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 35.8s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method naive --cycle 1 --seed 43 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 59.1s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method naive --cycle 2 --seed 43 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 64.4s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_base_turmeric.py --seed 44 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 150.4s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method replay --cycle 1 --seed 44 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 60.8s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method replay --cycle 2 --seed 44 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 53.4s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method ewc --cycle 1 --seed 44 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 40.5s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method ewc --cycle 2 --seed 44 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 28.9s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method naive --cycle 1 --seed 44 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================
+-- ok in 31.0s
+
+========================================================================
+$ G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py --method naive --cycle 2 --seed 44 --config G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\configs\part5_turmeric_cl.yaml
+========================================================================G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\code\train_cl_turmeric.py:99: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(base_ckpt, map_location=device), strict=True)
+device=cuda method=naive cycle=2 seed=44 -> G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle2_seed44
+stream(cl_cycle2_stream)=207 val=102 test=107
+resumed from model.pth
+incumbent test: acc=0.8879 f1=0.8825
+epoch=01 loss=0.1758 val_acc=0.8529 val_f1=0.8471
+epoch=02 loss=0.1720 val_acc=0.8039 val_f1=0.7942
+epoch=03 loss=0.1676 val_acc=0.7647 val_f1=0.7391
+epoch=04 loss=0.1970 val_acc=0.8039 val_f1=0.7850
+epoch=05 loss=0.1046 val_acc=0.8137 val_f1=0.8022
+epoch=06 loss=0.1098 val_acc=0.8039 val_f1=0.7924
+early stop at epoch 6
+
+Saved G:\AIOT_PHASE_03\CONTINUAL-LEARING-PLANT-DESEASE\experiments\part5_turmeric_cl\outputs\naive_cycle2_seed44\checkpoints\model.pth
+naive cycle2 test: acc=0.8411 f1=0.8427 (incumbent 0.8879)
+
+-- ok in 23.7s
+
+========================================================================
+ALL RUNS COMPLETE in 22.0 min
+next: python analyze_results.py

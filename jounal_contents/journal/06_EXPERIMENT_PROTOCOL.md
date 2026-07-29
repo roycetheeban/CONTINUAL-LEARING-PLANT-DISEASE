@@ -43,7 +43,7 @@ Your plan says **low / medium / high** (3 classes); the draft's Table VIII curre
 ---
 
 # PART 1 — E1: DECISION-TREE ENVIRONMENTAL RISK MODEL
-*Fills Table VIII (P10). Written for Tier B; the Tier A variant differs only at Step 3.*
+*Fills **Table IV** (planned as "Table VIII"; the compiled paper numbers it IV). Written for Tier B; the Tier A variant differs only at Step 3.*
 
 > ## ✅ AS-RUN RECORD (2026-07-24) — supersedes the Tier B plan below
 >
@@ -116,7 +116,7 @@ Ensure the monsoon regime falls at least partly in the **test** block — that g
 
 **Constrain depth to ≤ 5.** The entire justification for using a tree is auditability; a depth-12 tree is not auditable and you lose the argument that motivated the choice. If a shallow tree costs a little accuracy, that trade *is* the finding — report it.
 
-## Step 6 — Reporting (Table VIII, 3 classes)
+## Step 6 — Reporting (Table IV, 3 classes)
 
 - Per-class precision / recall / F1 / support, plus overall accuracy and macro-F1
 - Confusion matrix (Low↔Medium confusion is acceptable and expected; Low↔High is not)
@@ -132,7 +132,7 @@ Export one worked example — a real window from the test set where the tree out
 ---
 
 # PART 2 — E2: LABEL-LEVEL FUSION EVALUATION
-*Fills Table IX (P11).*
+*Fills **Table V** (planned as "Table IX").*
 
 > ## ✅ AS-RUN RECORD (2026-07-24) — supersedes the "source 1/2" plan below for now
 >
@@ -216,7 +216,7 @@ An "episode" = one 3–7 day window with a ground-truth outcome label. Aim for *
 | Sensor only | Decision-tree risk state, ignore images |
 | **Label-level fusion** | Both, via Φ |
 
-## Step 4 — Report (Table IX)
+## Step 4 — Report (Table V)
 
 - Accuracy and macro-F1 on the final state
 - **False-alarm rate** — the metric a farmer actually cares about; a system that cries wolf gets switched off
@@ -228,7 +228,7 @@ An "episode" = one 3–7 day window with a ground-truth outcome label. Aim for *
 ---
 
 # PART 3 — E3: ON-DEVICE CYCLE COST AND LATENCY
-*Fills Table X (P12). Must be measured **on the Jetson Orin Nano**, not on the training GPU.*
+*Fills **Table XIII** (planned as "Table X"). Specifies measurement **on the Jetson Orin Nano** — see the AS-RUN record: this was NOT achieved; a laptop-GPU proxy was used instead.*
 
 > ## 🟡 AS-RUN RECORD (2026-07-26) — PARTIAL, ON PROXY HARDWARE
 >
@@ -295,7 +295,63 @@ Optionally add idle and peak power draw (W) from `tegrastats`; useful if solar-p
 ---
 
 # PART 4 — E4: TURMERIC CL DEPLOYMENT VALIDATION
-*Fills Table XI (P13). Full protocol from data selection through layer-level training.*
+*Fills **Table XIV** (was planned as "Table XI"; the compiled paper numbers it XIV).*
+
+> ## ✅ AS-RUN RECORD (2026-07-29) — supersedes the dataset-assembly plan below
+>
+> **Data:** the two Mendeley sources below were **not** pooled/deduplicated as planned.
+> A pre-split, pre-segmented turmeric set was supplied directly
+> (`data/turmeric_5_classes_splitted/`, 1,045 images, 5 classes, 224×224 RGB, SAM-segmented).
+> Analysed before use: **0 exact duplicates**, 5 near-duplicate pairs at 16×16 dHash
+> (2 of them crossing splits → excluded), **99.5% effectively unique**. An earlier 8×8
+> aHash check suggested 187 near-duplicates; that was a **false alarm** from too coarse a
+> hash — similarly-posed leaf silhouettes on black backgrounds collide at that resolution.
+>
+> **Splitting — deviates from the tomato policy, deliberately.** The protocol's Step 2
+> assumed splitting from scratch. That is unsafe here: the existing phase-3 turmeric
+> checkpoint was trained on the shipped `train/`, so a fresh split would leak its training
+> images into the new test set and make its reported 89.81% retention uninterpretable.
+> Instead **test (107) and val (102) were carried over unchanged** and only `train/` (834)
+> was re-split 50/25/25 → initial 417 / cycle1 210 / cycle2 207, which reproduces the
+> tomato protocol's *internal* ratios (37.5 : 18.75 : 18.75). Output: `data/07_turmeric_5cls/`,
+> built by `data/06_scripts/splitters/split_turmeric_5cls.py`. Verified fully disjoint;
+> all 834 train images used exactly once.
+>
+> **Replay buffer rule changed, as Step 2(a) anticipated:** tomato's "15% per class, min 100"
+> is unsatisfiable at 76–92 images/class. Redefined as **`min(40, 50% of initial_train)`**
+> → 38–40/class. Stated in the paper.
+>
+> **Architecture:** built on **torchvision** MobileNetV3-Small + ImageNet (Case 2), *not* the
+> existing timm phase-3 checkpoint — the recipe under test is defined by the G1–G4 grouping
+> (`features[0:4]/[4:9]/[9:13]/classifier`), which is torchvision-specific. The phase-3 model
+> uses timm (`backbone.conv_stem.*`, 2.19M params, custom 2-layer head) and a
+> **non-alphabetical class order** (`Healthy=0, Leaf_Spot=1, Blotch=2, Dry=3, Aphids=4`);
+> it remains an independent reference point, not the basis.
+>
+> **Scope reduced (user decision):** Table XIV reports **Replay + a naive reference row**
+> rather than a full method ranking — the test set cannot separate methods (below), so a
+> ranking table would present differences the data does not support.
+>
+> **Result (3 seeds, mean ± std):** base 89.10 ± 2.35 → **Replay cycle 2 = 90.03 ± 3.54**;
+> EWC 88.79 ± 1.62; naive 87.85 ± 2.47. Replay is the only method ending above its own
+> baseline (+0.93 pp).
+>
+> **⚠️ The binding limitation:** n=107 ⇒ one image = 0.93 pp, single-run 95% CI ≈ ±5.7 pp.
+> **Every pairwise McNemar test returns p ≥ 0.109.** Per-seed replay results span 85.98 /
+> 92.52 / 91.59 — a 6.5 pp spread *within one method*. Reported as a feasibility result.
+>
+> **Two corrections made during development (both disclosed in the README):**
+> 1. *Replay batch-ratio bug* — the stream loader used `train.batch_size` (32) against a
+>    buffer batch of 16, giving a 1:2 mix instead of the intended 50/50. Caught because
+>    replay scored 82.24%, *below* the incumbent. After fix: 91.59%.
+> 2. *Post-hoc schedule change* — `patience` 5→8, epoch caps 15/30→30/40, after logs showed
+>    seed 43 hitting the phase-1 ceiling while still improving and seeds 43/44 early-stopping
+>    at epoch 6 on a noisy 102-image val. Applied identically to all seeds. It tightened base
+>    variance (±3.74 → ±2.35) but **made the headline comparison worse** (replay's margin
+>    over naive shrank 3.73 → 2.18 pp) — which is the evidence it was not result-chasing.
+>    Both runs retained: `outputs/` (final) and `outputs_patience5_backup/` (first).
+>
+> Code: `experiments/part5_turmeric_cl/`. Full inventory: that folder's `README.md`.
 
 ## Step 1 — Dataset assembly
 

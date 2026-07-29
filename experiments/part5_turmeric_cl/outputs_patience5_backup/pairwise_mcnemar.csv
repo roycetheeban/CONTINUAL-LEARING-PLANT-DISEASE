@@ -1,0 +1,10 @@
+seed,model_a,model_b,n_compared,a_right_b_wrong,b_right_a_wrong,n_discordant,p_value,verdict
+42,replay_cycle2,ewc_cycle2,107,9,2,11,0.0654296875,not significant
+43,replay_cycle2,ewc_cycle2,107,7,2,9,0.1796875,not significant
+44,replay_cycle2,ewc_cycle2,107,5,4,9,1.0,not significant
+42,replay_cycle2,naive_cycle2,107,8,3,11,0.2265625,not significant
+43,replay_cycle2,naive_cycle2,107,3,1,4,0.625,not significant
+44,replay_cycle2,naive_cycle2,107,7,2,9,0.1796875,not significant
+42,ewc_cycle2,naive_cycle2,107,0,2,2,0.5,not significant
+43,ewc_cycle2,naive_cycle2,107,2,5,7,0.453125,not significant
+44,ewc_cycle2,naive_cycle2,107,6,2,8,0.2890625,not significant
