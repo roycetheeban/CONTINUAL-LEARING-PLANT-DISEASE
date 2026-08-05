@@ -2,15 +2,19 @@
 
 **Template:** Ships as `\documentclass[journal]{IEEEtran}` so it **compiles on any Overleaf/TeX Live project with no extra files** (`ieeeaccess.cls` is NOT in TeX Live and must be uploaded from the IEEE Author Center — that missing file is the usual "No PDF" cause). A figure-fallback block draws placeholder boxes for figures that don't exist yet, so it builds before the figures are made. For the **final IEEE Access submission**, switch the documentclass to `ieeeaccess`, restore the IEEE Access front matter, and delete the fallback block — see the swap comments in the `.tex` and the WORKING NOTES.
 **Compile the ready-made file:** `leafsense.tex` (same content as the fence below). Don't re-extract unless you want to.
-**Length target:** ~15 pages · **References:** 35
+**Length target:** ~15 pages · **References:** 35 (all verified) · **Figures:** 8 · **Result tables:** all filled
 
-> **Ref status (updated):** [24], [26], [28] filled & Crossref-verified. Literature review expanded (+~1 pg): §II-B distillation (LwF), new §II-D On-Device & Federated, new §II-E Self-Training & Confidence Selection — refs **[29] LwF, [30] On-Device-256KB, [32] Noisy Student verified**; **[31] FedAvg and [33] FixMatch need page-range verification** (marked `%% VERIFY` in the .tex). **[34] Magarey et al. 2005 and [35] Gohel et al. 2022 added and Crossref-verified** — the turmeric-parameterised infection-risk oracle for E1 (below). Still to fill: **[21], [22]** (your prior papers) and **[27]** (turmeric dataset authors).
+> **Ref status: COMPLETE — verified 2026-07-29.** All **35** references audited; **20 of 21 DOIs resolve**; **IEEE format compliant**, no formatting changes needed. ⚠️ **Reference [5] was fabricated** (DOI 404s, and its claimed pages 9876–9888 fall in a gap between real *IEEE IoT J.* v9n12 articles) — removed and replaced with Khan et al., *Front. Plant Sci.* 14:1308528. It was **inherited from the prior conference paper**, so that bibliography is worth auditing too. Also corrected: [11] Dec. 2024 → **Jan. 2025**; [17] iCaRL pp. → **5533–5542**; [21] filled with the real ICIIS 2026 entry (**pp. 395–400, doi `10.1109/ICIIS69028.2026.11450780`**); [22] filled with ICDTSA 2025 (**Kilinochchi, May 2025, pp. 7–16, no DOI** — confirmed absent from Crossref); [27] real Mendeley author lists via the **DataCite** API; [31] FedAvg and [33] FixMatch `%% VERIFY` markers cleared. See `07_CHANGES_MADE.md` §26–27.
 
 > **E1 status: DONE.** The decision-tree environmental risk model is real, not a placeholder. Code: `experiments/part2_env_risk/code/` (`simulate_sensors.py`, `infection_risk_labels.py`, `features.py`, `train_env_risk.py`); config: `configs/part2_env_risk.yaml`; artifacts: `experiments/part2_env_risk/outputs/` (incl. deployed `decision_tree.pkl`). Labels are distilled from a validated infection model (Magarey et al. 2005) parameterised for turmeric (Gohel et al. 2022) — not self-defined thresholds, avoiding circularity. Result: deployed Decision Tree reaches **86.25% accuracy / 85.6 macro-F1**, matching or beating Random Forest and Gradient Boosting at a fraction of the size/latency; `hours_rh_above_85` + `rh_mean` account for 79% of feature importance, confirming the humidity/leaf-wetness mechanism. Data is simulated (disclosed in §VI). See `06_EXPERIMENT_PROTOCOL.md` Part 1 for the as-run design notes.
 
 > **E2 status: DONE.** The label-level fusion evaluation is real. Code: `experiments/part3_fusion_eval/code/` (`vision_infer.py`, `build_episodes.py`, `fusion_eval.py`); config: `configs/part3_fusion_eval.yaml`; artifacts: `experiments/part3_fusion_eval/outputs/`. The vision branch is the real trained Case 2 + Replay (cycle 2) checkpoint run on held-out tomato test images; the risk branch is real E1 test-period output; the 48 evaluation episodes are constructed (day-by-day sequencing, disclosed in §VI). Result: label-level fusion reaches **87.5% accuracy / 71.75 macro-F1** vs. 60.4%/29.6 (vision-only) and 35.4%/20.6 (sensor-only), matches sensor-only's lower false-alarm rate, degrades gracefully to vision-only when the sensor fails, and is honestly imperfect — it fails on one deliberately adversarial category where a coincidental high-humidity reading cannot be distinguished from a real one. Fig. 5 is built from real episode data. See `experiments/part3_fusion_eval/README.md` for full methodology.
 
 > **E3/E5 status: FILLED, but on PROXY HARDWARE — read the caveats.** Table X now holds real measurements, but **not** the Jetson Orin Nano numbers the protocol specifies (no Jetson available). Code: `experiments/part4_ondevice_proxy/code/` (`time_retrain_cycle.py`, `export_and_compile.py`, `bench_accuracy_latency.py`); config: `configs/part4_ondevice_proxy.yaml`; artifacts: `experiments/part4_ondevice_proxy/outputs/`. **Measured on a laptop NVIDIA RTX 4050 (CUDA 12.1):** replay retrain cycle **373.2 s / 155.6 MB peak VRAM** (reproduced 98.42% test acc exactly, confirming a faithful re-timing of the real cycle-2 config — the real checkpoint E2 depends on was *not* overwritten); ONNX export 1.5 s / 5.8 MB; **FP16 conversion gate Δ ≈ 0** (FP32 98.51% / PyTorch-FP16 98.59% / compiled 98.51%); classification latency eager 10.2 ms/img → **compiled 3.8 ms/img (2.7×)**. **Three disclosed deviations:** (1) laptop GPU, not Jetson — real on-device run still outstanding; (2) **TensorRT could not be installed** (pip `tensorrt`/`tensorrt-cu12` pull `nvidia-cuda-runtime-cu13`, whose wheel fails against this machine's CUDA 12.1 torch build), so **ONNX Runtime GPU** was substituted as the compiled-graph path and is labeled as such everywhere; (3) detection (12.2 ms) and segmentation (5.0 ms) are **cited from prior paper [21]**, not re-measured, per `01_SCOPE_AND_COVERAGE.md` §1.2. Two findings kept rather than smoothed over: the FP16 delta is one image out of 1,137 (i.e. noise — so the gate's argument is *verifying* equivalence, not that conversion is lossy), and eager FP16 is *slower* than FP32 for a model this small. Full gap inventory: `experiments/part4_ondevice_proxy/README.md` §7.
+
+> **E4 status: DONE (2026-07-29).** Turmeric CL validation is real. Code: `experiments/part5_turmeric_cl/code/` (`train_base_turmeric.py`, `train_cl_turmeric.py`, `analyze_results.py`); config: `configs/part5_turmeric_cl.yaml`; splits: `data/07_turmeric_5cls/` (built by `data/06_scripts/splitters/split_turmeric_5cls.py` — **test/val frozen from the shipped split** so the existing phase-3 checkpoint stays comparable; only `train/` re-split 50/25/25 → 417/210/207). Case 2 + Replay, 2 CL cycles, 3 seeds: **Replay 90.03% ± 3.54** vs. base 89.10% ± 2.35 — the only method ending above its own baseline (EWC 88.79% ± 1.62, naive 87.85% ± 2.47). Buffer rule changed to `min(40, 50% of initial_train)` and stated in the paper (tomato's "15%, min 100" is unsatisfiable at 76–92 images/class). ⚠️ Reported as a **feasibility check, not a ranking**: with n=107 no pairwise McNemar test reaches p<0.05. Scope narrowed to **Replay + a naive reference** for the same reason. See `06_EXPERIMENT_PROTOCOL.md` PART 4 for the as-run record.
+
+> **Fig. 9 status: REMOVED (2026-07-29).** No unit is installed, so the deployment photograph cannot be produced, and a dashboard-only figure does not carry the deployment claim. The figure was **never referenced from the body text** (`\ref{fig:deploy}` appeared zero times), so nothing depended on it. §VI was reworded from "pending replacement with in-situ sensor logs from *the installed* turmeric greenhouse unit" — which presupposed an installation that does not exist — to "No unit is currently installed, so no in-situ readings exist… to be revisited once a turmeric greenhouse unit is deployed." Every other deployment claim was audited. **The paper is now consistently a methods-and-architecture contribution, not a deployed-system one** — coherent with E1 being simulated, E2 constructed and E3 proxy-measured.
 
 ## How to use this file
 1. Compile `leafsense.tex` directly, or copy the fenced LaTeX below into your `.tex`. It starts at `\documentclass` — never prepend anything before it (that was what put the notes on page 1).
@@ -29,11 +33,11 @@
 | P6 | Fig. 6 | CatA accuracy grouped bar chart | ✅ DONE — `figures/fig6_cata.pdf` |
 | P7 | Fig. 7 | λ sensitivity curve | ✅ DONE — `figures/fig7_lambda.pdf` |
 | P8 | Fig. 8 | CatB stability–plasticity scatter | ✅ DONE — `figures/fig8_catb_scatter.pdf` |
-| P9 | Fig. 9 | Deployment photo + dashboard screenshot | 🔴 pending hardware |
-| P10 | Table VIII | Decision-tree risk results | ✅ DONE — E1 real (86.25% acc, DT deployed) |
-| P11 | Table IX | Fusion vs image-only | ✅ DONE — E2 real (87.5% acc fusion) |
-| P12 | Table X | On-device cycle + latency | 🟡 FILLED — E3/E5 real, but **laptop-GPU proxy, not Jetson** |
-| P13 | Table XI | Turmeric CL validation ⏳ E4 |
+| P9 | ~~Fig. 9~~ | Deployment photo + dashboard screenshot | ❌ **REMOVED 2026-07-29** — no installed unit; never `\ref`'d |
+| P10 | Table IV | Decision-tree risk results | ✅ DONE — E1 real (86.25% acc, DT deployed) |
+| P11 | Table V | Fusion vs image-only | ✅ DONE — E2 real (87.5% acc fusion) |
+| P12 | Table XIII | On-device cycle + latency | 🟡 FILLED — E3/E5 real, but **laptop-GPU proxy, not Jetson** |
+| P13 | Table XIV | Turmeric CL validation | ✅ DONE — E4 real (Replay 90.03% ± 3.54, 3 seeds, feasibility framing) |
 
 ---
 
@@ -68,7 +72,7 @@
 \usepackage{url}
 \usepackage{xparse}
 
-%% --- float placement tuning (float-heavy paper: 9 figures + 13 tables) ---
+%% --- float placement tuning (float-heavy paper: 8 figures + 14 tables) ---
 \graphicspath{{figures/}}
 \renewcommand{\topfraction}{0.92}
 \renewcommand{\bottomfraction}{0.85}
@@ -742,8 +746,8 @@ rather than to their tuning.
 \textbf{Stage} & \textbf{G1} & \textbf{G2} & \textbf{G3} & \textbf{G4 Head} \\
 \midrule
 Case 1 --- Scratch            & 1e-3 & 1e-3 & 1e-3 & 1e-3 \\
-Case 2 --- Phase i            & Froz. & Froz. & Froz. & 1e-3 \\
-Case 2 --- Phase ii           & Froz. & Froz. & 1e-4 & 1e-3 \\
+Case 2 --- Phase i            & Froz. & Froz. & Froz. & 8e-4 \\
+Case 2 --- Phase ii           & Froz. & Froz. & 5e-5 & 5e-4 \\
 Case 3A --- Pretrain (26 cls) & 1e-3 & 1e-3 & 1e-3 & 1e-3 \\
 Case 3B --- Phase i           & Froz. & Froz. & 5e-5 & 5e-4 \\
 Case 3B --- Phase ii          & Froz. & 1e-5 & 5e-5 & 5e-4 \\
@@ -1013,15 +1017,46 @@ size.
 
 \subsection{Implementation}
 
-All experiments use MobileNetV3-Small at $224\times224\times3$ input with the
-layer-wise schedule of Table~\ref{tab:lr}. Early stopping is applied with a minimum
-of five epochs before the criterion becomes active, preventing premature termination
-on noisy validation fluctuations for the small classes T2 and T4. Benchmark training
-is performed on a single GPU; the deployment measurements of
-Section~\ref{subsec:ondevice} are taken on the Jetson Orin Nano target.
-%% >>> Add here: exact GPU model, framework versions (PyTorch/CUDA/TensorRT),
-%% optimizer (e.g. AdamW), batch size, epochs per cycle, and random seed count.
-%% Reviewers at IEEE Access routinely ask for this. <<<
+All experiments use MobileNetV3-Small at $224\times224\times3$ input, obtained by
+resizing the short side to 256 followed by cropping, with the layer-wise schedule of
+Table~\ref{tab:lr}. Early stopping is applied with a minimum of five epochs before
+the criterion becomes active, preventing premature termination on noisy validation
+fluctuations for the small classes T2 and T4.
+
+\textbf{Hardware and software.} All benchmark training reported in
+Section~\ref{sec:results} was performed on a single NVIDIA GeForce RTX~4050 Laptop
+GPU (6\,GB VRAM, driver 595.79) under Python~3.10 with PyTorch~2.5.1,
+torchvision~0.20.1 and CUDA~12.1. Training is carried out in full precision;
+automatic mixed precision is not used, so the FP16 comparison of
+Section~\ref{subsec:ondevice} concerns only the exported deployment artifact and not
+the training pipeline. The deployment measurements of
+Section~\ref{subsec:ondevice} were taken on this same GPU and \emph{not} on the
+Jetson Orin Nano target, which was unavailable; see the on-device measurement
+disclosure below.
+
+\textbf{Optimization.} Every stage uses Adam with weight decay $10^{-4}$ and a
+class-weighted cross-entropy loss, with learning rates scheduled by reduction on
+plateau of validation macro-F1 (factor 0.5, floor $10^{-6}$); per-group learning
+rates are listed in full in Table~\ref{tab:lr}. The batch size is 32 throughout,
+except the Case~3A PlantVillage pre-training stage which uses 96, and replay cycles
+compose each batch from 16 buffered and 16 stream samples so that the old-to-new
+ratio is held at 1:1. Training from scratch (Case~1) and PlantVillage pre-training
+(Case~3A) run to at most 50 epochs with early-stopping patience 10; the two-phase
+fine-tuning runs to at most 20 then 30 epochs with patience 6 for Case~2, and 15
+then 10 epochs with patience 5 for Case~3B. Each continual learning cycle runs to at
+most 12 epochs with patience 5.
+
+\textbf{Random seeds.} The continual learning benchmark of
+Section~\ref{sec:results} is executed at a \emph{single} random seed (42) for every
+case, method and cycle. The differences between methods in
+Tables~\ref{tab:cata}--\ref{tab:resources} therefore carry no estimate of
+run-to-run variance and should be read as one realization rather than an expected
+value; the consistency of the method ranking across three initialization cases and
+two category settings is the only stability evidence available. The turmeric
+validation of Section~\ref{subsec:turmeric} is the exception, being repeated over
+three seeds with mean and standard deviation reported. Repeating the full benchmark
+over multiple seeds is the single most valuable extension of this evaluation and is
+left to future work.
 
 \textbf{Environmental data disclosure.} The sensor traces used to train and
 evaluate the environmental risk model of Section~\ref{sec:fusion} are
@@ -1307,14 +1342,18 @@ support it.
 \label{tab:hybrid}
 \centering
 \small
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-\textbf{Case} & \textbf{Hybrid New} & \textbf{Replay New} & \textbf{Hybrid Old} & \textbf{Time overhead} \\
+ & \multicolumn{2}{c}{\textbf{New-class}} & \textbf{Hybrid} & \textbf{Time} \\
+\cmidrule(lr){2-3}
+\textbf{Case} & \textbf{Hybrid} & \textbf{Replay} & \textbf{old ret.} & \textbf{overhead} \\
 \midrule
-Case 1 & 84.43\% & 92.85\% ($+8.4$) & 92.44\% & $+37\%$ \\
-Case 2 & 95.26\% & 98.07\% ($+2.8$) & 98.24\% & $+40\%$ \\
-Case 3 & 92.84\% & 96.42\% ($+3.6$) & 97.54\% & $+39\%$ \\
+Case 1 & 84.43 & 92.85 ($+8.4$) & 92.44 & $+37\%$ \\
+Case 2 & 95.26 & 98.07 ($+2.8$) & 98.24 & $+40\%$ \\
+Case 3 & 92.84 & 96.42 ($+3.6$) & 97.54 & $+39\%$ \\
 \bottomrule
+\multicolumn{5}{@{}l}{\footnotesize Accuracies in \%; parentheses give replay's margin.}
 \end{tabular}
 \end{table}
 
@@ -1336,17 +1375,19 @@ Table~\ref{tab:resources} reports deployment-relevant costs.
 \label{tab:resources}
 \centering
 \small
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}lccl@{}}
 \toprule
-\textbf{Method / Scenario} & \textbf{Peak VRAM} & \textbf{Model} & \textbf{Note} \\
+\textbf{Method /} & \textbf{Peak VRAM} & \textbf{Model} & \\
+\textbf{scenario} & \textbf{(MB)} & \textbf{(MB)} & \textbf{Note} \\
 \midrule
-Isolation --- CatA & 122.63\,MB & 5.81\,MB & Lowest VRAM \\
-Replay --- CatA    & 155.58\,MB & 5.81\,MB & Best accuracy \\
-EWC --- CatA       & 169.51\,MB & 5.81\,MB & Fastest (171\,s, Case 2) \\
-Naive --- CatA/B   & 161--162\,MB & 5.81\,MB & Reference \\
-Replay --- CatB    & 325.39\,MB & 5.82\,MB & Head expansion \\
-EWC --- CatB       & 383--601\,MB & 5.82\,MB & Fisher matrix at Cycle 2 \\
-Hybrid --- CatB    & 384--601\,MB & 5.82\,MB & Highest, no accuracy gain \\
+Isolation --- CatA & 122.63   & 5.81 & Lowest VRAM \\
+Replay --- CatA    & 155.58   & 5.81 & Best accuracy \\
+EWC --- CatA       & 169.51   & 5.81 & Fastest (171\,s) \\
+Naive --- CatA/B   & 161--162 & 5.81 & Reference \\
+Replay --- CatB    & 325.39   & 5.82 & Head expansion \\
+EWC --- CatB       & 383--601 & 5.82 & Fisher at Cycle 2 \\
+Hybrid --- CatB    & 384--601 & 5.82 & Highest; no gain \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1858,11 +1899,11 @@ capsici}) of turmeric,'' \emph{Indian Phytopathol.}, vol. 75, no. 2, pp. 487--49
 % | P6 | Fig. 6 | CatA accuracy grouped bar chart |
 % | P7 | Fig. 7 | λ sensitivity curve |
 % | P8 | Fig. 8 | CatB stability–plasticity scatter |
-% | P9 | Fig. 9 | Deployment photo + dashboard screenshot |
-% | P10 | Table VIII | Decision-tree risk results ✅ DONE (E1) |
-% | P11 | Table IX | Fusion vs image-only ✅ DONE (E2) |
-% | P12 | Table X | On-device cycle + latency ✅ DONE (E3/E5, laptop-GPU proxy) |
-% | P13 | Table XI | Turmeric CL validation ⏳ E4 |
+% | P9 | ~~Fig. 9~~ | Deployment photo + dashboard screenshot -- REMOVED 2026-07-29 (no installed unit; figure was never \ref'd) |
+% | P10 | Table IV | Decision-tree risk results ✅ DONE (E1) |
+% | P11 | Table V | Fusion vs image-only ✅ DONE (E2) |
+% | P12 | Table XIII | On-device cycle + latency ✅ DONE (E3/E5, laptop-GPU proxy) |
+% | P13 | Table XIV | Turmeric CL validation ✅ DONE (E4, Replay + naive, 3 seeds) |
 %
 % ---
 %
@@ -1875,15 +1916,15 @@ capsici}) of turmeric,'' \emph{Indian Phytopathol.}, vol. 75, no. 2, pp. 487--49
 %
 % ## Pre-submission checklist
 %
-% - [x] **E1** decision-tree experiment → fill Table VIII (P10) + Fig. 7 discussion
-% - [x] **E2** fusion evaluation → fill Table IX (P11) + Fig. 5 (P5)
-% - [x] **E3/E5** cycle + latency → Table X (P12) filled + discussion written. NOTE: laptop-GPU proxy, NOT Jetson; TensorRT unavailable (ONNX Runtime substituted); detect/seg cited to [21]. Real on-device measurement still outstanding.
-% - [ ] **E4** turmeric CL validation → fill Table XI (P13) and write the 2 discussion paragraphs
-% - [ ] Produce figures P1–P9 (vector PDF preferred; 600 dpi minimum if raster)
-% - [ ] Fill implementation details in Section VI-C (GPU, versions, optimizer, epochs, seeds)
+% - [x] **E1** decision-tree experiment → Table IV (P10) filled + discussion written
+% - [x] **E2** fusion evaluation → Table V (P11) filled + Fig. 5 (P5) built
+% - [x] **E3/E5** cycle + latency → Table XIII (P12) filled + discussion written. NOTE: laptop-GPU proxy, NOT Jetson; TensorRT unavailable (ONNX Runtime substituted); detect/seg cited to [21]. Real on-device measurement still outstanding.
+% - [x] **E4** turmeric CL validation → Table XIV (P13) filled + discussion written. Case 2 + Replay on data/07_turmeric_5cls, 2 cycles, 3 seeds: Replay 90.03 +/- 3.54 vs base 89.10 +/- 2.35, naive 87.85 +/- 2.47. Scope narrowed to Replay + naive reference; framed as a feasibility check (n=107, no pairwise McNemar reaches p<0.05).
+% - [x] Produce figures P1–P8 (vector PDF) — all 8 done; P9 removed, not produced
+% - [x] Fill implementation details in Section V-C -- DONE 2026-07-30: RTX 4050 Laptop GPU (6 GB, driver 595.79), Python 3.10 / PyTorch 2.5.1 / torchvision 0.20.1 / CUDA 12.1, FP32 (no AMP), Adam + wd 1e-4, class-weighted CE, ReduceLROnPlateau on val macro-F1, batch 32 (96 for Case 3A pretrain; replay 16+16), epoch/patience budgets per stage, single seed 42 with the limitation stated explicitly.
 % - [x] ~~Replace refs [24] and [26]~~ — done, Crossref-verified (Li et al. 2024, CEA 224:109211; Lee & Yun 2023, Plant Methods 19:145). [28] Rudin 2019 added.
-% - [ ] Update refs [21], [22], [27] with actual venues/DOIs
-% - [ ] **Verify every reference on IEEE Xplore** — do not submit unverified bibliographic data
+% - [x] Update refs [21], [22], [27] with actual venues/DOIs — done 2026-07-29 (ICIIS 2026 pp.395--400 + DOI; ICDTSA 2025 pp.7--16, no DOI; Mendeley authors via DataCite)
+% - [x] **Verify every reference** — done 2026-07-29: all 35 checked, 20/21 DOIs resolve, IEEE format compliant. Ref [5] was FABRICATED and has been replaced (see 07_CHANGES_MADE.md 26).
 % - [ ] Note: ref [26] has a published correction (doi: 10.1186/s13007-024-01140-3) — check whether it affects anything you rely on
 % - [ ] Add author biographies and photos
 % - [ ] Run through IEEE Access page-count and formatting check (~15 pages)
@@ -1895,16 +1936,17 @@ capsici}) of turmeric,'' \emph{Indian Phytopathol.}, vol. 75, no. 2, pp. 487--49
 
 ## Pre-submission checklist
 
-- [x] ~~**E1** decision-tree experiment~~ — done. Table VIII filled (5-model comparison, DT deployed: 86.25% acc / 85.6 macro-F1). Code in `experiments/part2_env_risk/`. Refs [34],[35] added. §VI simulation disclosure added.
-- [x] ~~**E2** fusion evaluation~~ — done. Table IX filled (fusion 87.5% acc / 71.75 macro-F1 vs. 60.4%/29.6 vision-only, 35.4%/20.6 sensor-only, on 48 constructed episodes). Fig. 5 (P5) built from real episode data. Code in `experiments/part3_fusion_eval/`. §VI fusion-evaluation disclosure added.
-- [x] ~~**E3/E5** cycle + latency~~ — Table X (P12) filled + discussion written. ⚠️ **Laptop RTX 4050 proxy, NOT Jetson**; TensorRT unavailable → ONNX Runtime substituted; detect/seg cited to [21]. Retrain 373.2 s / 155.6 MB VRAM; FP16 gate Δ ≈ 0; compiled classification 3.8 ms/img (2.7× vs eager). Code in `experiments/part4_ondevice_proxy/`. §VI on-device disclosure added. **Real on-device measurement still outstanding.**
-- [ ] **E4** turmeric CL validation → fill Table XI (P13) and write the 2 discussion paragraphs — ⏸️ DEFERRED (2026-07-26): data now in repo (`data/turmeric_5_classes_splitted/`, 5 classes, ~152–184 train imgs/class) but low sample count; run as feasibility check, not precision benchmark
-- [ ] Produce figures P1–P9 — ✅ P1–P8 done; **P9 (Fig. 9 deployment photo + dashboard screenshot) still outstanding** (dashboard reportedly already built locally, needs screenshotting)
-- [ ] Fill implementation details in Section VI-C (GPU, versions, optimizer, epochs, seeds)
+- [x] ~~**E1** decision-tree experiment~~ — done. Table IV filled (5-model comparison, DT deployed: 86.25% acc / 85.6 macro-F1). Code in `experiments/part2_env_risk/`. Refs [34],[35] added. §VI simulation disclosure added.
+- [x] ~~**E2** fusion evaluation~~ — done. Table V filled (fusion 87.5% acc / 71.75 macro-F1 vs. 60.4%/29.6 vision-only, 35.4%/20.6 sensor-only, on 48 constructed episodes). Fig. 5 (P5) built from real episode data. Code in `experiments/part3_fusion_eval/`. §VI fusion-evaluation disclosure added.
+- [x] ~~**E3/E5** cycle + latency~~ — Table XIII (P12) filled + discussion written. ⚠️ **Laptop RTX 4050 proxy, NOT Jetson**; TensorRT unavailable → ONNX Runtime substituted; detect/seg cited to [21]. Retrain 373.2 s / 155.6 MB VRAM; FP16 gate Δ ≈ 0; compiled classification 3.8 ms/img (2.7× vs eager). Code in `experiments/part4_ondevice_proxy/`. §VI on-device disclosure added. **Real on-device measurement still outstanding.**
+- [x] ~~**E4** turmeric CL validation~~ — done 2026-07-29. Table XIV (P13) filled + discussion written. Splits rebuilt as `data/07_turmeric_5cls/` (test/val frozen from the shipped split so the existing phase-3 checkpoint stays comparable); Case 2 + Replay, 2 cycles, 3 seeds → **Replay 90.03% ± 3.54** vs base 89.10% ± 2.35, naive 87.85% ± 2.47. Scope narrowed to Replay + a naive reference. Code in `experiments/part5_turmeric_cl/`. ⚠️ Framed as a **feasibility check** — n=107, no pairwise McNemar reaches p<0.05.
+- [x] ~~Produce figures P1–P9~~ — **P1–P8 done (8 final figures)**; **P9 removed 2026-07-29** — no installed unit to photograph, a dashboard-only figure does not carry the deployment claim, and the figure was never referenced from the body text. Deployment wording softened to conditional throughout §VI.
+- [x] ~~Fill implementation details in Section V-C~~ — done 2026-07-30. GPU model recovered from `experiments/CONTINUAL_RESOURCE_REPORT.md` (**NVIDIA GeForce RTX 4050 Laptop GPU**, 6 GB, driver 595.79 — the *same* device as the E3 proxy). Three new paragraphs added: hardware/software, optimization, and an explicit **single-seed (42) disclosure**. ⚠️ While cross-checking the configs against the paper, **Table III's Case 2 learning-rate rows were found to be wrong** — corrected, see `07_CHANGES_MADE.md` §30.
 - [x] ~~Replace refs [24] and [26]~~ — done, Crossref-verified (Li et al. 2024, CEA 224:109211; Lee & Yun 2023, Plant Methods 19:145). [28] Rudin 2019 added.
-- [ ] Update refs [21], [22], [27] with actual venues/DOIs
-- [ ] Verify page ranges for [31] FedAvg (PMLR vol. 54, ~pp. 1273–1282) and [33] FixMatch (NeurIPS 2020) — marked `%% VERIFY` in the .tex
-- [ ] **Verify every reference on IEEE Xplore** — do not submit unverified bibliographic data
+- [x] ~~Update refs [21], [22], [27]~~ — done 2026-07-29. [21] ICIIS, Peradeniya, Jan. 2026, pp. 395–400, doi `10.1109/ICIIS69028.2026.11450780` (Crossref-verified). [22] ICDTSA, Kilinochchi, May 2025, pp. 7–16, confirmed **no DOI**. [27] real Mendeley author lists via the **DataCite** API (Mendeley DOIs are not in Crossref).
+- [x] ~~Verify [31] FedAvg / [33] FixMatch page ranges~~ — done. [31] confirmed PMLR 54:1273–1282 from the publisher. [33] paper + authors confirmed in the NeurIPS 2020 index; pagination unconfirmable from a primary source (NeurIPS publishes none) — 596–608 is the Curran print volume, documented as such. Both `%% VERIFY` markers cleared.
+- [x] ~~**Verify every reference**~~ — done 2026-07-29: all 35 audited, **20 of 21 DOIs resolve**, IEEE format compliant throughout. ⚠️ **Ref [5] was fabricated** (dead DOI; claimed pages fall in a gap between real articles) — removed and replaced with Khan et al., *Front. Plant Sci.* 14:1308528. Inherited from the prior conference paper. See `07_CHANGES_MADE.md` §26.
 - [ ] Note: ref [26] has a published correction (doi: 10.1186/s13007-024-01140-3) — check whether it affects anything you rely on
+- [ ] **Compile in Overleaf and verify table layout** — the Table XI/XII/XIII collision fix was made with no local LaTeX toolchain and is **not visually verified**
 - [ ] Add author biographies and photos
 - [ ] Run through IEEE Access page-count and formatting check (~15 pages)

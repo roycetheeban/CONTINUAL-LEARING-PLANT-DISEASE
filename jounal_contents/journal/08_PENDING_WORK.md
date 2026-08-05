@@ -1,207 +1,117 @@
 # 08 — Pending Work: Ordered Path to Submission
 
 **Purpose:** everything still outstanding for the journal paper, in execution order, with the full flow for each.
+**Updated:** 2026-07-29 — items 3, 4, 5, 6, 7 of the previous list are now **closed**; see `07_CHANGES_MADE.md` PART A2.
 **Companion:** [`07_CHANGES_MADE.md`](07_CHANGES_MADE.md) — what has already been done and why it deviated from plan.
 **Scope:** journal paper only. Production/Jetson app work is tracked separately in `app_dev/jetson_flow.md`.
 
 ---
 
+## Where the paper stands
+
+| | Status |
+|---|---|
+| Result tables | ✅ **All 4 filled with real numbers** — IV (E1), V (E2), XIII (E3/E5), XIV (E4) |
+| Figures | ✅ **8 final** — Fig. 9 removed, see `07_CHANGES_MADE.md` §25 |
+| References | ✅ **35/35 complete**; 20 of 21 DOIs resolve; IEEE-format compliant |
+| Placeholders in `.tex` | ✅ **Zero**, except §VI-C implementation details |
+| `.tex` ↔ `.md` sync | ✅ byte-identical |
+
+**Four blocking items remain**, all needing input only you can supply (item 2 is partly draftable from the repo).
+
+---
+
 ## Priority overview
 
-| #  | Item                                         | Effort     | Blocks submission?                | Depends on              |
-| -- | -------------------------------------------- | ---------- | --------------------------------- | ----------------------- |
-| 1  | Compile & verify layout                      | 30 min     | **Yes**                     | —                      |
-| 2  | Fill §VI-C implementation details           | 1 h        | **Yes**                     | —                      |
-| 3  | Refs [21] [22] [27] venues/DOIs              | 1 h        | **Yes**                     | your publication status |
-| 4  | Verify all 35 refs on IEEE Xplore            | 2 h        | **Yes**                     | —                      |
-| 5  | Fix stale table numbers in planning docs     | 20 min     | No                                | —                      |
-| 6  | Fig. 9 deployment + dashboard                | 2–4 h     | **Yes** (figure referenced) | hardware access         |
-| 7  | i                                            | 1–2 days  | **Yes** (table referenced)  | —                      |
-| 8  | Author bios + photos                         | 1 h        | **Yes**                     | co-authors              |
-| 9  | Final formatting / page-count pass           | 2 h        | **Yes**                     | all above               |
-| 10 | *(Optional)* Real Jetson E3 re-measurement | 1 day      | No                                | Jetson hardware         |
-| 11 | *(Optional)* Real sensor logs for E1       | 4–8 weeks | No                                | deployed unit           |
+| # | Item | Effort | Blocks submission? | Depends on |
+|---|---|---|---|---|
+| 1 | Compile & verify layout | 30 min | **Yes** | — |
+| 2 | Fill §VI-C implementation details | 1 h | **Yes** | GPU model from you |
+| 3 | Author bios + photos | 1 h | **Yes** | co-authors |
+| 4 | Final formatting / page-count pass | 2 h | **Yes** | items 1–3 |
+| 5 | *(Optional)* Real Jetson E3 re-measurement | 1 day | No | Jetson hardware |
+| 6 | *(Optional)* Real sensor logs for E1 | 4–8 weeks | No | deployed unit |
+| 7 | *(Optional)* More turmeric data → upgrade E4 | — | No | data collection |
+| 8 | *(Optional)* Audit prior papers' reference lists | 1 h | No | — |
 
-**Critical path:** items 1 → 2 → 3 → 4 → 6 → 7 → 8 → 9.
-Items 5, 10, 11 can run in parallel or be skipped.
+**Critical path:** 1 → 2 → 3 → 4. Items 5–8 can run in parallel or be skipped.
 
 ---
 
 # 1. Compile and verify layout ⚠️ DO THIS FIRST
 
-**Why first:** table-collision fixes from `07_CHANGES_MADE.md` §17 were made blind — there is no LaTeX toolchain on the dev machine. Everything downstream assumes the paper renders correctly.
+**Why first:** the Table XIII collision fix (`07_CHANGES_MADE.md` §28) was made **without a LaTeX toolchain** — it is the only change in the whole project that could not be verified locally. Everything downstream assumes the paper renders correctly.
 
 **Flow:**
 
 1. Upload `jounal_contents/journal/leafsense.tex` + the `figures/` folder to Overleaf.
-2. Compile with pdfLaTeX. Expect zero errors; warnings about float placement are acceptable.
+2. Compile with pdfLaTeX. Expect zero errors; float-placement warnings are acceptable.
 3. Check specifically:
    - Tables XI, XII, XIII no longer overlap (the reported bug)
-   - Table XIII footnotes (`†`/`‡`) render below the table, inside the float
+   - Table XIII's `†`/`‡` footnotes render below the table, inside the float
+   - **Table XIV** (new) renders cleanly and inside its column
    - Fig. 5 panel (c) is legible at single-column width (88 mm)
    - No table runs past the column margin
+   - No `??` anywhere — all `\ref`/`\cite` resolve
+   - **No leftover Fig. 9 reference** — `\ref{fig:deploy}` should appear zero times
 4. If Table XIII still crowds → switch it to `\begin{table*}` (spans both columns).
 5. Confirm page count is near the ~15-page target.
 
-**Done when:** clean compile, no overlaps, page count acceptable.
+**Done when:** clean compile, no overlaps, no `??`, page count acceptable.
 
 ---
 
 # 2. Fill §VI-C implementation details
 
-**Why it matters:** IEEE Access reviewers routinely ask for this, and its absence is an easy desk-reject-adjacent complaint. Currently a placeholder comment in `leafsense.tex`.
+**Why it matters:** IEEE Access reviewers routinely ask for this. It is the **only remaining content gap** in the paper (`leafsense.tex`, placeholder comment in §VI-C).
 
-**What to supply:**
+**Already known — fill straight from the repo:**
 
-| Field                                 | Where to find it                                                              |
-| ------------------------------------- | ----------------------------------------------------------------------------- |
-| GPU model used for benchmark training | your training machine spec                                                    |
-| PyTorch / CUDA / torchvision versions | `environment.yml` → torch 2.5.1+cu121, torchvision 0.20.1+cu121, CUDA 12.1 |
-| Optimizer                             | training scripts →**Adam**                                             |
-| LR schedule                           | `ReduceLROnPlateau`, patience 3, factor 0.5, min_lr 1e-6                    |
-| Batch size                            | cycle configs →**32**                                                  |
-| Epochs per cycle                      | `max_epochs: 12`, `min_epochs: 5`, patience 5                             |
-| Layer-wise LRs                        | cycle 2 →`lr_g3: 5e-5`, `lr_head: 2e-4`                                  |
-| Random seed / seed count              | **42**, single seed — ⚠️ state this honestly                         |
-| Image size                            | 224×224, resize 256                                                          |
+| Field | Value | Source |
+|---|---|---|
+| PyTorch / CUDA / torchvision | torch 2.5.1+cu121, torchvision 0.20.1+cu121, CUDA 12.1 | `environment.yml` |
+| Optimizer | **Adam** | training scripts |
+| LR schedule | `ReduceLROnPlateau`, patience 3, factor 0.5, min_lr 1e-6 | training scripts |
+| Batch size | **32** | cycle configs |
+| Epochs per cycle | `max_epochs: 12`, `min_epochs: 5`, patience 5 | `catA_replay_cycle2.yaml` |
+| Layer-wise LRs | cycle 2 → `lr_g3: 5e-5`, `lr_head: 2e-4` | cycle configs |
+| Image size | 224×224 (resize 256) | configs |
+| Random seed | **42** | configs |
 
-**Flow:** read the values from `configs/part1_case2_imagenet/continuation/cat_a/replay/cycle2/catA_replay_cycle2.yaml` and `environment.yml` → write the paragraph → replace the placeholder comment → sync `.md`.
+**Still needed from you:** the **exact GPU model** used for the CL benchmark training runs. (The E3 proxy work used an RTX 4050 laptop GPU, but the original benchmark was run elsewhere — don't assume they are the same machine.)
 
-⚠️ **Single-seed disclosure:** all CL results are one seed. Either state it as a limitation, or run 3 seeds and report mean±std. Stating it is acceptable; hiding it is not.
+**Flow:** read the remaining values → write the paragraph → replace the placeholder comment in `leafsense.tex` → sync `04_FULL_PAPER_LATEX.md`.
 
----
-
-# 3. Fill references [21] [22] [27]
-
-Three bibliography entries still contain `[VENUE]`, `[YEAR]`, `[PP--PP]` placeholders.
-
-| Ref       | What it is                                                                   | Needed                                                                                       |
-| --------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `ref21` | *A Lightweight Modular Pipeline for Edge-Optimized Leaf Disease Detection* | Venue, year, pages, DOI —**load-bearing**: Table XIII cites it for detect/seg latency |
-| `ref22` | GAN-based leaf inpainting paper                                              | Venue, year, pages, DOI                                                                      |
-| `ref27` | Turmeric dataset                                                             | Author names — Mendeley DOIs`10.17632/jtttfbx342.1` and `10.17632/g46dvrcvwn.1`         |
-
-**Flow:**
-
-1. Check IEEE Xplore indexing status for your two papers.
-2. If not yet indexed → use the accepted-but-unpublished IEEE form: `to be published` / `early access`. Do **not** invent page numbers.
-3. Open both Mendeley DOIs → copy exact author lists for `ref27`.
-4. Update `leafsense.tex` bibliography → sync `.md`.
-
-⚠️ `ref21` is the citation backing two numbers in Table XIII. If it cannot be cited properly, those rows need re-measuring or removing.
+⚠️ **Single-seed disclosure.** All CL benchmark results (Tables VII–XII) are **one seed**. Either state this plainly as a limitation, or re-run 3 seeds and report mean ± std. Stating it is acceptable; omitting it is not — and note that **E4 now reports 3 seeds**, so the paper reads inconsistently if the benchmark's single-seed status goes unmentioned.
 
 ---
 
-# 4. Verify all 35 references on IEEE Xplore
-
-**Flow:** for each `\bibitem`, confirm author list, title, venue, volume/issue, pages, year, DOI. Fix mismatches. Mark verified.
-
-**Known items:**
-
-- [24], [26], [28], [34], [35] → already Crossref-verified ✅
-- [31] FedAvg, [33] FixMatch → marked `%% VERIFY` in the `.tex`, **page ranges unconfirmed**
-- [26] has a published correction (`10.1186/s13007-024-01140-3`) → check whether it affects anything relied upon
-
----
-
-# 5. Fix stale table numbers in planning docs
-
-Planning docs still use the *planned* table numbers, which no longer match what compiles (see `07_CHANGES_MADE.md` §19).
-
-| Doc says        | Actually renders as  |
-| --------------- | -------------------- |
-| Table VIII (E1) | **Table IV**   |
-| Table IX (E2)   | **Table V**    |
-| Table X (E3/E5) | **Table XIII** |
-| Table XI (E4)   | **Table XIV**  |
-
-**Flow:** update `01_SCOPE_AND_COVERAGE.md`, `06_EXPERIMENT_PROTOCOL.md`, `05_FIGURE_GUIDE.md`, and the placeholder index in `04_FULL_PAPER_LATEX.md`.
-
-**Cosmetic only** — the `.tex` uses `\ref{}` so the compiled paper is already correct. Do it to stop future confusion, not because the paper is wrong.
-
----
-
-# 6. Fig. 9 — deployment photo + dashboard screenshot
-
-Last unbuilt figure. Two independent panels.
-
-### Panel (a) — deployment photograph *(needs hardware)*
-
-- Shoot the installed unit in the greenhouse
-- Must show: Jetson enclosure, rotating camera mount, at least one sensor probe
-- Even lighting — avoid harsh backlight through glazing
-- Include something for scale
-- Add leader labels: `Jetson Orin Nano`, `Rotating camera mount (45° steps)`, `Environmental sensors`
-- **PNG or TIFF, not JPG** — IEEE flags compression artefacts
-- Crop, don't zoom. Get consent or crop out any person.
-
-### Panel (b) — dashboard screenshot *(software only — can be done now)*
-
-You said the Streamlit dashboard is already built locally. This panel does **not** need the greenhouse.
-
-- Capture: 5-line per-class daily count trend, current fused risk state, `Retrain` / `Capture Now` controls
-- Zoom browser to ~150% **before** capturing so text stays legible at 88 mm
-- Crop tightly — no address bar, no whitespace
-
-### Compose
-
-Stack or place side by side, label `(a)` / `(b)`, export ≥600 dpi as `figures/fig9_deployment.pdf`.
-
-**Note:** panel (b) is unblocked *now*. If the greenhouse install is delayed, consider whether a dashboard-only Fig. 9 with an amended caption is acceptable — that is a judgement call about how much the paper's deployment claim rests on the photograph.
-
----
-
-# 7. E4 — Turmeric CL validation → Table XIV
-
-Currently deferred. The **data and a trained classifier both already exist** (see `07_CHANGES_MADE.md` §18, §20), so this is closer to done than the status suggests.
-
-### What exists
-
-- **Data:** `data/turmeric_5_classes_splitted/` — 5 classes, ~152–184 train / 19–23 val / 19–24 test per class, 224×224 RGB, pre-segmented
-- **Trained model:** `other models/model/MobilenetV3_Phase3_EWC_Incremental_Results/best_phase3_model.pth` — 98.59% val, 89.81% retention, EWC λ=10,000
-
-### ⚠️ Two traps before touching it
-
-1. **Class order is NOT alphabetical** — `Healthy=0, Leaf_Spot=1, Blotch=2, Dry=3, Aphids=4`. Read `class_to_idx` from the checkpoint; never assume ImageFolder order. Getting this wrong mislabels every prediction *silently*.
-2. **timm, not torchvision** — keys are `backbone.conv_stem.*`; 2.19 M params; custom head `Linear(1024→512)→BN→ReLU→Dropout→Linear(512→5)`. Requires `timm` (now installed) plus the `EnhancedMobileNetV3Phase3` class. The tomato loading code will **not** work.
-
-### Flow
-
-1. Reconstruct the architecture and confirm `load_state_dict` is clean (no missing/unexpected keys).
-2. Reproduce the reported 89.81% retention on the turmeric test set — if it doesn't reproduce, the architecture reconstruction is wrong, stop and fix.
-3. Run **Case 2 + Replay** and **Case 2 + EWC** for 2 cycles, mirroring the tomato CatA protocol.
-4. Apply the turmeric-specific replay buffer rule: `min(40, 50% of initial_train)` — the tomato rule ("15%, min 100") is unsatisfiable at this volume. **State the change and reason in the paper.**
-5. Report mean ± std over 3–5 seeds.
-6. Fill Table XIV + write the 2 discussion paragraphs.
-
-### ⚠️ Framing constraint
-
-A ~20-image test set per class means **1 image ≈ 5 percentage points**. Differences under ~5 pp between methods are **not resolvable**. Present E4 as a **feasibility check that the recipe transfers**, not a precision benchmark. Overclaiming on 20 test images is exactly what a reviewer will catch.
-
----
-
-# 8. Author biographies and photos
+# 3. Author biographies and photos
 
 Standard IEEE requirement. Collect from each co-author: photo, degrees, current affiliation, research interests, IEEE membership grade.
 
 ---
 
-# 9. Final formatting and page-count pass
+# 4. Final formatting and page-count pass
 
 **Flow:**
 
 1. Recompile clean.
 2. Page count near ~15.
-3. All 9 figures present, vector PDF (or ≥600 dpi raster).
+3. All **8** figures present, vector PDF (or ≥600 dpi raster).
 4. All 14 tables render inside their columns; no overflow, no collisions.
 5. Every `\ref{}` and `\cite{}` resolves — no `??` in the PDF.
 6. Abstract and index terms match final content.
-7. Confirm all three §VI disclosures survived editing (simulated sensors, constructed episodes, proxy hardware).
+7. **Confirm all four §VI disclosures survived editing:**
+   - simulated sensor traces (E1)
+   - constructed episodes (E2)
+   - proxy hardware + ONNX Runtime substitution (E3)
+   - feasibility framing + non-significance (E4)
 8. If switching to `ieeeaccess.cls`: change `\documentclass`, restore IEEE Access front matter, **delete the figure-fallback block**.
 
 ---
 
-# 10. *(Optional)* Real Jetson E3 re-measurement
+# 5. *(Optional)* Real Jetson E3 re-measurement
 
 Would upgrade Table XIII from proxy to genuine on-device numbers and let the caption say "Jetson Orin Nano" without qualification.
 
@@ -211,45 +121,59 @@ Would upgrade Table XIII from proxy to genuine on-device numbers and let the cap
 
 ---
 
-# 11. *(Optional)* Real sensor logs for E1
+# 6. *(Optional)* Real sensor logs for E1
 
 The largest standing caveat: everything in E1 is simulated.
 
-**Flow:** install the unit → log sensors for 4–8 weeks → replace `sensors_raw.csv` → re-run `train_env_risk.py` → update Table IV → **re-run E2 as well** (it consumes E1's risk output) → remove or soften the §VI simulation disclosure.
+**Flow:** install the unit → log sensors for 4–8 weeks → replace `sensors_raw.csv` → re-run `train_env_risk.py` → update Table IV → **re-run E2 as well** (it consumes E1's risk output) → soften the §VI simulation disclosure.
+
+If a unit is actually installed, **also reconsider Fig. 9** (the removal in `07_CHANGES_MADE.md` §25 was conditional on there being no hardware) and revisit the deployment-conditional wording throughout §VI.
 
 **Timeline makes this unlikely before submission.** Recommend submitting with the disclosure and treating real-data validation as follow-up work.
+
+---
+
+# 7. *(Optional)* More turmeric data → upgrade E4
+
+E4's binding constraint is the **107-image test set** (95% CI ≈ ±5.7 pp), which is why no pairwise McNemar test reaches p<0.05 and the result is framed as a feasibility check rather than a ranking.
+
+At roughly **400 images per class** the test set reaches ~60/class, the CI tightens to ~±3 pp, and method ranking becomes possible — upgrading Table XIV from a feasibility check to a precision benchmark. Nothing in `experiments/part5_turmeric_cl/` would need rewriting; re-run `split_turmeric_5cls.py` then `run_all.py`.
+
+---
+
+# 8. *(Optional)* Audit the prior papers' reference lists
+
+Reference `[5]` in this paper was **fabricated** and was inherited from the prior conference paper (`07_CHANGES_MADE.md` §26). Spot-reading the ICDTSA GAN paper's bibliography shows several more apparently non-existent venues (*"IEEE Transactions on Agriculture"*, *"IEEE Transactions on Remote Sensing"*, *"Agricultural AI Journal"* — none of these journals exist).
+
+Both papers are already published, so this does **not** block this submission — but it is better to know before someone else checks. The same Crossref script used here can be pointed at either bibliography.
 
 ---
 
 # Pre-submission checklist
 
 ```
-[ ]  1. Compiles clean; tables XI/XII/XIII do not overlap
-[ ]  2. §VI-C implementation details filled (incl. single-seed disclosure)
-[ ]  3. Refs [21] [22] [27] have real venues/DOIs
-[ ]  4. All 35 refs verified on IEEE Xplore
-[ ]  5. Planning-doc table numbers corrected
-[ ]  6. Fig. 9 produced (both panels)
-[ ]  7. Table XIV filled from E4; framed as feasibility check
-[ ]  8. Author bios + photos added
-[ ]  9. Page count ~15; no ?? in PDF; all 3 disclosures intact
+[ ]  1. Compiles clean; tables XI/XII/XIII do not overlap; no ?? in PDF
+[ ]  2. §VI-C filled (incl. GPU model + single-seed disclosure)
+[ ]  3. Author bios + photos added
+[ ]  4. Page count ~15; 8 figures; all 4 §VI disclosures intact
 ```
 
-**Currently done:** Tables IV, V, XIII carry real numbers · Figs 1–8 final · 35/35 citations resolve · `.tex`/`.md` synced.
+**Already done:** Tables IV, V, XIII, **XIV** filled with real numbers · Figs 1–8 final · **Fig. 9 removed** and deployment claims softened · **35/35 references complete and verified** (fabricated [5] replaced) · `.tex`/`.md` byte-identical · planning-doc table numbers corrected.
 
 ---
 
 # Known standing limitations
 
-State these plainly rather than hoping they go unnoticed:
+State these plainly rather than hoping they go unnoticed. All except #6 are already disclosed in the paper.
 
-| # | Limitation                                        | Mitigation in place                                                       |
-| - | ------------------------------------------------- | ------------------------------------------------------------------------- |
-| 1 | E1 sensor data is simulated                       | §VI disclosure; oracle from published model, not self-defined thresholds |
-| 2 | E2 episodes are constructed                       | §VI disclosure; vision + risk branches are both real                     |
-| 3 | E3 measured on laptop, not Jetson                 | Table XIII footnote + §VI disclosure                                     |
-| 4 | ONNX Runtime substituted for TensorRT             | Labelled everywhere; JetPack ships TensorRT for real deployment           |
-| 5 | Single seed throughout                            | Must be stated in §VI-C                                                  |
-| 6 | Fig. 5 pairs tomato vision with turmeric risk     | Disclosed in caption                                                      |
-| 7 | E4 test set too small for fine-grained claims     | Frame as feasibility check                                                |
-| 8 | Fusion fails on the adversarial confound category | Reported as a measured limitation, not hidden                             |
+| # | Limitation | Mitigation in place |
+|---|---|---|
+| 1 | E1 sensor data is simulated | §VI disclosure; oracle from a published model, not self-defined thresholds |
+| 2 | E2 episodes are constructed | §VI disclosure; vision and risk branches are both real |
+| 3 | E3 measured on laptop, not Jetson | Table XIII footnote + §VI disclosure |
+| 4 | ONNX Runtime substituted for TensorRT | Labelled everywhere; JetPack ships TensorRT for real deployment |
+| 5 | E4 differences not statistically resolvable (n=107) | Framed as a feasibility check; McNemar p-values reported |
+| 6 | **CL benchmark (Tables VII–XII) is single-seed** | ⚠️ **Not yet stated** — see item 2 |
+| 7 | Fig. 5 pairs tomato vision with turmeric risk | Disclosed in the caption |
+| 8 | Fusion fails on the adversarial confound category | Reported as a measured limitation, not hidden |
+| 9 | No installed unit; no in-situ deployment evidence | Deployment wording is conditional throughout; Fig. 9 removed rather than faked |

@@ -1,11 +1,11 @@
-"""Fig 1 -- LEAFSENSE system architecture (offline-first edge + optional cloud)."""
+"""Fig 1 -- LEAFSENSE system architecture (offline-first edge tier)."""
 from matplotlib.patches import FancyBboxPatch
 from ls_style import PAL, COL2, save
 from ls_diagram import canvas, box, arrow, label
 
-W, H = COL2, 4.35
+W, H = COL2, 2.60
 fig, ax = canvas(W, H)
-YT = 100 * H / W  # ~60.8
+YT = 100 * H / W  # ~36.3
 
 
 def container(cx, cy, w, h, title, ec, fc, ls="-", tcol=None):
@@ -16,20 +16,8 @@ def container(cx, cy, w, h, title, ec, fc, ls="-", tcol=None):
             fontsize=6.2, fontweight="bold", color=tcol or ec, zorder=1)
 
 
-# ============ CLOUD tier (optional, greyed, dashed) ============
-container(50, YT - 6.5, 92, 11, "CLOUD  —  optional (subscription / support)",
-          "#999", "#f4f4f4", ls="--", tcol="#777")
-box(ax, 22, YT - 8.0, 24, 5.5, "Relabelling service", fc="white", ec="#aaa", fs=5.0)
-box(ax, 50, YT - 8.0, 24, 5.5, "Model registry / OTA", fc="white", ec="#aaa", fs=5.0)
-box(ax, 78, YT - 8.0, 26, 5.5, "RAG chatbot / insights", fc="white", ec="#aaa", fs=5.0)
-
-# intermittent sync arrow between tiers
-arrow(ax, (50, YT - 12.5), (50, YT - 18.5), color="#999", ls="--", lw=1.2, style="<|-|>")
-label(ax, 62, YT - 15.5, "intermittent sync\n(relabel queue · updates)", fs=4.6,
-      color="#999", ha="left", italic=True)
-
 # ============ EDGE tier (dominant, solid) ============
-EY = YT - 38
+EY = YT / 2
 container(50, EY, 96, 34, "EDGE  —  NVIDIA Jetson Orin Nano  (offline-first)",
           PAL["ink"], "white")
 

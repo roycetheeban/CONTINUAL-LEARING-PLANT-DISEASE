@@ -2,7 +2,7 @@
 
 **Purpose:** working record of every material deviation between the original plan (`06_EXPERIMENT_PROTOCOL.md`, `01_SCOPE_AND_COVERAGE.md`) and what was actually built, with the reasoning, the flow followed, the reference material, and the data used.
 **Companion:** [`08_PENDING_WORK.md`](08_PENDING_WORK.md) — what still has to be done.
-**Covers:** 2026-07-23 → 2026-07-29.
+**Covers:** 2026-07-23 → 2026-07-30.
 
 ---
 
@@ -15,7 +15,7 @@
 | E3/E5 On-device cost | Measured on Jetson | Measured on laptop GPU proxy | XIII | 🟡 partial, hardware **substituted** |
 | E4 Turmeric CL | Case 2 + Replay **and** EWC, full ranking | Replay + naive reference only | XIV | ✅ done, scope **narrowed** |
 
-**Paper state:** **all 4 result tables carry real numbers**; **8 figures final (Fig. 9 removed)**; **35/35 citations complete and verified**; `.tex` and `.md` byte-identical; the only remaining content gap is §VI-C implementation details.
+**Paper state:** **all 4 result tables carry real numbers**; **8 figures final (Fig. 9 removed)**; **35/35 citations complete and verified**; `.tex` and `.md` byte-identical; **§V-C implementation details are now filled, so the paper contains no remaining content gap.** The only unverified item is the rendered table layout, which needs an Overleaf compile.
 
 ---
 
@@ -338,6 +338,36 @@ Replaced with **A. T. Khan, S. M. Jensen, A. R. Khan, and S. Li, "Plant disease 
 Tables XI/XII/XIII collided in the rendered PDF. Two causes, both addressed: the caption ran 5 lines (cut to a one-line title, with the hardware/citation caveats moved to `†`/`‡` footnotes), and three consecutive `[!t]`-only floats gave LaTeX nowhere to place them (changed to `[!tbp]`).
 
 ⚠️ **Not visually verified** — no LaTeX toolchain available locally. Needs an Overleaf recompile to confirm.
+
+
+## 29. §V-C implementation details filled — GPU recovered from the repo, not guessed
+
+The last content gap in the paper. The one value that was thought to need asking for — the exact GPU used for the CL benchmark — was **already recorded in the repo** at `experiments/CONTINUAL_RESOURCE_REPORT.md` §1, taken from the saved `metrics.json` of every continuation run: **NVIDIA GeForce RTX 4050 Laptop GPU, 6141 MiB, driver 595.79**. So the CL benchmark and the E3 proxy ran on the *same* device — which the paper now states, removing any implication of two separate machines.
+
+Three paragraphs added: **hardware and software** (Python 3.10 / PyTorch 2.5.1 / torchvision 0.20.1 / CUDA 12.1, FP32 with no AMP — so the FP16 comparison applies only to the exported artifact, not training), **optimization** (Adam + weight decay 1e-4, class-weighted cross-entropy, `ReduceLROnPlateau` on validation macro-F1 factor 0.5 floor 1e-6, batch 32 with Case 3A pre-training at 96 and replay at 16+16, per-stage epoch and patience budgets), and **random seeds**.
+
+**The seed paragraph is deliberately blunt:** the benchmark is a single seed (42) across all 47 configs, so the method differences "carry no estimate of run-to-run variance and should be read as one realization rather than an expected value." Consistency of the ranking across 3 cases × 2 categories is named as the *only* stability evidence available, and multi-seed repetition is named as the single most valuable extension. This also resolves the internal inconsistency with E4, which does report 3 seeds.
+
+**Also fixed while writing this:** §V-C previously asserted the deployment measurements "are taken on the Jetson Orin Nano target" — flatly contradicting the on-device disclosure 26 lines below it, which says the opposite. Leftover text from before the E3 proxy work. A reviewer finding two contradictory hardware claims in one paper does more damage than the proxy limitation itself.
+
+## 30. Table III Case 2 learning rates were wrong — corrected ⚠️
+
+Found by cross-checking every row of Table~III against the config that actually produced the corresponding results, rather than assuming the table was right.
+
+**Two Case 2 base-training configs exist**, and both were run:
+
+| Config | Output dir | Phase i head | Phase ii G3 / head | Phase ii best epoch | Test acc |
+|---|---|---|---|---|---|
+| `case2_config_init.yaml` | `outputs/` | 1e-3 | 1e-4 / 1e-3 | 10 (max 15) | 97.19% |
+| `case2_tuned_config.yaml` | `outputs_tuned/` | **8e-4** | **5e-5 / 5e-4** | **24** (max 30) | 97.27% |
+
+Table III listed the **init** values — but **every Case 2 continuation run loads `outputs_tuned/checkpoints/M2.pth`** as its `base_checkpoint`. So the table documented a lineage that produced none of the reported Case 2 CL results.
+
+**Decisive evidence it is the tuned run:** `outputs_tuned` records `phase2.best_epoch = 24`, which is impossible under the init config's `max_epochs: 15`. The tuned config allows 30.
+
+Corrected to `8e-4` and `5e-5 / 5e-4`.
+
+**Scope of the error, checked row by row — nothing else is affected.** Case 1 scratch (1e-3 uniform), Case 3A pre-train (1e-3 uniform), Case 3B phases i/ii (5e-5 / 5e-4 and 1e-5 / 5e-5 / 5e-4), CL CatA cycles 1 and 2 (1e-4 / 5e-4 and 5e-5 / 2e-4) and both CatB split-LR rows (1e-4 / 1e-3 then 5e-5 / 5e-4) all match their configs exactly. **No reported accuracy changes** — the paper contains no table of base-model accuracies for the tomato cases, so the 97.27% vs 97.19% difference never propagated into a result.
 
 
 ---

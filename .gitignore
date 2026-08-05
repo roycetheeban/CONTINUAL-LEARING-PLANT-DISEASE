@@ -44,3 +44,7 @@ deployment/**
 *.npz
 *.parquet
 *.feather
+
+
+#JOURNAL DETAILS
+jounal_contents
