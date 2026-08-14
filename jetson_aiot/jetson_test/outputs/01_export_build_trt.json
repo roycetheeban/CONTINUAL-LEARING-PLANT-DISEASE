@@ -1,0 +1,27 @@
+{
+  "env": {
+    "hardware": {
+      "device_name": "NVIDIA Jetson Orin Nano Super Developer Kit",
+      "variant": "8GB",
+      "jetpack_version": "6.2.2",
+      "tensorrt_version": "10.3.0",
+      "cuda_version": "12.6",
+      "power_mode": "25W",
+      "notes": "Surveyed on-device 2026-08-09. SUPER variant (67 TOPS) -- latency is NOT comparable to the original 40-TOPS Orin Nano; the paper must say \"Super\". Power mode is reported; power draw and thermals are not measured."
+    },
+    "platform": "Linux-5.15.185-tegra-aarch64-with-glibc2.35",
+    "machine": "aarch64",
+    "python": "3.10.12",
+    "torch": "2.8.0",
+    "cuda_available": true,
+    "cuda": "12.6",
+    "gpu_name": "Orin",
+    "tensorrt": "10.3.0"
+  },
+  "onnx_export_seconds": 1.991,
+  "onnx_size_mb": 6.102,
+  "tensorrt_build_seconds": 218.344,
+  "engine_size_mb": 4.093,
+  "fp16_enabled": true,
+  "engine_path": "outputs/model_fp16.engine"
+}

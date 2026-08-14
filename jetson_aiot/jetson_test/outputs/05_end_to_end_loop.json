@@ -1,0 +1,184 @@
+{
+  "env": {
+    "hardware": {
+      "device_name": "NVIDIA Jetson Orin Nano Super Developer Kit",
+      "variant": "8GB",
+      "jetpack_version": "6.2.2",
+      "tensorrt_version": "10.3.0",
+      "cuda_version": "12.6",
+      "power_mode": "25W",
+      "notes": "Surveyed on-device 2026-08-09. SUPER variant (67 TOPS) -- latency is NOT comparable to the original 40-TOPS Orin Nano; the paper must say \"Super\". Power mode is reported; power draw and thermals are not measured."
+    },
+    "platform": "Linux-5.15.185-tegra-aarch64-with-glibc2.35",
+    "machine": "aarch64",
+    "python": "3.10.12",
+    "torch": "2.8.0",
+    "cuda_available": true,
+    "cuda": "12.6",
+    "gpu_name": "Orin",
+    "tensorrt": "10.3.0"
+  },
+  "claim_supported": "Complete perception-to-adaptation loop executed on device as a TRUE CASCADE: capture -> detect leaves -> crop per detection -> segment each crop -> remove background -> classify each masked crop -> confidence routing. Each stage consumes the previous stage's output.",
+  "scope_exclusions": [
+    "GAN occlusion recovery -- optional in the design, not shipped in this bundle; excluded rather than approximated.",
+    "Environmental risk fusion -- implementation not part of this bundle."
+  ],
+  "DOMAIN_CAVEAT": {
+    "issue": "The detector is trained on class 'turmeric_leaf' and the segmenter on 'middle_leaf', but this bundle ships only TOMATO (PlantVillage) imagery. The cascade therefore runs turmeric-domain detection and segmentation over tomato frames before a tomato classifier. That cross-domain chain does not exist in the deployed system, where the turmeric and tomato pipelines are separate.",
+    "latency_is_valid": "YES. YOLO and MobileNetV3 cost is set by input resolution and crop count, not image content, so the per-stage and total timings are a sound measurement of the device's compute cost for this pipeline shape.",
+    "semantics_are_NOT_valid": "NO. mean_classifier_confidence, routed_for_retraining and the crop count are products of out-of-domain detection. They must NOT be reported as system behaviour, routing rates, or evidence about confidence calibration.",
+    "to_fix_properly": "Re-run with turmeric imagery matching the detector/segmenter domain, and a classifier trained on that same crop distribution."
+  },
+  "backends": {
+    "detection": "PyTorch FP16 (ultralytics)",
+    "segmentation": "PyTorch FP16 (ultralytics), run PER CROP",
+    "classification": "TensorRT FP16 engine (the deployed artifact), PER CROP"
+  },
+  "capture_set_frames": 8,
+  "mean_crops_per_loop": 16.0,
+  "timed_loops": 30,
+  "warmup_loops": 3,
+  "imgsz_detect_seg": 640,
+  "confidence_threshold": 0.9,
+  "trt_max_batch": 8,
+  "total_loop_ms": {
+    "mean_ms": 539.678,
+    "std_ms": 26.08,
+    "p50_ms": 538.635,
+    "p95_ms": 577.952
+  },
+  "capture_sets_per_second": 1.853,
+  "frames_per_second": 14.82,
+  "ms_per_frame": 67.46,
+  "ms_per_crop": 33.73,
+  "per_stage_ms": {
+    "capture": {
+      "mean_ms": 7.801,
+      "std_ms": 0.595,
+      "p50_ms": 7.593,
+      "p95_ms": 8.967,
+      "share_pct": 1.45
+    },
+    "detection": {
+      "mean_ms": 145.875,
+      "std_ms": 6.236,
+      "p50_ms": 145.595,
+      "p95_ms": 155.978,
+      "share_pct": 27.03
+    },
+    "crop": {
+      "mean_ms": 3.676,
+      "std_ms": 0.461,
+      "p50_ms": 3.796,
+      "p95_ms": 4.358,
+      "share_pct": 0.68
+    },
+    "segmentation": {
+      "mean_ms": 305.842,
+      "std_ms": 17.007,
+      "p50_ms": 307.047,
+      "p95_ms": 328.96,
+      "share_pct": 56.67
+    },
+    "background_removal": {
+      "mean_ms": 21.348,
+      "std_ms": 1.631,
+      "p50_ms": 20.819,
+      "p95_ms": 24.826,
+      "share_pct": 3.96
+    },
+    "classification": {
+      "mean_ms": 54.6,
+      "std_ms": 6.359,
+      "p50_ms": 50.829,
+      "p95_ms": 64.325,
+      "share_pct": 10.12
+    },
+    "confidence_routing": {
+      "mean_ms": 0.538,
+      "std_ms": 0.026,
+      "p50_ms": 0.534,
+      "p95_ms": 0.583,
+      "share_pct": 0.1
+    }
+  },
+  "last_loop_observations": {
+    "crops": 16,
+    "masks_applied": 16,
+    "routed_for_retraining": 7,
+    "mean_classifier_confidence": 0.8034
+  },
+  "power": {
+    "duration_s": 16.207,
+    "samples": 155,
+    "sample_interval_s": 0.1,
+    "rails_w": {
+      "VDD_IN": {
+        "mean": 9.7533,
+        "peak": 11.3979,
+        "min": 8.7736
+      },
+      "VDD_CPU_GPU_CV": {
+        "mean": 3.6661,
+        "peak": 4.4506,
+        "min": 3.1283
+      },
+      "VDD_SOC": {
+        "mean": 2.1716,
+        "peak": 2.6982,
+        "min": 1.9584
+      }
+    },
+    "energy_j": {
+      "VDD_IN": 158.1875,
+      "VDD_CPU_GPU_CV": 59.479,
+      "VDD_SOC": 35.2344
+    },
+    "thermal_c": {
+      "cpu-thermal": {
+        "start": 61.12,
+        "peak": 62.44,
+        "end": 62.16,
+        "rise": 1.31
+      },
+      "gpu-thermal": {
+        "start": 61.06,
+        "peak": 63.59,
+        "end": 62.38,
+        "rise": 2.53
+      },
+      "soc0-thermal": {
+        "start": 60.56,
+        "peak": 61.78,
+        "end": 61.62,
+        "rise": 1.22
+      },
+      "soc1-thermal": {
+        "start": 60.75,
+        "peak": 61.94,
+        "end": 61.81,
+        "rise": 1.19
+      },
+      "soc2-thermal": {
+        "start": 59.94,
+        "peak": 61.16,
+        "end": 61.09,
+        "rise": 1.22
+      },
+      "tj-thermal": {
+        "start": 61.12,
+        "peak": 63.47,
+        "end": 62.38,
+        "rise": 2.34
+      }
+    },
+    "per_item": {
+      "item": "capture_set",
+      "count": 30,
+      "energy_mj_per_item": 5272.9167,
+      "ms_per_item": 540.2201
+    },
+    "attribution": "Sampled around the timed loops ONLY -- excludes process startup, model loading, engine deserialisation and warmup."
+  },
+  "note_vs_earlier_run": "Supersedes an un-chained version that ran every stage on the 8 full frames independently and reported 384.335 ms. That undercounted segmentation and classification, both of which scale with detection count, not frame count."
+}

@@ -1,0 +1,1019 @@
+{
+  "cycle": "cycle1",
+  "replay_folder_immutable": true,
+  "replay_root": "/home/sajeepan/jetson_aiot/jetson_test/data/replay_buffer",
+  "base_replay_count": 526,
+  "prior_added_count": 0,
+  "newly_added_count": 200,
+  "effective_old_count": 726,
+  "class_names": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "added_cycle_paths": [
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/4552e196-00f9-4de7-9a47-605de7a9ecd0___UF.GRC_BS_Lab Leaf 9296_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/0db0e663-b580-45b3-bd20-bc8a7f3d8b34___GCREC_Bact.Sp 6189_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/05fc994d-7781-4dc5-a15c-b359f6c681a6___GCREC_Bact.Sp 6304_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/502fb732-b98c-4472-9bf3-5a0c038492fc___UF.GRC_BS_Lab Leaf 8642_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/365b9e42-fc7d-4805-8737-dd51f26a2468___GCREC_Bact.Sp 3256_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/5532512c-66c7-4abf-b192-741b104c39bc___GCREC_Bact.Sp 3542_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/1d2bcd85-fdb7-4294-ba11-eb58373b4474___GCREC_Bact.Sp 3092_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/f248467c-ef23-484b-99d3-019559f58f4d___UF.GRC_BS_Lab Leaf 0407_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/8c780548-b142-4d08-b98d-22492ef5cc4f___UF.GRC_BS_Lab Leaf 8972_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/a5918d40-3a3e-4dd9-a087-c0737bbebdc3___GCREC_Bact.Sp 3024_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/35bec389-2983-44f6-8bd5-d70e77cda204___GCREC_Bact.Sp 5617_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/c1968e07-0f5b-4187-b718-868f1c24228d___GCREC_Bact.Sp 3639_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/2f9cc9b4-9244-4043-b786-25be4b3e4063___UF.GRC_BS_Lab Leaf 9032_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/f9299ed5-ac75-4849-a8b0-1e1b6c9d3097___GCREC_Bact.Sp 3241_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/2012f5c2-8a5a-4307-b2f6-f8cc65dea96d___GCREC_Bact.Sp 6350_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/c515ab18-07a3-4bdd-a5b6-140d65a185c4___GCREC_Bact.Sp 5674_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/67c8bbdb-ba79-4c64-897f-e9052728df45___GCREC_Bact.Sp 3008_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/91da720b-dc5c-4e35-8b74-50229a43f8be___GCREC_Bact.Sp 2956_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/25a8ea2f-8337-4b4b-8e2d-2110ee2b89ff___GCREC_Bact.Sp 5688_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/6322dd1e-a6fa-462c-b985-1f9188da0d95___GCREC_Bact.Sp 5972_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/d00cf182-48a5-49c6-a092-a3e0044c0d05___GCREC_Bact.Sp 3001_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/a554c4d2-6eb9-438f-ae54-9477b0428ddf___GCREC_Bact.Sp 5570_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/84397079-5839-431e-97d1-9dfc144f1fff___UF.GRC_BS_Lab Leaf 0486_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/dabf464f-af7f-4fdb-b598-ebc369968706___GCREC_Bact.Sp 3287_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/27ebdaaa-b432-4d4a-b404-a04e58a46f44___GCREC_Bact.Sp 6025_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/d7ce9c0e-ac95-46e6-8578-80c712d1a44a___GCREC_Bact.Sp 3606_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/6423c12d-7802-4fd0-92d3-2f5438f22418___UF.GRC_BS_Lab Leaf 9152_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/662555e4-c996-4945-8294-6e9dab37a80a___GCREC_Bact.Sp 5772_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/7a0193fd-9941-4800-b425-aafa3a998737___GCREC_Bact.Sp 5774_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/9db59731-040c-48ae-9a88-87c427ba120d___GCREC_Bact.Sp 3668_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/3dbc84e0-27f1-421f-8978-82881bf846fd___GCREC_Bact.Sp 3514_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/8f5439b2-dd11-4410-a0c0-1446c13c30b5___GCREC_Bact.Sp 3448_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/6a198118-1387-400d-bfb8-c1127df2570d___GCREC_Bact.Sp 5885_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/21f50927-9e52-4d6b-a3bd-8238cb23153a___GCREC_Bact.Sp 3271_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/55ab0db9-5d18-4634-ab2a-db1a2c3f4299___UF.GRC_BS_Lab Leaf 1032_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/d0259987-90c8-4af9-a2f4-524ed0c514a2___GCREC_Bact.Sp 6365_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/6ce45b91-cc8a-4026-a1bd-28b1365b78a4___GCREC_Bact.Sp 5597_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/ea4ddb4b-216a-4ec2-85bc-06314c7de145___GCREC_Bact.Sp 3022_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/47a3c2c9-1f3b-4d42-8857-cfc714042c2a___UF.GRC_BS_Lab Leaf 8631_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Bacterial_spot/b1229b90-496b-4489-a1ca-cc6fbbeb4fbd___GCREC_Bact.Sp 6260_final_masked.jpg",
+      "label_idx": 0,
+      "label_name": "Tomato___Bacterial_spot"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/df9e0c7e-59cb-4a87-abbd-66f0f78e5130___RS_Erly.B 8275_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/b4cfa208-cee0-4383-b0e2-6988814fbb9a___RS_Erly.B 7645_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/47465f0e-80ef-4641-b24b-7147dd82596d___RS_Erly.B 9473_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/d4a47a64-0c10-4a43-8712-4eee11c8cf1b___RS_Erly.B 9524_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/efd88799-7fbc-4638-b66b-4e49c7bf7b9f___RS_Erly.B 9390_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/4e24576f-00c2-494f-b47b-b2b3885b4749___RS_Erly.B 8279_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/f0eb00dc-22da-4c8b-b86d-72157ea9e71d___RS_Erly.B 9610_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/0f065614-a53a-4c83-9d29-5d3e4ab5b41d___RS_Erly.B 7676_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/b857a91a-c6e2-4d47-a025-5a5c3254e0a2___RS_Erly.B 7662_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/ff422d28-d002-4382-80bf-30f78f66c677___RS_Erly.B 6492_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/3a2f31aa-b3e1-45a0-b0e6-2ffe3a2538b2___RS_Erly.B 9393_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/c8dd6713-727e-4811-b951-e70e44d0c483___RS_Erly.B 7817_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/803ac166-670f-4cad-9f37-e36eea3118d9___RS_Erly.B 9457_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/573fc55b-8a73-48ba-b916-5d7f397977e4___RS_Erly.B 8384_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/5fdc3c4f-b88a-4aef-8a56-87336f220ff4___RS_Erly.B 6376_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/de96e7a2-6de3-4699-9680-9eb4d4e215c8___RS_Erly.B 9445_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/f8babb7d-af2d-495c-9d99-cf215c8c67af___RS_Erly.B 9462_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/8a1d3598-cd1d-4978-9e18-b5e205108540___RS_Erly.B 8315_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/7ea52c28-a4c6-4e12-a4d2-59fbb1c441d8___RS_Erly.B 7747_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/dc29e8de-633c-472e-8e12-c1a032437d1e___RS_Erly.B 8447_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/2840c2f1-b901-41c2-8d0c-7827bc7f8ab3___RS_Erly.B 9574_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/bef16984-17c5-4796-9496-85808dfa3a56___RS_Erly.B 9405_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/b8421c32-9111-49c0-8e78-f86a9912ece4___RS_Erly.B 7706_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/bad3a868-aed5-408f-b0a8-f018994ce28b___RS_Erly.B 7789_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/18d8f15c-4948-4506-ae09-54169f95cf36___RS_Erly.B 7496_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/2245fdf5-3ff5-4624-9797-0b65bcc6cf73___RS_Erly.B 6358_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/2efd143b-619d-455d-9b16-95536cad01e3___RS_Erly.B 7780_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/a6abb0cb-af59-4136-a928-f08d5313ae36___RS_Erly.B 7561_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/05fab431-cc13-4d6d-b4e1-912e0059c7c1___RS_Erly.B 8349_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/32e59188-5c46-4369-8991-5acfa253263b___RS_Erly.B 7781_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/a8d430c0-7dff-4474-a6c1-1fd601198ff6___RS_Erly.B 7738_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/32f37240-9abc-4a4d-8c62-37ee3e89d0b6___RS_Erly.B 6424_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/87725f1b-be8c-42b8-8eed-671b0c52276d___RS_Erly.B 7431_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/eabc47ee-5023-476b-9992-53baa566d270___RS_Erly.B 7757_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/fb3352cc-9189-4214-8b94-a60c6a392c96___RS_Erly.B 9600_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/04747279-48b2-4ce1-932b-e511424beb6b___RS_Erly.B 8240_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/69ec13bc-48bf-4a91-adc0-acb4386979ac___RS_Erly.B 7732_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/f882f8cc-49bc-49f6-a6c0-fbffe60d81a0___RS_Erly.B 7672_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/06339fe1-154f-4bcb-be91-a29e86e25929___RS_Erly.B 7440_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Early_blight/aafda29f-64e8-4f9a-8b71-d32b5ee27fef___RS_Erly.B 9431_final_masked.jpg",
+      "label_idx": 1,
+      "label_name": "Tomato___Early_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/aa358a07-3140-4f44-861b-dcd99f943b09___RS_Late.B 5542_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/0545d961-8c4c-43ee-9574-e05d7682a99f___GHLB2 Leaf 8631_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/b6a42b14-eb81-4e7b-9ca7-be9bed86c3b8___GHLB Leaf 1.5 Day 12_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/9b75e0b6-342b-4409-a02d-598e661160a6___GHLB2 Leaf 75_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/c68a177e-bd9d-4995-a8ab-9ef75bcef2fe___GHLB2 Leaf 8995_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/e5d1a9ef-23a4-45ee-ae3d-62644b71d803___RS_Late.B 5412_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/4de5d2c4-bed5-436a-95e2-bcf43a1723fd___GHLB2 Leaf 8727_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/4378c0ca-ff9f-48f4-8311-e716e89b1a99___RS_Late.B 5087_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/9aaf4a7d-12ac-457a-a18c-1f7ea13065de___RS_Late.B 5179_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/08a94695-4566-49aa-84df-91980c3534a2___RS_Late.B 5396_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/359ad718-024d-4c9e-b871-4144ca25da76___GHLB_PS Leaf 23.1 Day 13_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/c18f749d-9774-43f6-9c27-ff3d532f551a___RS_Late.B 7100_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/def2ded7-c610-404f-909f-83325dc4c85e___RS_Late.B 6854_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/aa1945c1-9d44-4e84-a18c-e5d78e3f4c37___RS_Late.B 5601_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/a8e0a1e2-02c7-4177-8ee6-e0c80743d6a8___GHLB2 Leaf 113.1_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/0003faa8-4b27-4c65-bf42-6d9e352ca1a5___RS_Late.B 4946_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/1a33a1fd-d077-4cf6-84ac-7825176e25d2___GHLB2 Leaf 8969_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/5c25c249-5433-47b9-be00-6cd2d31f48c1___GHLB2 Leaf 8753_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/52451f9c-825f-4907-8ee6-deeb5899d9b5___RS_Late.B 5449_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/9ecb8001-2f48-4487-b287-535dbcfb5c2f___RS_Late.B 6206_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/07cca2ca-6b0f-4322-8779-beb94bc219b0___RS_Late.B 6037_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/39c5ef21-730a-4e51-9eb0-a7639295c116___RS_Late.B 5157_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/781e93a9-2059-42de-8075-658033a6abf7___RS_Late.B 6075_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/13668efa-2c92-4e5a-94e1-e0bc53aab6c6___RS_Late.B 6962_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/914e1c39-d7e1-4b6e-83be-254ab705746b___GHLB2 Leaf 101.3_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/56226d25-dadc-4c38-8a06-cba810b38c42___GHLB2 Leaf 154.1_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/b8cf164c-05b8-455f-86de-fe785f40df9f___GHLB2 Leaf 8587_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/275e6226-c0a6-482d-b382-da22452db846___GHLB2 Leaf 8607_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/989d984b-eaef-4ae1-a850-c2ae65961bdf___GHLB2 Leaf 9026_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/dbedc9c1-d7f8-4eef-b4bf-d36689c57c60___GHLB Leaf 27 Day 12_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/427af7ac-5593-4c8e-9a10-44978c009612___RS_Late.B 5452_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/491a9294-8f46-4563-9787-6b8b68a9c050___RS_Late.B 6591_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/704b80c3-ffea-41c4-9f18-e07e56740279___RS_Late.B 6817_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/c69d0486-1baa-479e-947f-6b8d069279ff___RS_Late.B 5200_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/1a895389-ec7f-4622-afaf-9afe6c16a26a___RS_Late.B 5172_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/ccbeb4a7-7a15-4246-9ffa-1807e58b3afc___RS_Late.B 4849_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/e1d00dcb-f2cb-41ca-8a45-a46c43e7c90e___GHLB2 Leaf 8697_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/64a054b2-4375-48ff-aca3-f823d64d831e___RS_Late.B 7123_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/555b889a-d22e-4371-bd35-21ae629604ff___RS_Late.B 6742_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Late_blight/2d65b450-78b3-45db-ae98-2ee76f9fe1e2___GHLB2 Leaf 9116_final_masked.jpg",
+      "label_idx": 2,
+      "label_name": "Tomato___Late_blight"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/8d6e2d0b-672d-4737-8973-17a9f31517a8___Crnl_L.Mold 7070_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/e7391b48-0b36-41fd-81f0-35c6b5a24d0a___Crnl_L.Mold 6761_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/909dd94b-4338-4bd2-b22b-0f222b574124___Crnl_L.Mold 8842_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/96ec6dc6-c3fb-4261-93ae-77d5dfaf8478___Crnl_L.Mold 8909_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/2847f847-3048-487d-ae4f-c45e44d04d85___Crnl_L.Mold 8878_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/93608d6e-7511-4388-88c1-ef45b754e9c2___Crnl_L.Mold 6580_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/7f9fdc98-b176-45ac-a56f-28accf0a5a95___Crnl_L.Mold 6945_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/be834e45-b191-48c6-a47d-832bd36f1774___Crnl_L.Mold 8739_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/10e1a86f-0355-4534-aed8-08c6f01548d4___Crnl_L.Mold 7018_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/4375c98f-8986-4680-9432-afb29f839d7b___Crnl_L.Mold 6847_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/ceece521-8e6b-4f7b-b4bb-54369494e7a3___Crnl_L.Mold 6931_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/e2d4c4ee-752f-4494-a046-6076bc08ecbd___Crnl_L.Mold 7178_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/c2fd7cad-271c-49cc-aa49-85ebf0d4fd8d___Crnl_L.Mold 6820_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/8b5d979a-f03e-4f79-b638-f5222b904a1c___Crnl_L.Mold 6727_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/47368e87-9afe-4943-8929-e5e8a652bf60___Crnl_L.Mold 8950_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/86e29af1-d73d-4403-b436-247705413f6d___Crnl_L.Mold 6599_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/39feab4e-7c7b-44de-b9bf-8baaebb6e499___Crnl_L.Mold 8709_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/a50fd0e4-4f72-4f5b-98d2-7b1ccaacb364___Crnl_L.Mold 6532_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/de7feb7f-caf7-4f98-90d4-096b0f130817___Crnl_L.Mold 6629_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/bb7c7fce-4601-43b6-b396-4f78ca7dd44c___Crnl_L.Mold 9013_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/77cd3874-ca19-4bfc-a112-696b240a88f9___Crnl_L.Mold 6652_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/8989f67e-ccc0-4d37-a950-59d3a69856fe___Crnl_L.Mold 7175_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/7f283b23-4b47-47e2-9a9f-aa8619669018___Crnl_L.Mold 9044_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/4c7e93da-6c5a-4423-89f3-db15242fd53a___Crnl_L.Mold 8703_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/9bc3f5d2-a34c-45b1-9c8e-970c6c0e688b___Crnl_L.Mold 8971_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/8c12b984-d1be-4c9c-9fd8-cd032434f543___Crnl_L.Mold 8911_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/f80ea01a-c910-4f53-b415-9b327dc51402___Crnl_L.Mold 6804_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/b31c5c8a-aac0-4cad-af32-2b10e2fa64f6___Crnl_L.Mold 7053_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/483cc7e3-9fbd-4433-82b4-133c561f994c___Crnl_L.Mold 6537_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/f12a4cdc-3c47-4f22-9f03-188015dedb07___Crnl_L.Mold 8913_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/1ed685c5-7ed4-497e-b9dc-f2851fe7d865___Crnl_L.Mold 6828_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/171e415f-917b-49c1-90f5-9f4a90ac0f7f___Crnl_L.Mold 8648_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/c5dae6ba-42cf-4497-bf05-52af90c98d8a___Crnl_L.Mold 9038_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/d7ee8962-2ee6-4da6-aadd-d181aa54a498___Crnl_L.Mold 8922_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/4a221a03-1d3a-4641-9fd3-e0fc919fef54___Crnl_L.Mold 9104_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/e7ebe82b-5573-47ff-acb8-f208462d0335___Crnl_L.Mold 7123_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/b8fc0a5c-ffce-488e-ae68-f4a268f8817b___Crnl_L.Mold 9157_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/4914514e-fd44-4e2b-becd-5daf581c78e6___Crnl_L.Mold 9019_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/91eeb305-5a5f-4e72-8258-776ea9ed6338___Crnl_L.Mold 7112_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___Leaf_Mold/1837d2d4-ec4b-445c-89f7-a974061a433a___Crnl_L.Mold 6975_final_masked.jpg",
+      "label_idx": 3,
+      "label_name": "Tomato___Leaf_Mold"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/79e38a3e-8170-44e3-a7ce-e00bbbcf24dc___GH_HL Leaf 460_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/8a4cf703-385a-4c50-9ce2-a751ae6334e1___RS_HL 9963_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/13b114fe-22bf-498e-8534-4049123ef655___RS_HL 9775_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/4e67dd9d-8a92-4b30-bb08-2e30d34acde7___RS_HL 0245_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/c9f92d4b-9d9c-4932-ba1b-bc290987c154___RS_HL 0350_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/63568703-0cfc-4d23-a5e1-e3393df2d2fc___RS_HL 0246_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/9f959699-166c-4ac9-ba4a-a9e7d0c9e03b___RS_HL 0143_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/8ea80484-4e70-4a51-bbc2-213cfedd4f59___GH_HL Leaf 341_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/3b1ba616-6a8f-44e9-948f-5c056eb565c8___RS_HL 9980_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/9be696de-84ac-4275-b9b0-a6a54e8a1813___GH_HL Leaf 244_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/d9a6af00-1c5a-4299-9bad-b922c8b5c33e___RS_HL 0546_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/fb73cd43-aa32-4aba-978f-034c9c809c25___RS_HL 9749_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/67549f03-2c86-44b7-9730-32d4a23287f3___GH_HL Leaf 495.2_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/bc339a85-6c4e-428a-a18e-9174acdcab1e___RS_HL 0513_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/5f7d3261-84f4-4b85-b9e1-f15792638c2d___RS_HL 9676_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/c586e5df-8410-4690-aee8-25e9ef9df9a5___GH_HL Leaf 178.1_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/b995ac55-e42d-4fb6-9b91-310a4d046c21___RS_HL 9668_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/2ec18b22-c51c-456b-bf94-d5f3d282fb6c___RS_HL 0179_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/9266e5f5-ab7a-461a-836d-fa03f1669a6a___RS_HL 9810_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/2bce59d3-c971-46da-8bb5-bc36b712e208___GH_HL Leaf 257_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/0caff918-5807-40f2-b9e4-7dd34a7bab5d___RS_HL 0345_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/b3eaae0f-95b4-4bb5-89b5-4460cf79e554___RS_HL 0583_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/7d1cbe82-bda7-498a-ac8f-f01a0e279940___RS_HL 9639_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/b3e76dfe-eeb0-4edf-a93c-bb7964ff57eb___GH_HL Leaf 210.4_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/df35d1fb-978c-4aeb-9d6f-e7da242c81b8___RS_HL 0515_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/202825fe-3d0b-4c86-aea3-15604e2efed4___RS_HL 9694_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/a3e61ed6-3c67-48d7-af39-9a69b2c5c7bc___GH_HL Leaf 250.1_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/4ec0267c-4606-47bf-ad7e-5e087dc4aef1___RS_HL 0187_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/f4ef07ac-f42d-44b3-8433-368b03b422d2___RS_HL 9743_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/b923ed54-63ad-49f8-8881-ebd654c5821c___RS_HL 0359_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/bef34d1a-3d57-4b46-a4ac-70702a4ca5db___RS_HL 9799_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/ec1bfc74-550b-4478-95c0-d60c1379957a___RS_HL 9879_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/e53267d6-9a69-4e42-9ddc-8481a337b3e0___RS_HL 0073_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/3a48952b-cb72-4678-baca-d622971c78d0___RS_HL 9877_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/caa60224-1c60-455e-8b7c-e73626af84c1___GH_HL Leaf 214_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/109f3e0e-e7f4-41b9-b450-f68750e144ae___RS_HL 0014_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/4ae80701-db36-4003-a20c-925d66bdfb68___RS_HL 0602_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/c40b106b-14bf-4af2-88b5-51182169d548___RS_HL 0298_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/52325034-c2a2-4f00-b49d-e67cafcd2828___GH_HL Leaf 399.1_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    },
+    {
+      "path": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle1_replay_adds/Tomato___healthy/b59425a2-e983-49c8-a9fd-61da8f38e7f3___RS_HL 0537_final_masked.jpg",
+      "label_idx": 4,
+      "label_name": "Tomato___healthy"
+    }
+  ],
+  "_note": "Paths rewritten to POSIX, bundle-relative. 03_retrain_cycle.py converts them to absolute at runtime."
+}

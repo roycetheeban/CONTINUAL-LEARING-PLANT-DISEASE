@@ -1,0 +1,30 @@
+seed: 42
+num_workers: 0
+device: cuda
+meta:
+  cycle_name: cycle2
+model:
+  num_classes: 5
+  base_checkpoint: /home/sajeepan/jetson_aiot/jetson_test/models/classifier_catA_replay_cycle1.pth
+data:
+  train_dir: /home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle2_stream
+  replay_dir: /home/sajeepan/jetson_aiot/jetson_test/data/replay_buffer
+  val_dir: /home/sajeepan/jetson_aiot/jetson_test/data/val
+  test_dir: /home/sajeepan/jetson_aiot/jetson_test/data/test
+  image_size: 224
+  resize_size: 256
+train:
+  batch_size: 32
+  weight_decay: 0.0001
+  max_epochs: 12
+  min_epochs: 5
+  patience: 5
+  lr_g3: 5.0e-05
+  lr_head: 0.0002
+replay:
+  old_per_batch: 16
+  new_per_batch: 16
+  add_per_class_after_cycle: 40
+  input_manifest: /home/sajeepan/jetson_aiot/jetson_test/outputs/_manifest_runtime.json
+output:
+  root: /home/sajeepan/jetson_aiot/jetson_test/outputs/retrain_cycle

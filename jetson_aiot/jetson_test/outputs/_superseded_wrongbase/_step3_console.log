@@ -1,0 +1,24 @@
+/usr/lib/python3/dist-packages/scipy/__init__.py:146: UserWarning: A NumPy version >=1.17.3 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+  warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+Using device: cuda
+Downloading: "https://download.pytorch.org/models/mobilenet_v3_small-047dcff4.pth" to /home/sajeepan/.cache/torch/hub/checkpoints/mobilenet_v3_small-047dcff4.pth
+  0%|          | 0.00/9.83M [00:00<?, ?B/s] 36%|███▌      | 3.50M/9.83M [00:00<00:00, 36.6MB/s]100%|██████████| 9.83M/9.83M [00:00<00:00, 68.7MB/s]
+epoch=01 loss=0.0148 val_f1=0.9455 lrs=[5e-05, 0.0002]
+epoch=02 loss=0.0098 val_f1=0.9418 lrs=[5e-05, 0.0002]
+epoch=03 loss=0.0119 val_f1=0.9440 lrs=[5e-05, 0.0002]
+epoch=04 loss=0.0055 val_f1=0.9497 lrs=[5e-05, 0.0002]
+epoch=05 loss=0.0081 val_f1=0.9479 lrs=[5e-05, 0.0002]
+epoch=06 loss=0.0120 val_f1=0.9349 lrs=[5e-05, 0.0002]
+epoch=07 loss=0.0252 val_f1=0.9496 lrs=[5e-05, 0.0002]
+epoch=08 loss=0.0229 val_f1=0.9305 lrs=[2.5e-05, 0.0001]
+epoch=09 loss=0.0184 val_f1=0.9331 lrs=[2.5e-05, 0.0001]
+early stop: patience reached
+Saved: /home/sajeepan/jetson_aiot/jetson_test/outputs/retrain_cycle/checkpoints/model.pth
+Test macro_f1: 0.9888
+CUDA check: OK (Orin)
+running retrain cycle -> /home/sajeepan/jetson_aiot/jetson_test/outputs/retrain_cycle
+(this is the real cycle-2 config; nothing in the main repo is touched)
+
+  wrote outputs/03_retrain_cycle.json
+
+STEP 3 done -- 375.0 s wall clock.

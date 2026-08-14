@@ -1,0 +1,104 @@
+{
+  "cycle": "cycle2",
+  "method": "experience_replay",
+  "class_names": [
+    "Tomato___Bacterial_spot",
+    "Tomato___Early_blight",
+    "Tomato___Late_blight",
+    "Tomato___Leaf_Mold",
+    "Tomato___healthy"
+  ],
+  "base_checkpoint": "/home/sajeepan/jetson_aiot/jetson_test/models/classifier_catA_replay_cycle1.pth",
+  "train_summary": {
+    "best_epoch": 7,
+    "best_val_macro_f1": 0.9423388147083571,
+    "train_wall_time_sec": 478.054
+  },
+  "replay": {
+    "old_per_batch": 16,
+    "new_per_batch": 16,
+    "effective_old_count": 926,
+    "manifest_path": "/home/sajeepan/jetson_aiot/jetson_test/outputs/retrain_cycle/metrics/replay_buffer_manifest.json"
+  },
+  "runtime": {
+    "total_wall_time_sec": 491.2819,
+    "train_wall_time_sec": 478.054,
+    "peak_vram_mb": 156.58,
+    "process_ram_mb_end": 1471.01
+  },
+  "model_footprint": {
+    "num_parameters": 1522981,
+    "model_size_mb": 5.8097
+  },
+  "val": {
+    "accuracy": 0.9485488126649076,
+    "macro_f1": 0.9423388147083571,
+    "macro_precision": 0.936243507780221,
+    "macro_recall": 0.9519830108445465
+  },
+  "test": {
+    "accuracy": 0.9859278803869833,
+    "macro_f1": 0.98462867962021,
+    "macro_precision": 0.9821568010708361,
+    "macro_recall": 0.9876367752864651
+  },
+  "test_per_class_precision": {
+    "Tomato___Bacterial_spot": 0.9968253968253968,
+    "Tomato___Early_blight": 0.9316770186335404,
+    "Tomato___Late_blight": 0.9893238434163701,
+    "Tomato___Leaf_Mold": 0.9929577464788732,
+    "Tomato___healthy": 1.0
+  },
+  "test_per_class_recall": {
+    "Tomato___Bacterial_spot": 0.9843260188087775,
+    "Tomato___Early_blight": 1.0,
+    "Tomato___Late_blight": 0.972027972027972,
+    "Tomato___Leaf_Mold": 0.986013986013986,
+    "Tomato___healthy": 0.99581589958159
+  },
+  "test_per_class_f1": {
+    "Tomato___Bacterial_spot": 0.9905362776025236,
+    "Tomato___Early_blight": 0.9646302250803859,
+    "Tomato___Late_blight": 0.9805996472663139,
+    "Tomato___Leaf_Mold": 0.9894736842105263,
+    "Tomato___healthy": 0.9979035639412998
+  },
+  "config": {
+    "seed": 42,
+    "num_workers": 0,
+    "device": "cuda",
+    "meta": {
+      "cycle_name": "cycle2"
+    },
+    "model": {
+      "num_classes": 5,
+      "base_checkpoint": "/home/sajeepan/jetson_aiot/jetson_test/models/classifier_catA_replay_cycle1.pth"
+    },
+    "data": {
+      "train_dir": "/home/sajeepan/jetson_aiot/jetson_test/data/cl_cycle2_stream",
+      "replay_dir": "/home/sajeepan/jetson_aiot/jetson_test/data/replay_buffer",
+      "val_dir": "/home/sajeepan/jetson_aiot/jetson_test/data/val",
+      "test_dir": "/home/sajeepan/jetson_aiot/jetson_test/data/test",
+      "image_size": 224,
+      "resize_size": 256
+    },
+    "train": {
+      "batch_size": 32,
+      "weight_decay": 0.0001,
+      "max_epochs": 12,
+      "min_epochs": 5,
+      "patience": 5,
+      "lr_g3": 5e-05,
+      "lr_head": 0.0002
+    },
+    "replay": {
+      "old_per_batch": 16,
+      "new_per_batch": 16,
+      "add_per_class_after_cycle": 40,
+      "input_manifest": "/home/sajeepan/jetson_aiot/jetson_test/outputs/_manifest_runtime.json"
+    },
+    "output": {
+      "root": "/home/sajeepan/jetson_aiot/jetson_test/outputs/retrain_cycle"
+    }
+  }
+}

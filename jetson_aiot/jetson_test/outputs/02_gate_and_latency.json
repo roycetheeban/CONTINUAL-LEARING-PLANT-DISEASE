@@ -1,0 +1,70 @@
+{
+  "env": {
+    "hardware": {
+      "device_name": "NVIDIA Jetson Orin Nano Super Developer Kit",
+      "variant": "8GB",
+      "jetpack_version": "6.2.2",
+      "tensorrt_version": "10.3.0",
+      "cuda_version": "12.6",
+      "power_mode": "25W",
+      "notes": "Surveyed on-device 2026-08-09. SUPER variant (67 TOPS) -- latency is NOT comparable to the original 40-TOPS Orin Nano; the paper must say \"Super\". Power mode is reported; power draw and thermals are not measured."
+    },
+    "platform": "Linux-5.15.185-tegra-aarch64-with-glibc2.35",
+    "machine": "aarch64",
+    "python": "3.10.12",
+    "torch": "2.8.0",
+    "cuda_available": true,
+    "cuda": "12.6",
+    "gpu_name": "Orin",
+    "tensorrt": "10.3.0"
+  },
+  "test_set_size": 1137,
+  "accuracy": {
+    "torch_fp32": 98.3289,
+    "torch_fp16": 98.5928,
+    "tensorrt_fp16": 98.7687,
+    "delta_trt_minus_fp32_pp": 0.4398,
+    "delta_images": 5
+  },
+  "engine_io": {
+    "input_name": "input",
+    "input_trt_dtype": "DataType.FLOAT",
+    "output_name": "logits",
+    "output_trt_dtype": "DataType.FLOAT",
+    "note": "dtypes read from the engine, not assumed"
+  },
+  "sanity": {
+    "plausible": true,
+    "abs_delta_pp": 0.4398,
+    "chance_accuracy_pp": 20.0,
+    "verdict": "delta within the range FP16 fusion can plausibly explain"
+  },
+  "latency_ms": {
+    "torch_fp32_single": {
+      "mean_ms": 18.44,
+      "std_ms": 0.108,
+      "p50_ms": 18.42,
+      "p95_ms": 18.575
+    },
+    "torch_fp32_capture_set": {
+      "mean_ms": 18.679,
+      "std_ms": 0.099,
+      "p50_ms": 18.666,
+      "p95_ms": 18.871
+    },
+    "trt_fp16_single": {
+      "mean_ms": 1.911,
+      "std_ms": 0.03,
+      "p50_ms": 1.917,
+      "p95_ms": 1.957
+    },
+    "trt_fp16_capture_set": {
+      "mean_ms": 4.03,
+      "std_ms": 0.375,
+      "p50_ms": 4.094,
+      "p95_ms": 4.621
+    }
+  },
+  "trt_speedup_vs_fp32_single": 9.649,
+  "capture_set_size": 8
+}

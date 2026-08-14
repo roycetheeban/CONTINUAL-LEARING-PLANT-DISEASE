@@ -1,0 +1,19 @@
+Superseded 2026-08-09.
+
+Step 3 was run with retrain.base_checkpoint = the DEPLOYED cycle-2 model instead of
+the cycle-1 model the monthly cycle should start from. It therefore retrained
+cycle-2 on cycle-2 data -- material the model had already learned.
+
+Evidence:
+  epoch-1 train_loss  0.014816   (laptop, correct base: 0.0666  -- 4.5x higher)
+  early stop          epoch 9    (expected ~12)
+  test accuracy       99.0325%   (inflated; measured on memorised material)
+
+Invalidated: step 3 accuracy, and step 7's PROMOTE decision (it compared the
+retrained model against a near-copy of itself).
+
+Still valid from this run, and NOT re-measured: timing and memory do not depend on
+which weights training starts from --
+  peak VRAM 156.58 MB, ~38.3 s/epoch, process RAM 1519.82 MB.
+
+Steps 1, 2, 4, 5, 6 were never affected.

@@ -1,0 +1,68 @@
+{
+  "env": {
+    "hardware": {
+      "device_name": "NVIDIA Jetson Orin Nano Super Developer Kit",
+      "variant": "8GB",
+      "jetpack_version": "6.2.2",
+      "tensorrt_version": "10.3.0",
+      "cuda_version": "12.6",
+      "power_mode": "25W",
+      "notes": "Surveyed on-device 2026-08-09. SUPER variant (67 TOPS) -- latency is NOT comparable to the original 40-TOPS Orin Nano; the paper must say \"Super\". Power mode, board power (INA3221 rails) and thermals are all measured -- see outputs/06_power_thermal.json."
+    },
+    "platform": "Linux-5.15.185-tegra-aarch64-with-glibc2.35",
+    "machine": "aarch64",
+    "python": "3.10.12",
+    "torch": "2.8.0",
+    "cuda_available": true,
+    "cuda": "12.6",
+    "gpu_name": "Orin",
+    "tensorrt": "10.3.0"
+  },
+  "what_this_measures": "Full on-device redeployment of the model produced by step 3: convert to TensorRT, run the conversion gate, run the deployment gate, decide. Closes the adaptation half of the perception-to-adaptation loop.",
+  "test_set_size": 1137,
+  "retrained_checkpoint": "outputs/retrain_cycle/checkpoints/model.pth",
+  "incumbent_checkpoint": "models/classifier_catA_replay_cycle1.pth",
+  "incumbent_note": "The incumbent is the model the cycle STARTED from -- what was in production when the cycle ran. Its engine is built before the redeploy clock starts, since in production it already exists.",
+  "redeploy_cost_seconds": {
+    "onnx_export": 1.288,
+    "tensorrt_build": 103.495,
+    "gate_evaluation": 0.52,
+    "total": 111.34
+  },
+  "artifact_sizes_mb": {
+    "onnx": 6.102,
+    "engine": 4.018
+  },
+  "conversion_gate": {
+    "question": "Is the compiled artifact equivalent to the validated model?",
+    "retrained_fp32_pct": 98.5928,
+    "retrained_trt_fp16_pct": 98.6807,
+    "delta_pp": 0.0879,
+    "mcnemar": {
+      "b_first_only_correct": 0,
+      "c_second_only_correct": 1,
+      "discordant": 1,
+      "exact_mcnemar_p": 1.0,
+      "significant_at_0.05": false
+    },
+    "identical_predictions": false,
+    "statistically_equivalent": true
+  },
+  "deployment_gate": {
+    "question": "Does the new model beat the incumbent on the fixed test set?",
+    "incumbent_trt_fp16_pct": 98.3289,
+    "retrained_trt_fp16_pct": 98.6807,
+    "delta_pp": 0.3518,
+    "delta_images": 4,
+    "mcnemar": {
+      "b_first_only_correct": 5,
+      "c_second_only_correct": 9,
+      "discordant": 14,
+      "exact_mcnemar_p": 0.42395,
+      "significant_at_0.05": false
+    },
+    "decision": "PROMOTE",
+    "decision_rule": "promote iff retrained TRT accuracy > incumbent TRT accuracy",
+    "caveat": "The decision rule is a strict accuracy comparison, as the design specifies. Statistical significance is reported separately and is NOT part of the rule -- do not describe the promotion as statistically significant unless p < 0.05."
+  }
+}

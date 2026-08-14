@@ -1,0 +1,65 @@
+{
+  "env": {
+    "hardware": {
+      "device_name": "NVIDIA Jetson Orin Nano Super Developer Kit",
+      "variant": "8GB",
+      "jetpack_version": "6.2.2",
+      "tensorrt_version": "10.3.0",
+      "cuda_version": "12.6",
+      "power_mode": "25W",
+      "notes": "Surveyed on-device 2026-08-09. SUPER variant (67 TOPS) -- latency is NOT comparable to the original 40-TOPS Orin Nano; the paper must say \"Super\". Power mode is reported; power draw and thermals are not measured."
+    },
+    "platform": "Linux-5.15.185-tegra-aarch64-with-glibc2.35",
+    "machine": "aarch64",
+    "python": "3.10.12",
+    "torch": "2.8.0",
+    "cuda_available": true,
+    "cuda": "12.6",
+    "gpu_name": "Orin",
+    "tensorrt": "10.3.0"
+  },
+  "what_this_measures": "Full on-device redeployment of the model produced by step 3: convert to TensorRT, run the conversion gate, run the deployment gate, decide. Closes the adaptation half of the perception-to-adaptation loop.",
+  "test_set_size": 1137,
+  "retrained_checkpoint": "outputs/retrain_cycle/checkpoints/model.pth",
+  "redeploy_cost_seconds": {
+    "onnx_export": 2.101,
+    "tensorrt_build": 218.275,
+    "gate_evaluation": 0.511,
+    "total": 226.751
+  },
+  "artifact_sizes_mb": {
+    "onnx": 6.102,
+    "engine": 4.156
+  },
+  "conversion_gate": {
+    "question": "Is the compiled artifact equivalent to the validated model?",
+    "retrained_fp32_pct": 99.0325,
+    "retrained_trt_fp16_pct": 98.9446,
+    "delta_pp": -0.088,
+    "mcnemar": {
+      "b_first_only_correct": 1,
+      "c_second_only_correct": 0,
+      "discordant": 1,
+      "exact_mcnemar_p": 1.0,
+      "significant_at_0.05": false
+    },
+    "equivalent": false
+  },
+  "deployment_gate": {
+    "question": "Does the new model beat the incumbent on the fixed test set?",
+    "incumbent_trt_fp16_pct": 98.7687,
+    "retrained_trt_fp16_pct": 98.9446,
+    "delta_pp": 0.1759,
+    "delta_images": 2,
+    "mcnemar": {
+      "b_first_only_correct": 3,
+      "c_second_only_correct": 5,
+      "discordant": 8,
+      "exact_mcnemar_p": 0.726562,
+      "significant_at_0.05": false
+    },
+    "decision": "PROMOTE",
+    "decision_rule": "promote iff retrained TRT accuracy > incumbent TRT accuracy",
+    "caveat": "The decision rule is a strict accuracy comparison, as the design specifies. Statistical significance is reported separately and is NOT part of the rule -- do not describe the promotion as statistically significant unless p < 0.05."
+  }
+}

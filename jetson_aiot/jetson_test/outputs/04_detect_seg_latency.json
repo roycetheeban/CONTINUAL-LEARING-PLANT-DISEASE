@@ -1,0 +1,85 @@
+{
+  "env": {
+    "hardware": {
+      "device_name": "NVIDIA Jetson Orin Nano Super Developer Kit",
+      "variant": "8GB",
+      "jetpack_version": "6.2.2",
+      "tensorrt_version": "10.3.0",
+      "cuda_version": "12.6",
+      "power_mode": "25W",
+      "notes": "Surveyed on-device 2026-08-09. SUPER variant (67 TOPS) -- latency is NOT comparable to the original 40-TOPS Orin Nano; the paper must say \"Super\". Power mode is reported; power draw and thermals are not measured."
+    },
+    "platform": "Linux-5.15.185-tegra-aarch64-with-glibc2.35",
+    "machine": "aarch64",
+    "python": "3.10.12",
+    "torch": "2.8.0",
+    "cuda_available": true,
+    "cuda": "12.6",
+    "gpu_name": "Orin",
+    "tensorrt": "10.3.0"
+  },
+  "scope": "LATENCY ONLY -- mAP/mIoU not re-measured; keep citing ref21 for accuracy.",
+  "runtime_backend": "PyTorch FP16 via ultralytics (NOT a TensorRT engine)",
+  "comparability_note": "Compare 'inference' against ref21's 12.2 ms / 5.0 ms -- those are pure inference. 'wall_*' additionally includes image load, letterbox, NMS and Results construction, and is the honest end-to-end on-device cost. Unlike the classifier (steps 1-2), these run through PyTorch, not TensorRT, so they do not support a TensorRT deployment claim.",
+  "imgsz": 640,
+  "half": true,
+  "n_source_images": 32,
+  "results": {
+    "detection": {
+      "wall_mean_ms": 33.399,
+      "wall_std_ms": 0.996,
+      "wall_p50_ms": 33.565,
+      "wall_p95_ms": 34.461,
+      "fps_from_wall_mean": 29.94,
+      "preprocess": {
+        "mean_ms": 4.761,
+        "std_ms": 0.158,
+        "p50_ms": 4.74,
+        "p95_ms": 4.955
+      },
+      "inference": {
+        "mean_ms": 22.972,
+        "std_ms": 0.228,
+        "p50_ms": 22.875,
+        "p95_ms": 23.334
+      },
+      "postprocess": {
+        "mean_ms": 3.658,
+        "std_ms": 0.861,
+        "p50_ms": 4.066,
+        "p95_ms": 4.212
+      },
+      "fps_from_inference_mean": 43.53,
+      "image_load_and_overhead_ms": 2.008,
+      "weights": "yolov8n_detect.pt"
+    },
+    "segmentation": {
+      "wall_mean_ms": 41.948,
+      "wall_std_ms": 0.566,
+      "wall_p50_ms": 41.803,
+      "wall_p95_ms": 43.163,
+      "fps_from_wall_mean": 23.84,
+      "preprocess": {
+        "mean_ms": 4.666,
+        "std_ms": 0.124,
+        "p50_ms": 4.64,
+        "p95_ms": 4.924
+      },
+      "inference": {
+        "mean_ms": 29.239,
+        "std_ms": 0.407,
+        "p50_ms": 29.141,
+        "p95_ms": 30.017
+      },
+      "postprocess": {
+        "mean_ms": 5.961,
+        "std_ms": 0.106,
+        "p50_ms": 5.936,
+        "p95_ms": 6.158
+      },
+      "fps_from_inference_mean": 34.2,
+      "image_load_and_overhead_ms": 2.082,
+      "weights": "yolov8n_seg.pt"
+    }
+  }
+}
