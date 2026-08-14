@@ -62,15 +62,13 @@ Labels are final and match `04_FULL_PAPER_LATEX.md`. For each: what tool, what e
 
 **Tool: draw.io** · **Double column (`figure*`), 181 mm wide** · file: `fig1_architecture.pdf`
 
-The paper's offline-first claim must be *visible* here: the edge tier should dominate the frame and the cloud tier should look clearly optional.
+The paper's offline-first claim must be *visible* here: the figure shows the edge tier only.
 
-**Layout — two horizontal bands:**
+> **Changed 2026-08-05.** The upper "CLOUD (optional, subscription)" band — three grey dashed boxes (`Relabelling Service`, `Model Registry / OTA Updates`, `RAG Chatbot + Daily Insights`) plus the dashed `intermittent sync` connector — was **removed**. Those services are out of scope per `01_SCOPE_AND_COVERAGE.md` §1.3 (cloud microservices, RAG chatbot and subscription tiers are all skipped), so drawing them in the architecture figure promised a tier the paper never describes or evaluates. The figure is now single-band; the offline-first claim is carried by the caption instead. The canvas height dropped 4.35 in → 2.60 in accordingly.
 
-*Upper band (~25% height) — "CLOUD (optional, subscription)":* draw in light grey fill `#F0F0F0` with a **dashed border**. Three small boxes: `Relabelling Service`, `Model Registry / OTA Updates`, `RAG Chatbot + Daily Insights`. Keep these visually small and plain.
+**Layout — one band:**
 
-*Connector between bands:* a single **dashed** bidirectional arrow labelled `intermittent sync — relabel queue, model updates`. Dashed = not required for operation. This one detail carries the whole offline-first argument.
-
-*Lower band (~75% height) — "EDGE — NVIDIA Jetson Orin Nano":* solid dark border, white fill, visually dominant. Inside, left-to-right:
+*"EDGE — NVIDIA Jetson Orin Nano":* solid dark border, white fill, fills the frame. Inside, left-to-right:
 
 1. **Inputs column:** `Rotating Camera 360°/45° → 8 positions` and below it `Sensors: CO₂ · Temp · Humidity · Soil Moisture`. Small camera and thermometer icons help (draw.io shape library → search "camera", "sensor").
 2. **Image path** (horizontal chain, use `#0072B2` blue borders): `YOLOv8n Detect → Crop + Filter ≥124×124 → YOLOv8n-Seg → [GAN — optional]` — draw the GAN box **dashed with grey fill** and a small tag `off by default` → `MobileNetV3-Small Classify`.

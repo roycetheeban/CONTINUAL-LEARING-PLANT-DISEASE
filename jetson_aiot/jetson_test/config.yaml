@@ -1,0 +1,130 @@
+# Jetson Orin Nano on-device measurement -- E3/E5 upgrade from laptop proxy.
+#
+# Every path is RELATIVE TO THE BUNDLE ROOT (the directory containing this file).
+# Nothing here reaches outside the bundle, so it can be copied to the Jetson as-is.
+#
+# What this replaces: the laptop-RTX-4050 proxy numbers currently in Table XIII.
+# What it does NOT do: re-run the CL benchmark (Tables VI-XII). Those are method
+# comparisons and are legitimately run on any GPU -- only the deployment-cost
+# claims need the target device.
+
+seed: 42
+
+# ---------------------------------------------------------------- hardware
+# FILL THESE IN BEFORE RUNNING. They are written verbatim into every metrics
+# file and become the hardware provenance reported in the paper.
+hardware:
+  device_name: "NVIDIA Jetson Orin Nano Super Developer Kit"
+  variant: "8GB"                # 7.4 GiB visible, shared CPU/GPU
+  jetpack_version: "6.2.2"      # nvidia-jetpack 6.2.2+b24; L4T R36 rev 5.0
+  tensorrt_version: "10.3.0"    # deb 10.3.0.30-1+cuda12.5
+  cuda_version: "12.6"          # nvcc V12.6.68
+  power_mode: "25W"             # nvpmodel -q
+  notes: >-
+    Surveyed on-device 2026-08-09. SUPER variant (67 TOPS) -- latency is NOT
+    comparable to the original 40-TOPS Orin Nano; the paper must say "Super".
+    Power mode, board power (INA3221 rails) and thermals are all measured --
+    see outputs/06_power_thermal.json.
+
+model:
+  checkpoint: models/classifier_catA_replay_cycle2.pth
+  num_classes: 5
+  image_size: 224
+  class_names:
+    - Tomato___Bacterial_spot
+    - Tomato___Early_blight
+    - Tomato___Late_blight
+    - Tomato___Leaf_Mold
+    - Tomato___healthy
+  imagenet_mean: [0.485, 0.456, 0.406]
+  imagenet_std: [0.229, 0.224, 0.225]
+
+data:
+  test_dir: data/test
+  capture_set_size: 8      # the paper's "8-image capture set"
+
+export:
+  onnx_path: outputs/model.onnx
+  opset: 17
+
+trt:
+  engine_path: outputs/model_fp16.engine
+  fp16: true
+  workspace_mb: 1024
+  # If the FP16 build fails, the script records WHY and exits non-zero rather
+  # than silently substituting a fallback. On JetPack this should not happen.
+
+latency:
+  warmup_iters: 20
+  timed_iters: 200
+
+# --------------------------------------------------- on-device retrain cycle
+# Re-runs the REAL cycle-2 replay config with identical data/hyperparams/seed,
+# writing to a fresh output dir. Backs the paper's "fits the target device's
+# envelope" claim, which is currently inferred rather than measured.
+retrain:
+  enabled: true
+  # The model the monthly cycle STARTS from = the incumbent in production.
+  # MUST be cycle 1. The cycle-2 checkpoint retrains on already-seen data.
+  #
+  # This is deliberately NOT model.checkpoint. That entry is the DEPLOYED model
+  # (cycle 2) used by steps 1/2/5; step 3 needs the model the cycle begins with.
+  # Sharing one entry for both jobs silently retrained cycle-2 on cycle-2 data:
+  # epoch-1 loss 0.0148 instead of ~0.0666, early stop at 9 instead of 12, and an
+  # inflated 99.03% from testing on memorised material. 03_retrain_cycle.py now
+  # refuses to run if these two point at the same file.
+  base_checkpoint: models/classifier_catA_replay_cycle1.pth
+  output_root: outputs/retrain_cycle
+  train_dir: data/cl_cycle2_stream
+  replay_dir: data/replay_buffer
+  val_dir: data/val
+  test_dir: data/test
+  input_manifest: data/replay_buffer_manifest_cycle1.json
+  image_size: 224
+  resize_size: 256
+  batch_size: 32
+  weight_decay: 0.0001
+  max_epochs: 12
+  min_epochs: 5
+  patience: 5
+  lr_g3: 0.00005
+  lr_head: 0.0002
+  old_per_batch: 16
+  new_per_batch: 16
+  add_per_class_after_cycle: 40
+
+# ------------------------------------------------- detection / segmentation
+# LATENCY ONLY. mAP / mIoU stay cited from the prior conference paper [ref21] --
+# this bundle carries no detection ground truth, so accuracy is NOT re-measured.
+detect_seg:
+  enabled: true
+  detect_weights: models/yolov8n_detect.pt
+  seg_weights: models/yolov8n_seg.pt
+  imgsz: 640
+  warmup_iters: 10
+  timed_iters: 100
+  half: true
+
+# ------------------------------------------------- end-to-end loop (step 5)
+# Chains capture -> detect -> segment -> classify -> confidence routing in one
+# pass, to support the abstract's "complete perception-to-adaptation loop on
+# device" claim, which the per-component steps 1-4 do not establish on their own.
+# Environmental risk fusion is EXCLUDED (implementation not in this bundle).
+loop:
+  enabled: true
+  warmup_iters: 3
+  timed_iters: 30
+  confidence_threshold: 0.90   # below this, a frame is routed to the retrain buffer
+  min_crop_px: 16              # discard degenerate detection boxes
+  trt_max_batch: 8             # engine optimization-profile max from step 1
+
+# ------------------------------------------------------- power / thermal (step 6)
+# The bundle originally declared these unmeasurable under headless access. They are
+# readable from sysfs (INA3221 rails + thermal zones), so they are measured.
+power:
+  enabled: true
+  sample_interval_s: 0.1
+  idle_seconds: 30          # baseline, subtracted to give marginal workload cost
+  reps: 200                 # TRT classification repetitions
+  yolo_reps: 100
+  include_loop: true        # also profile the full cascade

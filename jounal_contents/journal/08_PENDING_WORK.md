@@ -11,9 +11,9 @@
 
 | | Status |
 |---|---|
-| Result tables | ✅ **All 4 filled with real numbers** — IV (E1), V (E2), XIII (E3/E5), XIV (E4) |
+| Result tables | ✅ **3 filled with real numbers** — IV (E1), XII (E3/E5), XIII (E4). E2's table was **withdrawn 2026-08-05** — its accuracy was fixed by the scenario design, not measured; findings moved to §V-B prose (`07_CHANGES_MADE.md` §32) |
 | Figures | ✅ **8 final** — Fig. 9 removed, see `07_CHANGES_MADE.md` §25 |
-| References | ✅ **35/35 complete**; 20 of 21 DOIs resolve; IEEE-format compliant |
+| References | ✅ **35/35 complete**; 20 of 21 DOIs resolve; IEEE-format compliant; **reordered to IEEE first-citation order 2026-08-05** (32 of 35 had been out of position — `07_CHANGES_MADE.md` §34) |
 | Placeholders in `.tex` | ✅ **Zero**, except §VI-C implementation details |
 | `.tex` ↔ `.md` sync | ✅ byte-identical |
 
@@ -158,7 +158,7 @@ Both papers are already published, so this does **not** block this submission �
 [ ]  4. Page count ~15; 8 figures; all 4 §VI disclosures intact
 ```
 
-**Already done:** Tables IV, V, XIII, **XIV** filled with real numbers · Figs 1–8 final · **Fig. 9 removed** and deployment claims softened · **35/35 references complete and verified** (fabricated [5] replaced) · `.tex`/`.md` byte-identical · planning-doc table numbers corrected.
+**Already done:** Tables IV, XII, XIII filled with real numbers · **Table V (fusion) withdrawn 2026-08-05** — design-determined accuracy, findings moved to §V-B prose · **E1 error asymmetry + n=80 caveats added** to §V-A · Figs 1–8 final · **Fig. 9 removed** and deployment claims softened · **Fig. 1 cloud tier removed** · **35/35 references complete and verified** (fabricated [5] replaced) · `.tex`/`.md` byte-identical.
 
 ---
 

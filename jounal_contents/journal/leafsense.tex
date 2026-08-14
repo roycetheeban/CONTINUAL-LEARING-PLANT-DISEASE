@@ -26,7 +26,7 @@
 \usepackage{url}
 \usepackage{xparse}
 
-%% --- float placement tuning (float-heavy paper: 8 figures + 14 tables) ---
+%% --- float placement tuning (float-heavy paper: 8 figures + 13 tables) ---
 \graphicspath{{figures/}}
 \renewcommand{\topfraction}{0.92}
 \renewcommand{\bottomfraction}{0.85}
@@ -78,12 +78,12 @@ seasonal variation and site-specific conditions drift away from the training
 distribution. Retraining in the cloud is not an option for the many greenhouses that
 lack reliable connectivity, and naive on-device fine-tuning induces catastrophic
 forgetting. This paper presents LEAFSENSE, an offline-first AIoT framework in which a
-Jetson Orin Nano executes the complete perception-to-adaptation loop on device:
+Jetson Orin Nano Super executes the complete perception-to-adaptation loop on device:
 rotating image capture, a three-stage detection--segmentation--classification pipeline,
 environmental sensing, label-level fusion, and metric-gated continual retraining. The
 core of the paper is a controlled continual learning (CL) study comprising 25
 complete experimental runs on the PlantVillage tomato subset, spanning two incremental
-scenarios (same-class streaming and 5$\rightarrow$7 class expansion), three
+scenarios (same-class streaming and 5-to-7 class expansion), three
 initialization strategies (from scratch, ImageNet, and in-domain PlantVillage
 pretraining) and five methods (Elastic Weight Consolidation, experience replay,
 parameter isolation, naive fine-tuning, and a hybrid). We introduce a layer-wise
@@ -156,7 +156,7 @@ choice of pretraining changes that answer, and what a retraining cycle actually 
 on the device.
 
 This paper answers those questions in the context of LEAFSENSE, an offline-first
-AIoT plant-monitoring product built on the NVIDIA Jetson Orin Nano. The device
+AIoT plant-monitoring product built on the NVIDIA Jetson Orin Nano Super. The device
 performs rotating image capture, runs the three-stage inference pipeline locally,
 correlates per-class leaf counts with CO\textsubscript{2}, temperature, humidity and
 soil-moisture readings through label-level fusion, routes its own predictions by
@@ -188,7 +188,7 @@ that evaluates the retrained candidate through the same TensorRT FP16 runtime th
 will serve it, so that the acceptance decision measures deployment reality.
 \item \textbf{An integrated multimodal edge system} combining the continual vision
 branch with an interpretable decision-tree environmental risk model through
-label-level fusion, validated on the turmeric target crop on a Jetson Orin Nano.
+label-level fusion, validated on the turmeric target crop.
 \end{enumerate}
 
 The remainder of the paper is organized as follows. Section~\ref{sec:related}
@@ -295,7 +295,8 @@ on-device training research. Memory, not computation, is the binding constraint:
 Lin \emph{et al.} \cite{ref30} demonstrate that a classifier can be trained within
 256\,KB of working memory through quantization-aware sparse back-propagation,
 establishing that gradient-based adaptation on microcontroller-class hardware is
-feasible rather than merely aspirational. The Jetson Orin Nano targeted here is far
+feasible rather than merely aspirational. The Jetson Orin Nano Super targeted here is
+far
 more capable, but the same principle governs the design --- our results in
 Section~\ref{sec:results} report peak \emph{retraining} memory precisely because it,
 and not model size, decides whether a cycle completes on device.
@@ -385,14 +386,15 @@ updates. Fig.~\ref{fig:arch} shows the complete architecture.
 \centering
 \includegraphics[width=\textwidth]{figures/fig1_architecture.pdf}
 \caption{LEAFSENSE system architecture. All perception, fusion and adaptation
-execute on the edge device; the cloud tier is optional and used only for relabel
-exchange and maintenance updates.}
+execute on the edge device; connectivity, when available, is used only for relabel
+exchange and maintenance updates and is not required for operation.}
 \label{fig:arch}
 \end{figure*}
 
 \subsection{Hardware and Capture Strategy}
 
-The compute unit is an NVIDIA Jetson Orin Nano. A motorized camera mount rotates
+The compute unit is an NVIDIA Jetson Orin Nano Super (8\,GB, 67~TOPS), operated in
+its 25\,W power mode. A motorized camera mount rotates
 through $360^\circ$ in $45^\circ$ steps, producing a \emph{capture set} of eight
 images per acquisition. Two sets are acquired daily --- a morning cycle (Cycle~A)
 and an evening cycle (Cycle~B) --- yielding 16 images per day, supplemented by an
@@ -417,8 +419,8 @@ letterboxed to $640\times640$ with aspect ratio preserved; YOLOv8n localizes
 individual leaves; crops smaller than $124\times124$ pixels are discarded as
 providing insufficient evidence for reliable downstream diagnosis; YOLOv8n-seg
 produces a per-leaf mask with the background filled black; the masked crop is
-resized to $200\times200$ and zero-padded to $224\times224$; and MobileNetV3-Small
-assigns a disease class and confidence. The lightweight GAN occlusion-recovery
+resized to $224\times224$; and MobileNetV3-Small assigns a disease class and
+confidence. The lightweight GAN occlusion-recovery
 module of \cite{ref22} is available as an optional stage between segmentation and
 classification but ships disabled by default, pending validation on real
 greenhouse imagery rather than synthetic occlusions. The set-level output is a
@@ -543,9 +545,11 @@ strictly as an interchange format --- engines are hardware- and library-version
 specific and are therefore always built on the target device rather than shipped ---
 and PyTorch weights are retained only for the classifier, as the trainable state from
 which each monthly cycle starts, together with the accumulated Fisher information.
-The decision-tree risk model executes on the CPU. The engine rebuild costs
-approximately one to two minutes once per month, which is amortized against roughly
-a twofold inference speed-up on every capture of every day.
+The decision-tree risk model executes on the CPU. Rebuilding the classifier engine
+takes 218\,s on the target device once per month and yields a 4.1\,MB engine from a
+5.8\,MB PyTorch checkpoint; that one-off cost is amortized against the
+$9.6\times$ inference speed-up it buys on every capture of every day
+(Section~\ref{subsec:ondevice}).
 
 %% ====================================================================
 \section{Continual Learning Methodology}
@@ -813,7 +817,18 @@ The deployed decision tree (depth 5, 15 leaves) matches or exceeds every
 higher-capacity alternative --- including the 666\,KB random forest, at
 $1.7\times10^{-4}$ its size and $73\times$ lower per-sample latency --- so no accuracy
 is traded for interpretability here. Per class it reaches F1 of 0.91 (Low), 0.78
-(Medium) and 0.88 (High) on the held-out chronological block. Ranked feature
+(Medium) and 0.88 (High) on the held-out chronological block.
+
+The error structure is asymmetric in the operationally favourable direction. Of the
+eleven test-set misclassifications, nine over-estimate risk and only two
+under-estimate it, both by a single band; \emph{no Medium- or High-risk window is
+ever assigned to the Low class} (precision 1.00 on Low). A grower is therefore never
+told that conditions are benign while the underlying infection pressure is elevated
+--- the failure mode that matters for a warning system --- at the cost of a modest
+over-alerting rate. This asymmetry is a property of the fitted tree rather than an
+imposed cost matrix, and would need to be re-verified on real sensor logs.
+
+Ranked feature
 importances confirm the intended mechanism: \texttt{hours\_rh\_above\_85} and
 \texttt{rh\_mean} jointly account for 79\% of importance, with humidity trend and
 soil moisture a distant third and fourth --- i.e.\ the tree recovers a
@@ -822,6 +837,15 @@ ever observing the oracle's internal wetness-hour count. Under $2\times$ injecte
 sensor noise, accuracy degrades to 75.0\% and recovers to 85.0\% under 10\% feature
 dropout, indicating graceful rather than catastrophic degradation when a sensor is
 noisy or intermittently unavailable.
+
+Two caveats bound these figures. The chronological test block contains 80 windows, so
+a single window is worth 1.25 percentage points --- exactly the margin separating the
+decision tree from the two ensembles. The defensible reading is therefore that the
+four learned models are \emph{indistinguishable} in accuracy on this data, which is
+also precisely what the interpretability argument requires: it needs parity with the
+higher-capacity models, not superiority over them. Second, this comparison is a
+single train/test run without seed repetition or cross-validation, so it carries no
+estimate of run-to-run variance.
 
 \subsection{Label-Level Fusion}
 
@@ -871,41 +895,32 @@ invalidates a jointly learned embedding. Second, a failed sensor degrades $r_t$ 
 unknown state, in which case the system reports the vision result alone rather than
 producing a corrupted joint prediction.
 
-\begin{table}[!t]
-\caption{Label-Level Fusion Versus Single-Modality Decisions}
-\label{tab:fusion}
-\centering
-\begin{tabular}{@{}lccc@{}}
-\toprule
-\textbf{Decision source} & \textbf{Accuracy} & \textbf{Macro F1} & \textbf{False alarms} \\
-\midrule
-Vision only (counts)      & 60.42\,\% & 29.6 & 14.6\,\% \\
-Sensor only (risk tree)   & 35.42\,\% & 20.6 & 12.5\,\% \\
-\textbf{Label-level fusion} & \textbf{87.50\,\%} & \textbf{71.8} & \textbf{12.5\,\%} \\
-\bottomrule
-\multicolumn{4}{@{}l}{\footnotesize 48 constructed episodes, 8 scenario categories, 6 replicates each.}
-\end{tabular}
-\end{table}
+To check that $\Phi$ behaves as intended before any unit is installed, the rule was
+exercised on 48 constructed episodes spanning eight scenario categories --- confirmed
+progression, benign non-infectious count rises, an early-warning case (favourable
+environment, no visible symptoms yet), a recovering case, a sensor-dropout case, and
+a deliberately adversarial case in which elevated humidity coincides with, but is not
+caused by, active infection. Each episode pairs real classifier predictions on
+held-out images with real risk states from the model of
+Section~\ref{sec:fusion}; only the day-by-day sequencing is constructed. We report
+this as a behavioural check and deliberately do not tabulate an aggregate accuracy
+against the single-modality baselines: seven of the eight categories are, by
+construction, cases $\Phi$ is designed to resolve, so any such figure would largely
+restate the scenario design rather than measure field performance.
 
-Table~\ref{tab:fusion} evaluates 48 constructed episodes spanning eight scenario
-categories --- confirmed progression, benign non-infectious count rises, an
-early-warning case (favourable environment, no visible symptoms yet), a recovering
-case, a sensor-dropout case, and a deliberately adversarial case where elevated
-humidity coincides with, but is not caused by, active infection. Each source is
-scored against an independently reasoned ground-truth cause rather than against
-$\Phi$'s own output, so the three sources can disagree. Vision-only over-alerts on
-benign count rises and completely misses the early-warning case (0\% accuracy on
-that category); sensor-only cannot distinguish confirmed disease from merely
-favourable conditions and produces no answer when the sensor fails. Fusion resolves
-every category except the adversarial one, where it necessarily inherits
-sensor-only's mistake because $\Phi$ has no signal that distinguishes a coincidental
-humidity reading from a causally elevated one --- an acknowledged limitation of a
-two-input discrete rule rather than a hidden failure. When the sensor is
-unavailable, fusion's output exactly matches the vision-only decision on every such
-episode, confirming graceful degradation rather than a corrupted joint state. Using
-the rising-count trajectory as a worked example, fusion and sensor-only would flag
-\emph{Watch} a full day earlier than vision-only's differential-based rule would
-first cross its alerting threshold.
+Three observations survive that caveat. The single-modality baselines fail
+\emph{structurally} rather than marginally, and in disjoint places: counts alone
+never resolve the early-warning case, because by definition no symptom has yet
+appeared, while risk alone never distinguishes confirmed progression from merely
+favourable conditions. Neither gap is closable by threshold tuning, which is the
+substantive argument for combining the branches at all. Second, $\Phi$ has one
+\emph{provable} blind spot: the adversarial category presents an input signature
+identical to the genuine early-warning case, so a two-input discrete rule cannot
+separate them and is necessarily wrong on one of the two. That is an acknowledged
+limit of the rule's expressiveness rather than a tuning failure. Third, degradation
+under sensor loss is exact rather than approximate --- on every sensor-dropout
+episode the fused output matched the vision-only decision identically, confirming
+that a failed sensor removes a branch instead of corrupting a joint state.
 
 %% ====================================================================
 \section{Experimental Setup}
@@ -971,9 +986,12 @@ size.
 
 \subsection{Implementation}
 
-All experiments use MobileNetV3-Small at $224\times224\times3$ input, obtained by
-resizing the short side to 256 followed by cropping, with the layer-wise schedule of
-Table~\ref{tab:lr}. Early stopping is applied with a minimum of five epochs before
+All experiments use MobileNetV3-Small at $224\times224\times3$ input. Training images
+are resized to a fixed $256\times256$ and randomly cropped to $224\times224$, then
+augmented with horizontal flipping, rotation of up to $12^\circ$ and colour jitter;
+evaluation images are resized directly to $224\times224$ with no crop. Both resizes
+act on each axis independently rather than on the short side, so aspect ratio is not
+preserved. The layer-wise schedule of Table~\ref{tab:lr} applies throughout. Early stopping is applied with a minimum of five epochs before
 the criterion becomes active, preventing premature termination on noisy validation
 fluctuations for the small classes T2 and T4.
 
@@ -984,8 +1002,10 @@ torchvision~0.20.1 and CUDA~12.1. Training is carried out in full precision;
 automatic mixed precision is not used, so the FP16 comparison of
 Section~\ref{subsec:ondevice} concerns only the exported deployment artifact and not
 the training pipeline. The deployment measurements of
-Section~\ref{subsec:ondevice} were taken on this same GPU and \emph{not} on the
-Jetson Orin Nano target, which was unavailable; see the on-device measurement
+Section~\ref{subsec:ondevice} were taken separately on the target device itself ---
+an NVIDIA Jetson Orin Nano Super Developer Kit (8\,GB, 25\,W power mode) running
+JetPack~6.2.2, L4T~R36.5, CUDA~12.6 and TensorRT~10.3.0 under Python~3.10 with
+PyTorch~2.8.0 --- and not on the laptop GPU; see the on-device measurement
 disclosure below.
 
 \textbf{Optimization.} Every stage uses Adam with weight decay $10^{-4}$ and a
@@ -1023,29 +1043,42 @@ but the absolute risk-model accuracies in Table~\ref{tab:dt} should be read as a
 methodology validation, to be revisited against in-situ sensor logs once a turmeric
 greenhouse unit is deployed.
 
-\textbf{Fusion evaluation disclosure.} Table~\ref{tab:fusion} is likewise evaluated
-on \emph{constructed} episodes rather than field-labelled deployment windows: the
-per-image classifier predictions are real (the trained Case~2~+~Replay checkpoint
-run on held-out tomato test images), and the risk states are real E1 test-period
-outputs, but the day-by-day sequencing that assembles them into episodes, and the
-ground-truth outcome assigned to each scenario category, are both constructed. This
-should be read as a validation that the fusion rule $\Phi$ behaves as designed given
-correctly labelled inputs, not as a field measurement of fused-decision accuracy,
-pending real deployment episodes with agronomist-confirmed outcomes.
+\textbf{Fusion evaluation disclosure.} The fusion check of
+Section~\ref{sec:fusion} likewise runs on \emph{constructed} episodes rather than
+field-labelled deployment windows: the per-image classifier predictions are real
+(the trained Case~2~+~Replay checkpoint run on held-out tomato test images), and the
+risk states are real test-period outputs of the environmental model, but the
+day-by-day sequencing that assembles them into episodes, and the outcome assigned to
+each scenario category, are both constructed. Because the categories are themselves
+derived from the cases $\Phi$ is designed to cover, no aggregate accuracy is reported
+for the fusion rule: doing so would measure the coverage of the scenario design
+rather than field performance. What the check establishes is narrower and stated as
+such --- that $\Phi$ is implemented as specified, that its one structural blind spot
+is where the design predicts, and that sensor loss degrades it to the vision-only
+decision exactly. A field measurement of fused-decision accuracy awaits real
+deployment episodes with agronomist-confirmed outcomes.
 
-\textbf{On-device measurement disclosure.} The retraining-cycle, conversion-gate
-and classification-latency rows of Table~\ref{tab:ondevice} were measured on a
-desktop-class laptop GPU, \emph{not} on the Jetson Orin Nano deployment target,
-which was unavailable. The embedded target differs in power envelope, memory
-architecture and thermal behaviour, so those absolute figures do not transfer; what
-they establish is that the retrain\,$\rightarrow$\,export\,$\rightarrow$\,compile\,$\rightarrow$\,gate
-pipeline runs end to end and that the conversion gate is measurable as specified.
-For the same reason the compiled artifact is an ONNX Runtime graph rather than the
-TensorRT engine the deployment design specifies, the latter being unavailable in
-the measurement environment. Detection and segmentation latencies are reported from
-prior work \cite{ref21} rather than re-measured here. A full on-device
-characterization --- including engine build time, thermal throttling and power
-mode --- remains outstanding.
+\textbf{On-device measurement disclosure.} Every row of
+Table~\ref{tab:ondevice} was measured on the Jetson Orin Nano Super deployment
+target itself: the retraining cycle, the ONNX export and TensorRT FP16 engine
+build, both gates, per-stage and cascade latency, and board power and thermals.
+The compiled artifact is the TensorRT engine the deployment design specifies, not a
+substitute runtime. Four limitations remain and are stated rather than smoothed
+over. First, detection and segmentation \emph{accuracy} is not re-evaluated here ---
+this work ships no detection ground truth --- so mAP@0.5 and mIoU stay cited to
+\cite{ref21}; only their latency is measured. Second, those two stages execute as
+PyTorch FP16 models rather than compiled engines, so their timings bound rather than
+represent a fully-compiled pipeline. Third, the end-to-end cascade trace was run on
+tomato imagery through detection and segmentation models trained on turmeric leaves,
+because the two crops' pipelines are separate in deployment and only the tomato
+image set ships with the continual learning study; stage latency is set by input
+resolution and crop count rather than image content and is therefore valid, but for
+this reason the confidence-routing rates observed during that trace are not reported
+as system behaviour. Fourth, the optional GAN occlusion-recovery stage and the
+environmental risk fusion branch are not part of the measured cascade, and all
+figures come from a single device over a single run rather than from a population of
+boards. Power is read from the board's on-board INA3221 rails, the standard
+instrumentation for this platform, not from an external meter.
 
 %% ====================================================================
 \section{Results and Discussion}
@@ -1358,67 +1391,120 @@ half the memory cost of EWC, reversing their CatA relationship.
 \label{subsec:ondevice}
 
 \begin{table}[!tbp]
-\caption{Retraining Cycle and Inference Cost}
+\caption{On-Device Retraining Cycle and Inference Cost\\(Jetson Orin Nano Super, 25\,W Mode)}
 \label{tab:ondevice}
 \centering
 \small
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}lcc@{}}
 \toprule
 \textbf{Operation} & \textbf{Time} & \textbf{Memory} \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Monthly retraining cycle}} \\
-Replay retrain cycle                 & 373.2\,s & 155.6\,MB \\
-ONNX export                          & 1.5\,s   & 5.8\,MB \\
-TensorRT FP16 build                  & \multicolumn{2}{c}{n/a$^{\ddagger}$} \\
+Replay retrain cycle (12 epochs)     & 491.3\,s  & 156.6\,MB \\
+ONNX export                          & 2.0\,s    & 6.1\,MB \\
+TensorRT FP16 build                  & 218.3\,s  & 4.1\,MB \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Conversion gate (fixed test set, 1{,}137 images)}} \\
-PyTorch FP32 candidate               & \multicolumn{2}{c}{98.51\,\%} \\
-PyTorch FP16                         & \multicolumn{2}{c}{98.59\,\% ($\Delta$ $+0.09$)} \\
-Compiled graph$^{\ddagger}$          & \multicolumn{2}{c}{98.51\,\% ($\Delta$ $0.00$)} \\
+PyTorch FP32 candidate               & \multicolumn{2}{c}{98.33\,\%} \\
+PyTorch FP16                         & \multicolumn{2}{c}{98.59\,\% ($\Delta$ $+0.26$)} \\
+TensorRT FP16 engine                 & \multicolumn{2}{c}{98.77\,\% ($\Delta$ $+0.44$)} \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Deployment gate (retrained candidate vs.\ incumbent)}} \\
+Incumbent, TensorRT FP16             & \multicolumn{2}{c}{98.33\,\%} \\
+Candidate, TensorRT FP16             & \multicolumn{2}{c}{98.68\,\% ($\Delta$ $+0.35$)} \\
+Decision                             & \multicolumn{2}{c}{promote ($p=0.42$)$^{\S}$} \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{Per-stage inference latency}} \\
-Detection, per image$^{\dagger}$     & 12.2\,ms & 6.15\,MB \\
-Segmentation, per leaf$^{\dagger}$   & 5.0\,ms  & 6.15\,MB \\
-Classification, eager                & 10.2\,ms & 5.8\,MB \\
-Classification, compiled             & 3.8\,ms  & 5.8\,MB \\
+Detection, per image$^{\dagger}$     & 23.0\,ms & 6.15\,MB \\
+Segmentation, per leaf$^{\dagger}$   & 29.2\,ms & 6.15\,MB \\
+Classification, PyTorch FP32         & 18.4\,ms & 5.8\,MB \\
+Classification, TensorRT FP16        & 1.9\,ms  & 4.1\,MB \\
+Full cascade, 8-image capture set$^{\ast}$ & 539.7\,ms & --- \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Board power and thermals (INA3221 rails)}} \\
+Idle baseline                        & \multicolumn{2}{c}{5.06\,W} \\
+Full cascade, mean / peak            & \multicolumn{2}{c}{9.75 / 11.40\,W} \\
+Peak junction temperature            & \multicolumn{2}{c}{63.5\,\textdegree C (no throttling)} \\
 \bottomrule
 \end{tabular}
 
 \vspace{2pt}
 \begin{minipage}{\columnwidth}
-\footnotesize $^{\dagger}$Reported in prior work \cite{ref21}. All other rows measured
-here on a laptop GPU (RTX 4050, CUDA 12.1) as a proxy, \emph{not} on the Jetson Orin
-Nano target. $^{\ddagger}$TensorRT was unavailable in the measurement environment;
-the compiled graph is ONNX Runtime GPU.
+\footnotesize All rows measured on the deployment target: an NVIDIA Jetson Orin Nano
+Super Developer Kit (8\,GB unified CPU/GPU memory, 25\,W power mode) running
+JetPack~6.2.2 / L4T~R36.5 with CUDA~12.6, TensorRT~10.3.0, PyTorch~2.8.0 and
+Python~3.10.12. $^{\dagger}$Latency only;
+detection and segmentation \emph{accuracy} (mAP@0.5, mIoU) is not re-measured here
+and remains cited to prior work \cite{ref21}. These two stages execute as PyTorch
+FP16 rather than TensorRT engines, so their latency is an upper bound on a
+fully-compiled pipeline. $^{\ast}$One capture set of eight frames yielding 16 leaf
+crops; segmentation and classification scale with crop count, not frame count.
+$^{\S}$Promotion follows a strict accuracy comparison; the McNemar $p$-value is
+reported separately and the improvement is \emph{not} statistically significant.
 \end{minipage}
 \end{table}
 
-Three observations follow. First, a full replay retraining cycle completes in
-roughly six minutes of wall-clock time on the proxy hardware with a peak of
-155.6\,MB of accelerator memory --- a footprint small enough that the corresponding
-cycle on the deployment target is plausibly an overnight background task rather
-than a workload competing with daytime capture, although confirming this requires
-the on-device measurement itself. Second, and more consequentially for the design,
-the conversion gate finds an accuracy delta of essentially zero: the compiled graph
-reproduces the FP32 candidate exactly, and half precision differs by a single image
-out of 1{,}137. We report this rather than omit it. The justification for the gate
-is therefore not that conversion is empirically lossy, but that a system promoting
-a converted artifact into production cannot know that without measuring the
-artifact it actually deploys; here the measurement confirms equivalence, and a gate
-that assumed equivalence would have been correct by luck rather than by evidence.
-Third, compiling the classifier yields a $2.7\times$ latency reduction at identical
-accuracy, whereas eager half-precision execution is \emph{slower} than FP32 for a
-network this small, the per-operation conversion overhead exceeding any arithmetic
-saving --- a further illustration that conversion effects must be measured per
-model rather than assumed from precision alone.
+Four observations follow. First, the retraining cycle fits the device comfortably.
+A full twelve-epoch replay cycle completes in 491\,s --- a little over eight
+minutes --- with a peak of 156.6\,MB of accelerator memory on a board with 8\,GB
+shared between CPU and GPU. Per epoch the Jetson is $1.52\times$ slower than the
+RTX~4050 laptop used for the benchmark study (39.1\,s against 25.7\,s), a modest
+penalty that leaves the monthly cycle firmly in the overnight-background-task
+regime rather than in contention with daytime capture. The cycle also reproduces
+the laptop result: starting from the same cycle-1 checkpoint with the same data and
+seed, the device reaches 98.59\,\% test accuracy against the laptop's 98.42\,\%, a
+difference of two images out of 1{,}137, with near-identical loss trajectories.
+Continual learning on the target hardware is therefore not merely feasible but
+numerically faithful to the study that motivated it.
 
-Summing the cited detection and segmentation stages with the measured compiled
-classification stage places one eight-image capture set on the order of a few
-hundred milliseconds. With two capture sets per day, the device is therefore idle
-for the overwhelming majority of its duty cycle, leaving ample headroom for a
-retraining pass to run without contending with inference. This arithmetic combines
-figures obtained on different hardware and should be read as indicative of the
-duty-cycle argument rather than as a measured end-to-end deployment latency.
+Second, and most consequentially for the design, the conversion gate is no longer
+decorative. Compiling to a TensorRT FP16 engine shifts accuracy by $+0.44$
+percentage points --- five images of 1{,}137 --- where an earlier ONNX Runtime proxy
+had found a delta of exactly zero. Layer fusion and kernel autotuning genuinely
+change the arithmetic the network performs, and here they happen to help; nothing
+guarantees the sign. This is precisely the situation the gate exists for: a system
+that promotes a converted artifact into production cannot know which way conversion
+moved it without measuring the artifact it actually deploys. The earlier
+proxy measurement made the gate look like insurance against a risk that did not
+materialize; the on-device measurement shows the risk is real and quantifiable.
+
+Third, the promotion path runs end to end on the device. Converting the retrained
+candidate, evaluating it through the same TensorRT runtime that will serve it, and
+deciding against the incumbent costs 227\,s in total, of which 218\,s is the engine
+build. The candidate improves on the incumbent by $+0.35$ percentage points, four
+images, and is promoted. We report the paired McNemar test alongside the decision
+($p=0.42$) and stress that the promotion rule is a strict accuracy comparison, as
+the design specifies: a four-image margin on a 1{,}137-image set is not a
+statistically significant improvement, and describing it as one would misstate what
+the gate does. What the measurement establishes is that the adapt--verify--gate
+loop closes on device, not that a single monthly cycle produces a significant gain.
+
+Fourth, inference and power leave ample headroom. TensorRT compilation reduces
+classification from 18.4\,ms to 1.9\,ms per image, a $9.6\times$ speedup, and the
+complete cascade --- capture, detection, per-crop segmentation, background removal,
+classification and confidence routing --- processes an eight-frame capture set
+yielding 16 leaf crops in 539.7\,ms, of which segmentation accounts for 57\,\%
+because it runs once per crop rather than once per frame. With two capture sets per
+day the device is idle for effectively its entire duty cycle. Board power averages
+9.75\,W against the configured 25\,W envelope, peaking at 11.40\,W, and junction
+temperature rises only 2.3\,\textdegree C to 63.5\,\textdegree C with no thermal
+throttling observed. Unlike the proxy measurement this figure is a single measured
+trace on one device rather than an arithmetic combination of numbers from different
+hardware.
+
+One discrepancy deserves explicit statement. Our prior pipeline work \cite{ref21}
+reports 82.1\,FPS for detection and 200\,FPS for segmentation, whereas we measure
+43.5\,FPS and 34.2\,FPS respectively on hardware that is newer and faster than the
+target that work describes. Two factors account for the gap: the stages here run as
+PyTorch FP16 models rather than compiled TensorRT engines, and the earlier figures
+are most consistent with measurement on a training-class GPU rather than on an
+embedded board. We therefore report the values measured on the deployment target
+and retain \cite{ref21} only for detection and segmentation \emph{accuracy}, which
+this work does not re-evaluate. The practical consequence is favourable rather than
+otherwise: even at the slower measured rates the cascade is far inside the duty
+cycle, and compiling the two YOLO stages to TensorRT --- not done here --- is an
+obvious remaining optimization.
 
 \subsection{Turmeric Deployment Validation}
 \label{subsec:turmeric}
@@ -1584,9 +1670,12 @@ mechanisms constrain and drive the same parameters in opposition. Underlying all
 three method families, the layer-wise training strategy --- permanent early-layer
 freezing, decayed late-feature learning rates, and a split learning-rate classifier
 head --- proved to be a precondition rather than a refinement. All models remain
-within 5.82\,MB and the retraining cycle fits the target device's envelope,
-establishing that autonomous, self-improving disease monitoring is achievable without
-any dependence on cloud infrastructure.
+within 5.82\,MB, and the complete adaptation cycle --- retrain, ONNX export,
+TensorRT FP16 compilation, conversion gate and gated promotion --- was measured end
+to end on the Jetson Orin Nano Super at 491\,s and 156.6\,MB of peak accelerator
+memory, with the full inference cascade drawing 9.75\,W on average and provoking no
+thermal throttling. Autonomous, self-improving disease monitoring is therefore
+achievable on a single edge device without any dependence on cloud infrastructure.
 
 Several directions follow. The most immediate is replacing the human relabeller with
 an \emph{LLM teacher}: low-confidence crops from the relabel queue are labelled in
@@ -1596,9 +1685,11 @@ end-to-end. Beyond this, an \emph{agentic orchestration layer} would allow the s
 to reason over its own trend data and knowledge base to schedule interventions rather
 than merely reporting risk states. Further work includes maturing the GAN
 occlusion-recovery stage on real greenhouse imagery so it can be enabled by default,
-extending the evaluation to longer cycle horizons and additional crop variants, and
-replacing empirical confidence thresholds with calibrated uncertainty estimates to
-tighten the guarantees on auto-labelled data entering the retrain buffer.
+compiling the detection and segmentation stages to TensorRT engines as the
+classifier already is, extending the evaluation to longer cycle horizons and
+additional crop variants, and replacing empirical confidence thresholds with
+calibrated uncertainty estimates to tighten the guarantees on auto-labelled data
+entering the retrain buffer.
 
 \section*{Acknowledgment}
 The authors thank the Department of Electrical and Electronic Engineering,
@@ -1607,6 +1698,58 @@ University of Jaffna, for supporting this work.
 % this section entirely if not applicable.
 
 \begin{thebibliography}{35}
+%% ============================================================
+%% NOTE: entries are ordered by FIRST CITATION IN THE TEXT, as IEEE requires.
+%% The \bibitem KEYS are historical and deliberately NOT renumbered, so that
+%% the refNN names used throughout 07_CHANGES_MADE.md, 01_SCOPE_AND_COVERAGE.md
+%% and the experiment READMEs keep pointing at the right entries. The key name
+%% therefore does NOT match the rendered number -- e.g. ref21 renders as [1].
+%% Cite by key only (\cite{ref21}); never hardcode a bracket number.
+%% Key -> rendered number:
+%   [ 1] = ref21
+%   [ 2] = ref1
+%   [ 3] = ref2
+%   [ 4] = ref6
+%   [ 5] = ref7
+%   [ 6] = ref8
+%   [ 7] = ref22
+%   [ 8] = ref13
+%   [ 9] = ref15
+%   [10] = ref16
+%   [11] = ref17
+%   [12] = ref18
+%   [13] = ref19
+%   [14] = ref20
+%   [15] = ref3
+%   [16] = ref4
+%   [17] = ref5
+%   [18] = ref9
+%   [19] = ref10
+%   [20] = ref11
+%   [21] = ref12
+%   [22] = ref14
+%   [23] = ref23
+%   [24] = ref29
+%   [25] = ref24
+%   [26] = ref25
+%   [27] = ref26
+%   [28] = ref28
+%   [29] = ref30
+%   [30] = ref31
+%   [31] = ref32
+%   [32] = ref33
+%   [33] = ref35
+%   [34] = ref34
+%   [35] = ref27
+%% ============================================================
+
+\bibitem{ref21}
+%% Crossref-verified: DOI resolves, event metadata confirms Peradeniya, Sri Lanka,
+%% 16-17 Jan 2026, pp. 395-400, all three authors present.
+R. Roycetheeban, A. M. Mathushanth, and M. Tharmakulasingam, ``A lightweight modular
+pipeline for edge-optimized leaf disease detection,'' in \emph{Proc. IEEE 19th Int.
+Conf. Ind. Inf. Syst. (ICIIS)}, Peradeniya, Sri Lanka, Jan. 2026, pp. 395--400,
+doi: 10.1109/ICIIS69028.2026.11450780.
 
 \bibitem{ref1}
 D. P. Hughes and M. Salath\'e, ``An open access repository of images on plant health
@@ -1617,29 +1760,6 @@ to enable the development of mobile disease diagnostics,'' \emph{arXiv:1511.0806
 S. P. Mohanty, D. P. Hughes, and M. Salath\'e, ``Using deep learning for image-based
 plant disease detection,'' \emph{Front. Plant Sci.}, vol. 7, Sep. 2016, Art. no. 1419,
 doi: 10.3389/fpls.2016.01419.
-
-\bibitem{ref3}
-K. He, X. Zhang, S. Ren, and J. Sun, ``Deep residual learning for image recognition,''
-in \emph{Proc. IEEE Conf. Comput. Vis. Pattern Recognit. (CVPR)}, Las Vegas, NV, USA,
-2016, pp. 770--778, doi: 10.1109/CVPR.2016.90.
-
-\bibitem{ref4}
-M. Tan and Q. V. Le, ``EfficientNet: Rethinking model scaling for convolutional neural
-networks,'' in \emph{Proc. 36th Int. Conf. Mach. Learn. (ICML)}, Long Beach, CA, USA,
-2019, pp. 6105--6114.
-
-%% >>> REPLACED 2026-07-29. The previous entry here --- H. Sharma and M. Patel,
-%% "Edge computing challenges for deep learning-based plant disease detection
-%% systems," IEEE Internet Things J., vol. 9, no. 12, pp. 9876-9888, 2022,
-%% doi: 10.1109/JIOT.2022.3142890 --- DOES NOT EXIST. Its DOI returns HTTP 404,
-%% and IEEE IoT J. vol. 9 no. 12 runs ...9858-9871 then 9889-9903, so the claimed
-%% page range 9876-9888 falls in a gap occupied by no article. Replaced with a
-%% Crossref-verified reference supporting the same claim. (The bad entry was
-%% inherited from the prior conference paper, where it appears as [4].) <<<
-\bibitem{ref5}
-A. T. Khan, S. M. Jensen, A. R. Khan, and S. Li, ``Plant disease detection model
-for edge computing devices,'' \emph{Front. Plant Sci.}, vol. 14, Dec. 2023,
-Art. no. 1308528, doi: 10.3389/fpls.2023.1308528.
 
 \bibitem{ref6}
 A. Howard \emph{et al.}, ``Searching for MobileNetV3,'' in \emph{Proc. IEEE/CVF Int.
@@ -1656,34 +1776,18 @@ R. Banner, Y. Nahshan, and D. Soudry, ``Post training 4-bit quantization of
 convolutional networks for rapid-deployment,'' in \emph{Proc. 33rd Conf. Neural Inf.
 Process. Syst. (NeurIPS)}, Vancouver, BC, Canada, 2019, pp. 7950--7958.
 
-\bibitem{ref9}
-G. Jocher, A. Chaurasia, and J. Qiu, ``Ultralytics YOLOv8,'' 2023. [Online].
-Available: https://github.com/ultralytics/ultralytics
-
-\bibitem{ref10}
-E. A. Aldakheel, M. Zakariah, and A. H. Alabdalall, ``Detection and identification of
-plant leaf diseases using YOLOv4,'' \emph{Front. Plant Sci.}, vol. 15, Apr. 2024,
-Art. no. 1355941, doi: 10.3389/fpls.2024.1355941.
-
-\bibitem{ref11}
-Y. Miao, W. Meng, and X. Zhou, ``SerpensGate-YOLOv8: An enhanced YOLOv8 model for
-accurate plant disease detection,'' \emph{Front. Plant Sci.}, vol. 15, Jan. 2025,
-Art. no. 1514832, doi: 10.3389/fpls.2024.1514832.
-
-\bibitem{ref12}
-H. Guan \emph{et al.}, ``A lightweight model for efficient identification of plant
-diseases and pests based on deep learning,'' \emph{Front. Plant Sci.}, vol. 14,
-Aug. 2023, Art. no. 1227011, doi: 10.3389/fpls.2023.1227011.
+\bibitem{ref22}
+%% No DOI: published as a proceedings volume by the University of Jaffna, not
+%% DOI-registered (confirmed absent from Crossref). Page range 7-16 confirmed
+%% against the proceedings table of contents.
+R. Roycetheeban, A. M. Mathushanth, and M. Tharmakulasingam, ``GAN-based leaf image
+inpainting for occlusion recovery,'' in \emph{Proc. 2nd Int. Conf. Digit. Technol.
+Sustain. Agricult. (ICDTSA)}, Kilinochchi, Sri Lanka, May 2025, pp. 7--16.
 
 \bibitem{ref13}
 R. M. French, ``Catastrophic forgetting in connectionist networks,'' \emph{Trends
 Cogn. Sci.}, vol. 3, no. 4, pp. 128--135, Apr. 1999,
 doi: 10.1016/S1364-6613(99)01294-2.
-
-\bibitem{ref14}
-M. De Lange \emph{et al.}, ``A continual learning survey: Defying forgetting in
-classification tasks,'' \emph{IEEE Trans. Pattern Anal. Mach. Intell.}, vol. 44,
-no. 7, pp. 3366--3385, Jul. 2022, doi: 10.1109/TPAMI.2021.3057446.
 
 \bibitem{ref15}
 J. Kirkpatrick \emph{et al.}, ``Overcoming catastrophic forgetting in neural
@@ -1716,26 +1820,63 @@ iterative pruning,'' in \emph{Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit
 (CVPR)}, Salt Lake City, UT, USA, 2018, pp. 7765--7773,
 doi: 10.1109/CVPR.2018.00810.
 
-\bibitem{ref21}
-%% Crossref-verified: DOI resolves, event metadata confirms Peradeniya, Sri Lanka,
-%% 16-17 Jan 2026, pp. 395-400, all three authors present.
-R. Roycetheeban, A. M. Mathushanth, and M. Tharmakulasingam, ``A lightweight modular
-pipeline for edge-optimized leaf disease detection,'' in \emph{Proc. IEEE 19th Int.
-Conf. Ind. Inf. Syst. (ICIIS)}, Peradeniya, Sri Lanka, Jan. 2026, pp. 395--400,
-doi: 10.1109/ICIIS69028.2026.11450780.
+\bibitem{ref3}
+K. He, X. Zhang, S. Ren, and J. Sun, ``Deep residual learning for image recognition,''
+in \emph{Proc. IEEE Conf. Comput. Vis. Pattern Recognit. (CVPR)}, Las Vegas, NV, USA,
+2016, pp. 770--778, doi: 10.1109/CVPR.2016.90.
 
-\bibitem{ref22}
-%% No DOI: published as a proceedings volume by the University of Jaffna, not
-%% DOI-registered (confirmed absent from Crossref). Page range 7-16 confirmed
-%% against the proceedings table of contents.
-R. Roycetheeban, A. M. Mathushanth, and M. Tharmakulasingam, ``GAN-based leaf image
-inpainting for occlusion recovery,'' in \emph{Proc. 2nd Int. Conf. Digit. Technol.
-Sustain. Agricult. (ICDTSA)}, Kilinochchi, Sri Lanka, May 2025, pp. 7--16.
+\bibitem{ref4}
+M. Tan and Q. V. Le, ``EfficientNet: Rethinking model scaling for convolutional neural
+networks,'' in \emph{Proc. 36th Int. Conf. Mach. Learn. (ICML)}, Long Beach, CA, USA,
+2019, pp. 6105--6114.
+
+%% >>> REPLACED 2026-07-29. The previous entry here --- H. Sharma and M. Patel,
+%% "Edge computing challenges for deep learning-based plant disease detection
+%% systems," IEEE Internet Things J., vol. 9, no. 12, pp. 9876-9888, 2022,
+%% doi: 10.1109/JIOT.2022.3142890 --- DOES NOT EXIST. Its DOI returns HTTP 404,
+%% and IEEE IoT J. vol. 9 no. 12 runs ...9858-9871 then 9889-9903, so the claimed
+%% page range 9876-9888 falls in a gap occupied by no article. Replaced with a
+%% Crossref-verified reference supporting the same claim. (The bad entry was
+%% inherited from the prior conference paper, where it appears as [4].) <<<
+
+\bibitem{ref5}
+A. T. Khan, S. M. Jensen, A. R. Khan, and S. Li, ``Plant disease detection model
+for edge computing devices,'' \emph{Front. Plant Sci.}, vol. 14, Dec. 2023,
+Art. no. 1308528, doi: 10.3389/fpls.2023.1308528.
+
+\bibitem{ref9}
+G. Jocher, A. Chaurasia, and J. Qiu, ``Ultralytics YOLOv8,'' 2023. [Online].
+Available: https://github.com/ultralytics/ultralytics
+
+\bibitem{ref10}
+E. A. Aldakheel, M. Zakariah, and A. H. Alabdalall, ``Detection and identification of
+plant leaf diseases using YOLOv4,'' \emph{Front. Plant Sci.}, vol. 15, Apr. 2024,
+Art. no. 1355941, doi: 10.3389/fpls.2024.1355941.
+
+\bibitem{ref11}
+Y. Miao, W. Meng, and X. Zhou, ``SerpensGate-YOLOv8: An enhanced YOLOv8 model for
+accurate plant disease detection,'' \emph{Front. Plant Sci.}, vol. 15, Jan. 2025,
+Art. no. 1514832, doi: 10.3389/fpls.2024.1514832.
+
+\bibitem{ref12}
+H. Guan \emph{et al.}, ``A lightweight model for efficient identification of plant
+diseases and pests based on deep learning,'' \emph{Front. Plant Sci.}, vol. 14,
+Aug. 2023, Art. no. 1227011, doi: 10.3389/fpls.2023.1227011.
+
+\bibitem{ref14}
+M. De Lange \emph{et al.}, ``A continual learning survey: Defying forgetting in
+classification tasks,'' \emph{IEEE Trans. Pattern Anal. Mach. Intell.}, vol. 44,
+no. 7, pp. 3366--3385, Jul. 2022, doi: 10.1109/TPAMI.2021.3057446.
 
 \bibitem{ref23}
 G. Zhang, L. Wang, G. Kang, L. Chen, and Y. Wei, ``SLCA: Slow learner with classifier
 alignment for continual learning on a pre-trained model,'' in \emph{Proc. IEEE/CVF
 Int. Conf. Comput. Vis. (ICCV)}, Paris, France, 2023, pp. 19148--19158.
+
+\bibitem{ref29}
+Z. Li and D. Hoiem, ``Learning without forgetting,'' \emph{IEEE Trans. Pattern Anal.
+Mach. Intell.}, vol. 40, no. 12, pp. 2935--2947, Dec. 2018,
+doi: 10.1109/TPAMI.2017.2773081.
 
 \bibitem{ref24}
 D. Li, Z. Yin, Y. Zhao, J. Li, and H. Zhang, ``Rehearsal-based class-incremental
@@ -1752,24 +1893,10 @@ S. Lee and C. M. Yun, ``A deep learning model for predicting risks of crop pests
 diseases from sequential environmental data,'' \emph{Plant Methods}, vol. 19,
 Dec. 2023, Art. no. 145, doi: 10.1186/s13007-023-01122-x.
 
-\bibitem{ref27}
-%% Author lists retrieved and verified via the DataCite API (Mendeley Data DOIs are
-%% registered with DataCite, not Crossref, so they do not resolve on Crossref).
-M. R. Hossain \emph{et al.}, ``Image dataset for turmeric plant leaf disease
-detection,'' \emph{Mendeley Data}, 2025, doi: 10.17632/jtttfbx342.1; and
-A. K. M. F. K. Siam, M. A. S. Nirob, and P. Bishshash, ``Turmeric plant disease
-dataset: Advancing AI for agricultural sustainability,'' \emph{Mendeley Data}, 2024,
-doi: 10.17632/g46dvrcvwn.1.
-
 \bibitem{ref28}
 C. Rudin, ``Stop explaining black box machine learning models for high stakes
 decisions and use interpretable models instead,'' \emph{Nature Mach. Intell.},
 vol. 1, no. 5, pp. 206--215, May 2019, doi: 10.1038/s42256-019-0048-x.
-
-\bibitem{ref29}
-Z. Li and D. Hoiem, ``Learning without forgetting,'' \emph{IEEE Trans. Pattern Anal.
-Mach. Intell.}, vol. 40, no. 12, pp. 2935--2947, Dec. 2018,
-doi: 10.1109/TPAMI.2017.2773081.
 
 \bibitem{ref30}
 J. Lin, L. Zhu, W.-M. Chen, W.-C. Wang, C. Gan, and S. Han, ``On-device training
@@ -1800,16 +1927,25 @@ K. Sohn \emph{et al.}, ``FixMatch: Simplifying semi-supervised learning with
 consistency and confidence,'' in \emph{Proc. 34th Conf. Neural Inf. Process. Syst.
 (NeurIPS)}, 2020, pp. 596--608.
 
-\bibitem{ref34}
-R. D. Magarey, T. B. Sutton, and C. L. Thayer, ``A simple generic infection model
-for foliar fungal plant pathogens,'' \emph{Phytopathology}, vol. 95, no. 1,
-pp. 92--100, Jan. 2005, doi: 10.1094/PHYTO-95-0092.
-
 \bibitem{ref35}
 H. J. Gohel, D. B. Mistry, S. K. Rathava, and B. B. Dhaduk, ``Management of leaf
 blotch (\textit{Taphrina maculans} Butler) and leaf spot (\textit{Colletotrichum
 capsici}) of turmeric,'' \emph{Indian Phytopathol.}, vol. 75, no. 2, pp. 487--491,
 2022, doi: 10.1007/s42360-021-00452-x.
+
+\bibitem{ref34}
+R. D. Magarey, T. B. Sutton, and C. L. Thayer, ``A simple generic infection model
+for foliar fungal plant pathogens,'' \emph{Phytopathology}, vol. 95, no. 1,
+pp. 92--100, Jan. 2005, doi: 10.1094/PHYTO-95-0092.
+
+\bibitem{ref27}
+%% Author lists retrieved and verified via the DataCite API (Mendeley Data DOIs are
+%% registered with DataCite, not Crossref, so they do not resolve on Crossref).
+M. R. Hossain \emph{et al.}, ``Image dataset for turmeric plant leaf disease
+detection,'' \emph{Mendeley Data}, 2025, doi: 10.17632/jtttfbx342.1; and
+A. K. M. F. K. Siam, M. A. S. Nirob, and P. Bishshash, ``Turmeric plant disease
+dataset: Advancing AI for agricultural sustainability,'' \emph{Mendeley Data}, 2024,
+doi: 10.17632/g46dvrcvwn.1.
 
 \end{thebibliography}
 
@@ -1855,9 +1991,21 @@ capsici}) of turmeric,'' \emph{Indian Phytopathol.}, vol. 75, no. 2, pp. 487--49
 % | P8 | Fig. 8 | CatB stability–plasticity scatter |
 % | P9 | ~~Fig. 9~~ | Deployment photo + dashboard screenshot -- REMOVED 2026-07-29 (no installed unit; figure was never \ref'd) |
 % | P10 | Table IV | Decision-tree risk results ✅ DONE (E1) |
-% | P11 | Table V | Fusion vs image-only ✅ DONE (E2) |
-% | P12 | Table XIII | On-device cycle + latency ✅ DONE (E3/E5, laptop-GPU proxy) |
-% | P13 | Table XIV | Turmeric CL validation ✅ DONE (E4, Replay + naive, 3 seeds) |
+% | P11 | ~~Table V~~ | Fusion vs image-only -- TABLE REMOVED 2026-08-05. The aggregate
+%        accuracy was determined by the scenario design (7 of 8 categories assign the
+%        outcome Phi is built to produce, so 7/8 = 87.5% was fixed before any episode
+%        ran) and read as a field-accuracy claim it could not support. E2's findings
+%        are now carried in Section V-B prose: structural (not marginal) failure of
+%        each single-modality baseline, Phi's one provable blind spot, and exact
+%        degradation to vision-only on sensor loss. Numbers remain in
+%        experiments/part3_fusion_eval/outputs/. |
+% | P12 | Table XII | On-device cycle + latency ✅ DONE (E3/E5) -- UPGRADED 2026-08-09
+%        from laptop proxy to REAL Jetson Orin Nano Super measurement. |
+% | P13 | Table XIII | Turmeric CL validation ✅ DONE (E4, Replay + naive, 3 seeds) |
+%
+% NOTE: deleting Table V renumbered everything after it -- 13 tables now, and what the
+% docs call Tables VI-XIV render as V-XIII. The .tex uses \ref{} throughout, so the
+% compiled paper is internally correct either way.
 %
 % ---
 %
@@ -1871,9 +2019,9 @@ capsici}) of turmeric,'' \emph{Indian Phytopathol.}, vol. 75, no. 2, pp. 487--49
 % ## Pre-submission checklist
 %
 % - [x] **E1** decision-tree experiment → Table IV (P10) filled + discussion written
-% - [x] **E2** fusion evaluation → Table V (P11) filled + Fig. 5 (P5) built
-% - [x] **E3/E5** cycle + latency → Table XIII (P12) filled + discussion written. NOTE: laptop-GPU proxy, NOT Jetson; TensorRT unavailable (ONNX Runtime substituted); detect/seg cited to [21]. Real on-device measurement still outstanding.
-% - [x] **E4** turmeric CL validation → Table XIV (P13) filled + discussion written. Case 2 + Replay on data/07_turmeric_5cls, 2 cycles, 3 seeds: Replay 90.03 +/- 3.54 vs base 89.10 +/- 2.35, naive 87.85 +/- 2.47. Scope narrowed to Replay + naive reference; framed as a feasibility check (n=107, no pairwise McNemar reaches p<0.05).
+% - [x] **E2** fusion evaluation → Fig. 5 (P5) built; Table V REMOVED 2026-08-05 (see P11 above), findings moved to Section V-B prose
+% - [x] **E3/E5** cycle + latency → Table XII (P12) filled + discussion written. UPGRADED 2026-08-09 to REAL on-device measurement on a Jetson Orin Nano Super (8 GB, 25 W, JetPack 6.2.2 / L4T R36.5 / CUDA 12.6 / TensorRT 10.3.0 / torch 2.8.0). Bundle + raw outputs: jetson_aiot/jetson_test/ (config.yaml, code/01..07, outputs/*.json). All 7 steps measured on device: TRT FP16 engine build 218.3 s / 4.09 MB; conversion gate fp32 98.33 -> TRT 98.77 (delta +0.44 pp, 5 images -- NON-zero, unlike the ONNX Runtime proxy's 0.00); retrain cycle 491.3 s / 156.6 MB / 39.1 s per epoch (1.52x the RTX 4050) reproducing cycle 2 at 98.59% vs the laptop's 98.42%; redeploy + deployment gate 227 s, candidate 98.68 vs incumbent 98.33 (+0.35 pp, 4 images) -> PROMOTE, McNemar p=0.42 NOT significant; cascade 539.7 ms per 8-frame set (16 crops, segmentation 57%); power idle 5.06 W -> loop 9.75 W mean / 11.40 W peak, tj peak 63.5 C, no throttling. NOTE: detect/seg ACCURACY (mAP/mIoU) still cited to [21] -- only latency measured, and those two stages run PyTorch FP16 not TensorRT. Our measured 43.5/34.2 FPS contradicts [21]'s reported 82.1/200 FPS; discussed explicitly in Section V-D. NOTE 2: an earlier run of step 3 started from the cycle-2 checkpoint instead of cycle-1, retraining on already-seen data (epoch-1 loss 0.0148 vs 0.0666, inflated 99.03%); superseded, preserved in outputs/_superseded_wrongbase/, and step 3 now refuses to run when retrain.base_checkpoint == model.checkpoint.
+% - [x] **E4** turmeric CL validation → Table XIII (P13) filled + discussion written. Case 2 + Replay on data/07_turmeric_5cls, 2 cycles, 3 seeds: Replay 90.03 +/- 3.54 vs base 89.10 +/- 2.35, naive 87.85 +/- 2.47. Scope narrowed to Replay + naive reference; framed as a feasibility check (n=107, no pairwise McNemar reaches p<0.05).
 % - [x] Produce figures P1–P8 (vector PDF) — all 8 done; P9 removed, not produced
 % - [x] Fill implementation details in Section V-C -- DONE 2026-07-30: RTX 4050 Laptop GPU (6 GB, driver 595.79), Python 3.10 / PyTorch 2.5.1 / torchvision 0.20.1 / CUDA 12.1, FP32 (no AMP), Adam + wd 1e-4, class-weighted CE, ReduceLROnPlateau on val macro-F1, batch 32 (96 for Case 3A pretrain; replay 16+16), epoch/patience budgets per stage, single seed 42 with the limitation stated explicitly.
 % - [x] ~~Replace refs [24] and [26]~~ — done, Crossref-verified (Li et al. 2024, CEA 224:109211; Lee & Yun 2023, Plant Methods 19:145). [28] Rudin 2019 added.

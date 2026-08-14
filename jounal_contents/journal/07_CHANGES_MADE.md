@@ -11,11 +11,13 @@
 | Experiment | Planned | Built | Table | Verdict |
 |---|---|---|---|---|
 | E1 Environmental risk | Tier B, generic thresholds | Turmeric-parameterised infection oracle, 5-model comparison | IV | ✅ done, design **upgraded** |
-| E2 Label-level fusion | Real deployment episodes | Constructed episodes, real model + real risk | V | ✅ done, source **downgraded** |
-| E3/E5 On-device cost | Measured on Jetson | Measured on laptop GPU proxy | XIII | 🟡 partial, hardware **substituted** |
-| E4 Turmeric CL | Case 2 + Replay **and** EWC, full ranking | Replay + naive reference only | XIV | ✅ done, scope **narrowed** |
+| E2 Label-level fusion | Real deployment episodes | Constructed episodes, real model + real risk | ~~V~~ **prose only** | ✅ done, source **downgraded**, **table removed** (item 32) |
+| E3/E5 On-device cost | Measured on Jetson | Measured on laptop GPU proxy | XII | 🟡 partial, hardware **substituted** |
+| E4 Turmeric CL | Case 2 + Replay **and** EWC, full ranking | Replay + naive reference only | XIII | ✅ done, scope **narrowed** |
 
-**Paper state:** **all 4 result tables carry real numbers**; **8 figures final (Fig. 9 removed)**; **35/35 citations complete and verified**; `.tex` and `.md` byte-identical; **§V-C implementation details are now filled, so the paper contains no remaining content gap.** The only unverified item is the rendered table layout, which needs an Overleaf compile.
+**Paper state:** **3 result tables carry real numbers** (E2's was withdrawn, see item 32); **13 tables, 8 figures**; **35/35 citations complete and verified**; `.tex` and `.md` byte-identical; §VI-C implementation details filled. The only unverified item is the rendered table layout, which needs an Overleaf compile.
+
+⚠️ **Table numbers shifted 2026-08-05.** Deleting Table V renumbered every table after it. Where this document says Tables VI–XIV, the paper now compiles to V–XIII. The `.tex` uses `\ref{}` throughout, so the compiled paper is internally correct; only the prose in these planning docs is affected.
 
 ---
 
@@ -369,6 +371,86 @@ Corrected to `8e-4` and `5e-5 / 5e-4`.
 
 **Scope of the error, checked row by row — nothing else is affected.** Case 1 scratch (1e-3 uniform), Case 3A pre-train (1e-3 uniform), Case 3B phases i/ii (5e-5 / 5e-4 and 1e-5 / 5e-5 / 5e-4), CL CatA cycles 1 and 2 (1e-4 / 5e-4 and 5e-5 / 2e-4) and both CatB split-LR rows (1e-4 / 1e-3 then 5e-5 / 5e-4) all match their configs exactly. **No reported accuracy changes** — the paper contains no table of base-model accuracies for the tomato cases, so the 97.27% vs 97.19% difference never propagated into a result.
 
+
+## 31. Fig. 1 cloud tier removed
+
+The upper dashed **"CLOUD — optional (subscription / support)"** band — `Relabelling service`, `Model registry / OTA`, `RAG chatbot / insights`, plus the dashed `intermittent sync` connector — was deleted from Fig. 1.
+
+**Why:** every one of those three boxes is explicitly **out of scope** in `01_SCOPE_AND_COVERAGE.md` §1.3 (cloud microservices, RAG chatbot, subscription tiers → skipped or future-work only). The paper never describes, measures or evaluates any of them, so the architecture figure was advertising a tier that has no corresponding section — the kind of gap a reviewer reads as overclaiming. Removing it also strengthens the offline-first framing rather than weakening it: the figure is now entirely on-device.
+
+**Changed:** `figures/src/fig1_architecture.py` — cloud `container()`, the three boxes, the sync arrow and its label deleted; canvas height `4.35 → 2.60` in and `EY = YT - 38 → YT / 2` so the edge tier is centred with the surplus vertical space removed. Regenerated `fig1_architecture.pdf` + preview PNG. Width unchanged at `COL2` (181 mm, `figure*`).
+
+**Caption reworded** in both `.tex` and `04_FULL_PAPER_LATEX.md`, since it referred to a tier that no longer appears: "…the cloud tier is optional and used only for relabel exchange and maintenance updates" → "…connectivity, when available, is used only for relabel exchange and maintenance updates and is not required for operation."
+
+`05_FIGURE_GUIDE.md` Fig. 1 spec and the `02_TITLES_AND_STRUCTURE.md` figure list updated to match. §III's opening sentence about opportunistic connectivity was checked and left as is — it describes the system, not the figure, and remains accurate.
+
+## 32. Table V (fusion) withdrawn — its accuracy was decided by the scenario design ⚠️
+
+The most consequential change in this pass. **Table V is deleted**; E2's findings now live in §V-B prose.
+
+**What was found.** Cross-checking `configs/part3_fusion_eval.yaml` against `outputs/episodes_scored.csv`: for **7 of the 8** scenario categories, the `ground_truth` field is identical to what Φ outputs for that same `(trend, risk)` pair. Only `confound_high_risk_false_alarm` differs. So:
+
+```
+fusion accuracy = 7 categories Φ is built to resolve / 8 categories = 87.5%
+                = 42/48 episodes
+```
+
+The number was fixed when the category table was written, before any episode ran. **Proof it is not empirical:** across all 48 episodes exactly **one** real classifier prediction ever flipped a realized trend (episode 47, `stable → rising`) — and it landed in the confound category, already scoring 0/6, so it changed nothing. A different seed, a different checkpoint, even a worse classifier still yields 87.5%.
+
+**This is the item-9 circularity bug, reduced but not eliminated.** Before that fix, ground truth matched Φ on 8/8 → 100%. After, 7/8 → 87.5%. Adding the adversarial category made the score *look* earned; it did not make it a measurement.
+
+**Why deletion rather than a disclosure sentence.** A disclosure was drafted and rejected: the aggregate would still sit in a table headed "Accuracy / Macro F1 / False alarms" beside genuinely measured numbers elsewhere in the paper, and readers take tables at face value regardless of surrounding prose. A reviewer opening the config sees `ground_truth: Alert` next to `{trend: rising, risk: High, output: Alert}` — and having caught that, re-reads the CL results with suspicion. The cost of keeping it was never the 87.5%; it was the credibility spillover onto results that *are* earned. A per-category coverage matrix was also considered and declined in favour of prose.
+
+**What survives, and is genuinely earned:**
+1. Single-modality baselines fail **structurally, in disjoint places** — counts alone cannot resolve the early-warning case (no symptom exists yet), risk alone cannot separate confirmed progression from favourable conditions. Neither is closable by tuning. This is the substantive argument for fusing at all.
+2. Φ has one **provable** blind spot — the adversarial category is input-identical to the genuine early-warning case, so a two-input discrete rule is necessarily wrong on one of them.
+3. **Graceful degradation is exact, not approximate** — on all 6 sensor-dropout episodes the fused output matched vision-only identically.
+
+**Also corrected:** §V-B previously claimed each source was "scored against an independently reasoned ground-truth cause rather than against Φ's own output." For 7 of 8 categories that was not true. The sentence is gone.
+
+**Edits:** `\begin{table}{tab:fusion}` deleted; §V-B evaluation paragraph rewritten; §VI fusion disclosure rewritten to stop referencing the table and to state why no aggregate is reported; header comment 14 → 13 tables; placeholder index P11 annotated. Contribution 5 in §I was checked and left alone — its "validated on the turmeric target crop" rests on E4, not E2. All numbers remain in `experiments/part3_fusion_eval/outputs/`; nothing was deleted outside the paper.
+
+**Verified after the edit:** no broken `\ref`, no undefined citations, 35/35 bib entries still cited, all environments balanced (13 tables, 8 figures, 4 equations, 2 algorithms), `.tex` ↔ `.md` byte-identical.
+
+## 33. E1 error asymmetry and statistical caveats added to §V-A
+
+Two additions to the environmental-risk discussion, both from data already in `outputs/` since July.
+
+**The asymmetry finding** (from `confusion_dt.csv`, previously unreported):
+
+```
+          pred: Low  Medium  High
+true Low        29      5      1
+true Medium      0     18      3
+true High        0      2     22
+```
+
+The entire `Low` prediction column is `29 / 0 / 0` — **no Medium- or High-risk window is ever classified Low** (precision 1.00 on Low). Of 11 errors, 9 over-estimate risk and 2 under-estimate by a single band. For a warning system this is the operationally correct direction: a grower is never told conditions are benign while infection pressure is elevated. Stated as a property of the fitted tree, not an imposed cost matrix, and flagged for re-verification on real logs.
+
+**The statistical caveat.** The test block is 80 windows, so one window = 1.25 pp — meaning the DT's 86.25% vs RF/GBM's 85.00% is **one sample wide**. The text now says the four learned models are indistinguishable in accuracy, which is what the interpretability argument actually needs (it requires parity, not superiority). Also states plainly that E1 is a single train/test run with no seed repetition or cross-validation.
+
+**Why this mattered:** the paper reported McNemar tests and confidence intervals for E4's n=107 while claiming an unqualified win for E1's n=80. That inconsistency in statistical rigour, within one paper, is the kind of thing a reviewer notices.
+
+**Declined:** adding a confusion-matrix figure. The paper is float-heavy (8 figures, 13 tables, ~15-page target, Tables XI/XII/XIII already collided once), and two sentences carry the finding at no float cost.
+
+## 34. Bibliography reordered to IEEE first-citation order ⚠️
+
+**Found:** the reference list was in *thematic* order (PlantVillage → backbones → compression → YOLO → CL methods → own prior work at 21–22), not citation order. IEEE requires entries numbered by **first mention in the text**. **32 of 35 were out of position.** The actual first-appearance sequence was:
+
+```
+21  1  2  6  7  8  22  13  15  16  17  18  19  20  3  4  5  9
+10  11  12  14  23  29  24  25  26  28  30  31  32  33  35  34  27
+```
+
+The first citation in the paper is `ref21` (the prior ICIIS pipeline paper, in the opening paragraph on turmeric yield losses), and `ref3`/`ref4`/`ref5` don't appear until Related Work. Verification passes to date had checked that citations *resolve* and that DOIs are valid — never that they were *ordered*, which is why 35/35 kept coming back clean.
+
+**Fixed** by reordering the 35 `\bibitem` blocks. Nothing else changed: the body uses `\cite{key}` throughout, and LaTeX assigns numbers by `\bibitem` position, so **not one `\cite` command was touched**. Confirmed beforehand that the body contains no hardcoded bracket numbers — the only `[1]` matches are `\begin{algorithmic}[1]`.
+
+**Keys deliberately NOT renamed.** `ref21` now renders as **[1]**, `ref1` as [2], and so on. Renaming would have invalidated every `refNN` reference across this document, `01_SCOPE_AND_COVERAGE.md`, and the experiment READMEs — a larger and more error-prone change than the confusion it removes. A full key→number mapping is now a comment block at the top of `thebibliography`, with an instruction to cite by key and never hardcode a number.
+
+**Verified:** first-appearance order is now `1..35` exactly; all 35 entries' content byte-identical to before the move (compared modulo whitespace against a backup); all provenance comments preserved, including the fabricated-`ref5` evidence, the `ref21` Crossref confirmation and the `ref22` no-DOI note; no undefined citations; no uncited entries; `.tex` ↔ `.md` byte-identical.
+
+⚠️ **Worth checking on the prior papers too** — if the same thematic-ordering habit produced the reference lists in `ref21`/`ref22`, they may carry the same defect. Related to the standing item 8 in `08_PENDING_WORK.md` (auditing those bibliographies for fabricated entries).
 
 ---
 
