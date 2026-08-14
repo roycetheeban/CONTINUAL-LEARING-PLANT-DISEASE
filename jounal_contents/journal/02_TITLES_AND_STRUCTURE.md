@@ -34,7 +34,7 @@
 | — | References | 0.75 | ~27 IEEE-style, incl. both prior papers |
 
 **Figure plan (placeholders in draft):**
-- Fig. 1 — LEAFSENSE system architecture (edge + optional cloud)
+- Fig. 1 — LEAFSENSE system architecture (edge tier; cloud band removed 2026-08-05)
 - Fig. 2 — 3-stage inference pipeline with confidence routing
 - Fig. 3 — On-device monthly CL cycle with metric gate (flowchart)
 - Fig. 4 — MobileNetV3-Small layer groups G1–G4 & split-LR head
