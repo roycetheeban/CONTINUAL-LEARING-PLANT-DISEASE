@@ -12,6 +12,9 @@
 %%   - change the next line to:  \documentclass{ieeeaccess}
 %%   - restore the ieeeaccess front matter (see WORKING NOTES at end of file)
 %%   - remove the figure-fallback block below.
+%%   - RESTORE THE \thanks{} AUTHOR BLOCK. The draft currently sets the
+%%     affiliation inline under the author names, which is not IEEE house
+%%     style; the submission form is kept commented out beside it.
 \documentclass[journal]{IEEEtran}
 
 \usepackage{cite}
@@ -58,13 +61,28 @@
 \title{LEAFSENSE: An Edge-Deployed Continual Learning Framework for
 Autonomous Plant Disease Monitoring in AIoT Greenhouses}
 
-\author{Roycetheeban~R.,~Mathushanth~A.~M.,~and~Mukunthan~Tharmakulasingam%
-\thanks{The authors are with the Department of Electrical and Electronic
-Engineering, Faculty of Engineering, University of Jaffna, Jaffna, Sri Lanka
-(e-mail: 2021e123@eng.jfn.ac.lk; 2021e015@eng.jfn.ac.lk;
-mukunthan@eng.jfn.ac.lk).}%
-% \thanks{Funding statement, if any.}%
+%% DRAFT-ONLY author block: the affiliation is set inline, directly beneath the
+%% author names, instead of as a first-column footnote. This is NOT IEEE journal
+%% house style -- IEEEtran's \thanks{} deliberately renders affiliations as a
+%% footnote at the foot of column 1. Restore the \thanks{} form below (or replace
+%% both with the ieeeaccess front matter) before submission.
+\author{Roycetheeban~R., Mathushanth~A.~M., and Mukunthan~Tharmakulasingam\\[2pt]
+\normalfont\normalsize Department of Electrical and Electronic Engineering,
+Faculty of Engineering,\\
+\normalfont\normalsize University of Jaffna, Jaffna, Sri Lanka\\[1pt]
+\normalfont\normalsize e-mail: 2021e123@eng.jfn.ac.lk; 2021e015@eng.jfn.ac.lk;
+mukunthan@eng.jfn.ac.lk%
 }
+
+%% ---- SUBMISSION FORM: restore this and delete the block above ----------------
+% \author{Roycetheeban~R.,~Mathushanth~A.~M.,~and~Mukunthan~Tharmakulasingam%
+% \thanks{The authors are with the Department of Electrical and Electronic
+% Engineering, Faculty of Engineering, University of Jaffna, Jaffna, Sri Lanka
+% (e-mail: 2021e123@eng.jfn.ac.lk; 2021e015@eng.jfn.ac.lk;
+% mukunthan@eng.jfn.ac.lk).}%
+% \thanks{Funding statement, if any.}%
+% }
+%% -----------------------------------------------------------------------------
 
 \markboth{IEEE Access (Preprint Draft), 2026}%
 {Roycetheeban \MakeLowercase{\textit{et al.}}: LEAFSENSE: An Edge-Deployed Continual Learning Framework}
@@ -83,22 +101,25 @@ rotating image capture, a three-stage detection--segmentation--classification pi
 environmental sensing, label-level fusion, and metric-gated continual retraining. The
 core of the paper is a controlled continual learning (CL) study comprising 25
 complete experimental runs on the PlantVillage tomato subset, spanning two incremental
-scenarios (same-class streaming and 5-to-7 class expansion), three
+scenarios (same-class streaming and 5 to 7 class expansion), three
 initialization strategies (from scratch, ImageNet, and in-domain PlantVillage
-pretraining) and five methods (Elastic Weight Consolidation, experience replay,
-parameter isolation, naive fine-tuning, and a hybrid). We introduce a layer-wise
-training strategy that partitions MobileNetV3-Small into four functional groups with
-progressive freezing and a split learning-rate classifier head for class expansion.
+pretraining) and four continual learning methods (Elastic Weight Consolidation,
+experience replay, parameter isolation, and a hybrid of the first two). We introduce a
+layer-wise training strategy that partitions MobileNetV3-Small into four functional
+groups with progressive freezing and a split learning-rate classifier head for class
+expansion.
 Experience replay over an ImageNet-initialized backbone is the strongest configuration,
 reaching 98.25\% average accuracy in same-class streaming and simultaneously 98.07\%
 new-class accuracy with 97.19\% old-class retention under class expansion; EWC attains
-98.21\% at 3.6$\times$ lower training cost, making it the preferred choice for frequent
+98.21\% at 3.6 times lower training cost, making it the preferred choice for frequent
 update cycles. Parameter isolation, adequate for same-class streams, fails
 catastrophically on new classes (6.38\% new-class accuracy with an in-domain backbone),
-and a hybrid EWC$+$replay scheme underperforms replay alone while costing 37--40\% more
-training time. All resulting models remain within 5.82\,MB, and the retraining cycle
-completes within the memory envelope of the target device, demonstrating that
-autonomous, self-improving disease monitoring is feasible entirely at the edge.
+and a hybrid scheme combining EWC and replay underperforms replay alone while costing
+37--40\% more training time. All resulting models remain within 5.82\,MB, and a
+complete on-device adaptation cycle --- retrain, compile to a TensorRT FP16 engine and
+gated promotion --- is measured at 491\,s and 156.6\,MB of peak accelerator memory
+while drawing 9.75\,W with no thermal throttling, demonstrating that autonomous,
+self-improving disease monitoring is feasible entirely at the edge.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -169,7 +190,7 @@ model only if it improves on a permanently held-out test set.
 \begin{enumerate}
 \item \textbf{A controlled 25-run continual learning benchmark} for plant disease
 classification spanning two incremental scenarios (same-class streaming and
-5$\rightarrow$7 class expansion), three initialization strategies (scratch,
+5 to 7 class expansion), three initialization strategies (scratch,
 ImageNet, in-domain PlantVillage) and five methods (EWC, experience replay,
 parameter isolation, naive fine-tuning, hybrid EWC$+$replay), with initialization
 treated as an explicit experimental factor rather than an uncontrolled confound.
@@ -431,7 +452,11 @@ per-class leaf count vector.
 \centering
 \includegraphics[width=\columnwidth]{figures/fig2_pipeline.pdf}
 \caption{Three-stage inference pipeline with confidence routing. The GAN
-occlusion-recovery stage is optional and disabled by default.}
+occlusion-recovery stage is optional and disabled by default. Marginal metrics are
+those \emph{reported in prior work} \cite{ref21} for the frozen detection and
+segmentation stages and for that work's turmeric classifier; they are not results of
+this paper, whose continual learning accuracies are reported in
+Tables~\ref{tab:cata}--\ref{tab:ondevice}.}
 \label{fig:pipeline}
 \end{figure}
 
@@ -1106,7 +1131,7 @@ Case 1 --- Isolation & 96.31\% & 0.9563 & 96.57\% & 0.9596 & 96.44\% & 232\,s \\
 Case 1 --- Naive$^{*}$ & 97.63\% & 0.9732 & 97.54\% & 0.9713 & 97.58\% & 322\,s \\
 \midrule
 Case 2 --- EWC       & 97.98\% & 0.9779 & 98.24\% & 0.9807 & \textbf{98.21\%} & \textbf{171\,s} \\
-Case 2 --- Replay $\star$ & 98.07\% & 0.9781 & 98.42\% & 0.9827 & \textbf{98.25\%} & 620\,s \\
+Case 2 --- Replay & 98.07\% & 0.9781 & 98.42\% & 0.9827 & \textbf{98.25\%} & 620\,s \\
 Case 2 --- Isolation & 97.19\% & 0.9686 & 97.27\% & 0.9697 & 97.23\% & --- \\
 Case 2 --- Naive$^{*}$ & 97.63\% & 0.9733 & 99.21\% & 0.9908 & 98.42\% & 322\,s \\
 \midrule
@@ -1115,7 +1140,7 @@ Case 3 --- Replay    & 97.80\% & 0.9763 & 98.50\% & 0.9835 & 98.15\% & 482\,s \\
 Case 3 --- Isolation & 96.48\% & 0.9615 & 96.66\% & 0.9633 & 96.57\% & 232\,s \\
 Case 3 --- Naive$^{*}$ & 96.48\% & 0.9624 & 98.24\% & 0.9798 & 97.36\% & --- \\
 \bottomrule
-\multicolumn{7}{@{}l}{\footnotesize $\star$ Best configuration. $^{*}$ Naive requires full data history; reference only, not a valid CL method.}
+\multicolumn{7}{@{}l}{\footnotesize Bold = best per column. $^{*}$ Naive requires full data history; reference only, not a valid CL method.}
 \end{tabular}
 \end{table*}
 
@@ -1173,17 +1198,19 @@ Fig.~\ref{fig:lambda} plots the sensitivity.
 \label{tab:lambda}
 \centering
 \small
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}lcccl@{}}
 \toprule
-$\boldsymbol{\lambda}$ & \textbf{C1 Acc} & \textbf{C2 Acc} & \textbf{C1 Time} & \textbf{Assessment} \\
+$\boldsymbol{\lambda}$ & \textbf{C1 Acc} & \textbf{C2 Acc} & \textbf{Time} & \textbf{Assessment} \\
 \midrule
-1{,}000  & 97.71\% & 98.15\% & 87.9\,s & Under-regularized \\
-3{,}000  & 97.80\% & \textbf{98.24\%} $\star$ & 88.0\,s & Optimal for Cycle 2 \\
-5{,}000  & 97.63\% & 98.24\% & 85.5\,s & Marginal over-regularization \\
-8{,}000  & 97.89\% & 98.07\% & 85.9\,s & Slight plasticity loss \\
-10{,}000 & \textbf{97.98\%} $\star$ & 98.24\% & 85.2\,s & Optimal for Cycle 1 \\
-15{,}000 & 97.89\% & 98.15\% & 84.7\,s & Over-regularized \\
+1{,}000  & 97.71\% & 98.15\% & 87.9\,s & Under-reg. \\
+3{,}000  & 97.80\% & \textbf{98.24\%} & 88.0\,s & Optimal, C2 \\
+5{,}000  & 97.63\% & 98.24\% & 85.5\,s & Slight over-reg. \\
+8{,}000  & 97.89\% & 98.07\% & 85.9\,s & Plasticity loss \\
+10{,}000 & \textbf{97.98\%} & 98.24\% & 85.2\,s & Optimal, C1 \\
+15{,}000 & 97.89\% & 98.15\% & 84.7\,s & Over-reg. \\
 \bottomrule
+\multicolumn{5}{@{}l}{\footnotesize Bold = best per cycle. C1/C2 = retraining cycles 1 and 2.}
 \end{tabular}
 \end{table}
 
@@ -1214,14 +1241,17 @@ initialization.
 \label{tab:lambdacase}
 \centering
 \small
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}lccc@{}}
 \toprule
-\textbf{Case} & \textbf{Fixed} $\lambda=1{,}000$ & \textbf{Tuned} $\lambda$ & \textbf{Gain} \\
+\textbf{Initialization} & \textbf{Fixed} & \textbf{Tuned} & \textbf{Gain} \\
+                        & $\lambda=1{,}000$ & $\lambda$ & \\
 \midrule
-Case 1 --- Scratch        & 97.58\% & 97.67\% & $+0.09$ \\
-Case 2 --- ImageNet       & 97.82\% & 98.21\% & $+0.39$ \\
-Case 3 --- PlantVillage $\star$ & 96.40\% & 97.54\% & $\mathbf{+1.14}$ \\
+Case 1 --- Scratch      & 97.58\% & 97.67\% & $+0.09$ \\
+Case 2 --- ImageNet     & 97.82\% & 98.21\% & $+0.39$ \\
+Case 3 --- PlantVillage & 96.40\% & 97.54\% & $\mathbf{+1.14}$ \\
 \bottomrule
+\multicolumn{4}{@{}l}{\footnotesize Accuracies are Category A averages; gain in percentage points.}
 \end{tabular}
 \end{table}
 
@@ -1241,7 +1271,7 @@ Table~\ref{tab:catb} reports both evaluation dimensions, and Fig.~\ref{fig:catb}
 plots them against one another to expose the stability--plasticity structure.
 
 \begin{table*}[!t]
-\caption{Category B Results --- New-Class Expansion (5$\rightarrow$7 Classes)}
+\caption{Category B Results --- New-Class Expansion (5 to 7 Classes)}
 \label{tab:catb}
 \centering
 \small
@@ -1255,7 +1285,7 @@ Case 1 --- Naive$^{*}$ & 94.39\% & 93.42\% & 93.91\% & 87.07\% & 743\,s \\
 Case 1 --- Hybrid    & 85.30\% & 83.56\% & 84.43\% & 92.44\% & 1{,}741\,s \\
 \midrule
 Case 2 --- EWC       & 93.62\% & 94.78\% & 94.20\% & 95.95\% & 797\,s \\
-Case 2 --- Replay $\star$ & 98.07\% & 98.07\% & \textbf{98.07\%} & \textbf{97.19\%} & 1{,}181\,s \\
+Case 2 --- Replay & 98.07\% & 98.07\% & \textbf{98.07\%} & \textbf{97.19\%} & 1{,}181\,s \\
 Case 2 --- Isolation & 45.45\% & 56.29\% & 50.87\% & $\sim$100\% & --- \\
 Case 2 --- Naive$^{*}$ & 94.58\% & 96.91\% & 95.74\% & 87.51\% & 351\,s \\
 Case 2 --- Hybrid    & 93.81\% & 96.71\% & 95.26\% & 98.24\% & 1{,}659\,s \\
@@ -1660,7 +1690,7 @@ device, and a controlled 25-run continual learning study establishing which
 adaptation strategy that loop should use. Experience replay over an
 ImageNet-initialized MobileNetV3-Small proved strongest overall, reaching 98.25\%
 average accuracy in same-class streaming and simultaneously 98.07\% new-class
-accuracy with 97.19\% old-class retention under 5$\rightarrow$7 class expansion,
+accuracy with 97.19\% old-class retention under 5 to 7 class expansion,
 while EWC delivered statistically equivalent same-class accuracy at 3.6$\times$ lower
 training cost. Two negative results carry equal practical weight: parameter isolation
 fails categorically when new classes are introduced, because architectural separation

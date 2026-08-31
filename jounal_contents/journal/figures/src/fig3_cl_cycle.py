@@ -3,7 +3,7 @@ from matplotlib.patches import Polygon
 from ls_style import PAL, COL1, save
 from ls_diagram import canvas, box, arrow, label
 
-W, H = COL1, 4.75
+W, H = COL1, 4.90
 fig, ax = canvas(W, H)
 YT = 100 * H / W
 
@@ -27,8 +27,9 @@ box(ax, X, YT - 52, 60, 10, "Export ONNX  →  build\nTensorRT FP16 engine", fs=
 box(ax, X, YT - 70, 64, 13,
     "Evaluate candidate ENGINE\non FIXED held-out test set",
     fc="#fff5e6", ec=PAL["orange"], lw=1.6, bold=True, fs=5.8)
-label(ax, X, YT - 77.5, "same TRT FP16 runtime that will serve",
-      fs=4.7, color=PAL["vermillion"], italic=True)
+# Offset LEFT of the spine so the arrow into the diamond does not run through it.
+label(ax, X - 4, YT - 79.6, "same TRT FP16 runtime\nthat will serve",
+      fs=4.7, color=PAL["vermillion"], italic=True, ha="right")
 
 dy = YT - 92
 diamond(ax, X, dy, 34, 18, "better than\nincumbent?", "#f3f3f3", "#555")
@@ -52,14 +53,18 @@ arrow(ax, (X, YT - 57), (X, YT - 63.5))
 arrow(ax, (X, YT - 76.5), (X, dy + 9))          # into diamond
 arrow(ax, (X, dy - 9), (X, dy - 14.5))          # yes out
 arrow(ax, (X, dy - 25.5), (X, dy - 30.5))
-label(ax, X + 3.5, dy - 12, "yes", fs=5.2, color=PAL["green"], ha="left")
+label(ax, X + 2.5, dy - 11.5, "yes", fs=5.2, color=PAL["green"], ha="left")
 
-# No branch: diamond left -> keep-incumbent box -> up left channel -> box2
+# No branch: diamond left -> keep-incumbent box -> up the left channel -> box 2.
+# The "no" label sits ABOVE the midpoint of the horizontal segment (x 35 -> 26),
+# not beside the diamond vertex, so it annotates the arrow it belongs to.
 arrow(ax, (X - 17, dy), (26, dy), color=PAL["vermillion"])
-label(ax, 40, dy + 2.5, "no", fs=5.2, color=PAL["vermillion"])
+label(ax, 30.5, dy + 2.6, "no", fs=5.2, color=PAL["vermillion"], ha="center")
 arrow(ax, (15, dy + 9), (15, YT - 20), color=PAL["vermillion"], rad=0.0)
 arrow(ax, (15, YT - 20), (X - 30, YT - 20), color=PAL["vermillion"])
-label(ax, 15, (dy + 9 + YT - 20) / 2, "retry\nnext\ncycle", fs=4.7,
-      color=PAL["vermillion"], ha="center")
+# Offset LEFT of the vertical channel (x=15): the boxes start at x=22, so there is
+# no room on the right. Sits in the outer margin, clear of both line and boxes.
+label(ax, 12.5, (dy + 9 + YT - 20) / 2, "retry\nnext\ncycle", fs=4.7,
+      color=PAL["vermillion"], ha="right")
 
 save(fig, "fig3_cl_cycle")

@@ -10,11 +10,19 @@ YT = 100 * H / W  # top of canvas (~88)
 label(ax, 50, YT - 4, "MobileNetV3-Small backbone", fs=7, color="#111", bold=True)
 
 # ---- backbone: 4 group bands ------------------------------------------------
+# Convention (matches Figs 1-3): PALE TINT fill + saturated palette EDGE. Filling
+# with the raw palette colour makes this figure louder than the rest of the paper
+# and puts dark text on saturated ground, which fails contrast. Tint + edge keeps
+# the Okabe-Ito hue coding while staying legible in greyscale.
 groups = [
-    ("G1 Early", "feat[0–3]", "edges,\ncolour", "FROZEN\n(always)", PAL["sky"]),
-    ("G2 Mid",   "feat[4–8]", "venation,\ntexture", "frozen\n(CatA)", PAL["green"]),
-    ("G3 Late",  "feat[9–12]", "lesion,\nclass margin", "LOW LR\nEWC target", PAL["orange"]),
-    ("G4 Head",  "classifier", "class\nprobs", "split-LR\n(CatB)", PAL["vermillion"]),
+    ("G1 Early", "feat[0–3]", "edges,\ncolour", "FROZEN\n(always)",
+     "#e7f2fa", PAL["sky"]),
+    ("G2 Mid",   "feat[4–8]", "venation,\ntexture", "frozen\n(CatA)",
+     "#e6f5f0", PAL["green"]),
+    ("G3 Late",  "feat[9–12]", "lesion,\nclass margin", "LOW LR\nEWC target",
+     "#fdf0dc", PAL["orange"]),
+    ("G4 Head",  "classifier", "class\nprobs", "split-LR\n(CatB)",
+     "#fbeadf", PAL["vermillion"]),
 ]
 x0, x1 = 6, 94
 n = len(groups)
@@ -22,12 +30,13 @@ gw = (x1 - x0) / n
 yb = YT - 34          # band vertical centre
 bh = 15
 centres = []
-for i, (name, blk, feat, status, col) in enumerate(groups):
+for i, (name, blk, feat, status, fc, ec) in enumerate(groups):
     cx = x0 + gw * (i + 0.5)
     centres.append(cx)
-    ec = PAL["vermillion"] if name.startswith("G3") else "#333"
-    lw = 2.0 if name.startswith("G3") else 1.1
-    box(ax, cx, yb, gw * 0.86, bh, "", fc=col, ec=ec, lw=lw, round=True, z=2)
+    # G3 is the primary forgetting site: emphasised by a heavier rule, not by a
+    # different colour, so the emphasis survives greyscale printing.
+    lw = 2.0 if name.startswith("G3") else 1.2
+    box(ax, cx, yb, gw * 0.86, bh, "", fc=fc, ec=ec, lw=lw, round=True, z=2)
     label(ax, cx, yb + 3.0, name, fs=6.2, color="#111", bold=True, z=4)
     label(ax, cx, yb - 0.2, blk, fs=5.2, color="#111", z=4)
     label(ax, cx, yb - 3.6, status, fs=4.9, color="#111", z=4)
@@ -57,12 +66,13 @@ label(ax, 50, iy + 7.5, "Classifier head expansion  5 → 7  (+2,050 params, 0.1
 ny = iy - 1.5
 oldx = [18, 25, 32, 39, 46]
 for x in oldx:
-    box(ax, x, ny, 4.4, 4.4, "", fc=PAL["grey"], ec="#333", lw=0.8, round=True, z=3)
+    box(ax, x, ny, 4.4, 4.4, "", fc="#dedede", ec="#777", lw=0.8, round=True, z=3)
 label(ax, 32, ny - 5.2, "old classes T1–T5   (LR ↓ protected)",
       fs=4.9, color="#333", z=4)
 newx = [66, 73]
 for x in newx:
-    box(ax, x, ny, 4.4, 4.4, "", fc=PAL["vermillion"], ec="#333", lw=0.8, round=True, z=3)
+    box(ax, x, ny, 4.4, 4.4, "", fc="#fbeadf", ec=PAL["vermillion"], lw=1.1,
+        round=True, z=3)
 label(ax, 69.5, ny - 5.2, "new T6–T7   (LR ↑ fast)", fs=4.9, color="#333", z=4)
 # divider bracket
 arrow(ax, (52, ny), (61, ny), color="#999", lw=0.9, style="-|>")
